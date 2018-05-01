@@ -1,0 +1,17 @@
+#article_title {
+	text-align: center;
+	color: #C8102E;
+}
+
+.instructions {
+	margin: auto;
+	width: 80%;
+}
+
+.instructions li{
+	color: #f2f2f2;
+}
+
+.instructions a{
+	color: #f2f2f2;
+}

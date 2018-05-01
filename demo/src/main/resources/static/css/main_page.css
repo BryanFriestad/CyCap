@@ -1,0 +1,20 @@
+body {
+	background-image: url("../res/webpage/gameplay_test.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.section2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: calc(100% - 128px);
+	justify-content: center;
+}
+
+.section2 button{
+	display: block;
+	position: relative;
+	top: -10px;
+	margin-bottom: 40px;
+}
