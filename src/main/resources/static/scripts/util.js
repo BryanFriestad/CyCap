@@ -211,6 +211,10 @@ function message_handler(msg){
 		}
 		window.location.href = "/game_list";
 	}
+	else if(temp[0] == "b_done"){
+		alert("Your map has been saved successfully!");
+		window.location.href = "/game_list";
+	}
 	else{
 		gameState.receiveGameState(msg.data);
 	}
