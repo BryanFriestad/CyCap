@@ -23,11 +23,17 @@ function InputHandler(game_id){
 		//compile input data
 		let snap = new InputSnapshot(this.mapX, this.mapY, this.canvasX, this.canvasY, this.mouse_clicked, this.lmb_down, this.keys_down, this.keys_pnr, this.snapshotNum);
 		
-		//push the snapshot to the list
-		this.clientPredictiveState.push(snap);
+		if(DT_ONLINE){
+			//push the snapshot to the list
+			this.clientPredictiveState.push(snap);
+			
+			//increment shapshotNum++
+			this.snapshotNum++;
+		}
+		else{
+			this.clientPredictiveState[0] = snap;
+		}
 		
-		//increment shapshotNum++
-		this.snapshotNum++;
 		
 		//return string
 		return snap.getData();

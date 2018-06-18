@@ -1,3 +1,6 @@
+//DEV TOOLS
+const DT_ONLINE = true;
+
 //CONSTANTS
 const GRAVITY = 9.81;
 const SIN_45 = Math.sin(Math.PI/4);
@@ -175,17 +178,26 @@ function toDegrees(angle) {
 }
 
 function connectToServer(){
-	serverSocket = new WebSocket('ws://' + window.location.host + '/my-websocket-endpoint');
-	serverSocket.onopen = function() {
-		//do some initial handshaking, sending back and forth information like the password and starting game state, etc
-		sendMessageToServer("join:" + client_id);
-	};
+	if(DT_ONLINE){
+		serverSocket = new WebSocket('ws://' + window.location.host + '/my-websocket-endpoint');
+		serverSocket.onopen = function() {
+			//do some initial handshaking, sending back and forth information like the password and starting game state, etc
+			sendMessageToServer("join:" + client_id);
+		};
 
-	serverSocket.onmessage = message_handler;
+		serverSocket.onmessage = message_handler;
+	}
+	else{
+		temp = ["", "", "", "build", "builder", map_width, map_height]; //msg type, password, game_id(not needed), game_type, role, bg tile width, bg tile height 
+		setup(temp);
+		requestAnimationFrame(run); //more synchronized method similar to setInterval
+	}
 }
 
 function sendMessageToServer(msg){
-	serverSocket.send(msg);
+	if(DT_ONLINE){
+		serverSocket.send(msg);
+	}
 }
 
 //event listener for when the socket receives a message from the server

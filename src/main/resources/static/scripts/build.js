@@ -840,6 +840,9 @@ function BGTile(img, grid_x, grid_y, index){
 //but it needs to be at the end of the file because it references
 //certain functions in other files that require classes that exist in this file
 //to have already been defined
+if(!DT_ONLINE){
+	connectToServer();
+}
 if(document.getElementById("loading_screen").complete){
 	connectToServer();
 }
