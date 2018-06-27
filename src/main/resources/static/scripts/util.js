@@ -1,5 +1,12 @@
 //DEV TOOLS
-const DT_ONLINE = true;
+const DT_ONLINE = false;
+let BASE_DIR = "";
+if(DT_ONLINE){
+	BASE_DIR = "";
+}
+else{
+	BASE_DIR = "../static/";
+}
 
 //CONSTANTS
 const GRAVITY = 9.81;

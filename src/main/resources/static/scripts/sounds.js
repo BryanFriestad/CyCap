@@ -36,6 +36,6 @@ function SoundFactory(){
 }
 
 let gunshot1 = document.createElement("audio");
-gunshot1.src = "res/sounds/m9_gunshot.mp3";
+gunshot1.src = BASE_DIR + "res/sounds/m9_gunshot.mp3";
 gunshot1.setAttribute("preload", "auto");
 gunshot1.setAttribute("controls", "none");

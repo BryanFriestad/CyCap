@@ -611,6 +611,18 @@ function Player(width, height, img, x, y, role, team, client_id) {
 				this.visibility = 7;
 				break;
 				
+			case "builder":
+				this.mov_speed = 180;
+				this.max_hp = 75;
+				this.health = this.max_hp;
+				this.weapon1 = new Shotgun(45, 300, 500, 2, 10, 2000, 0.7); //sawed off
+				this.weapon2 = new Pistol(11, 100, 400, 8, 2, 200, 0.05); //m1911
+				this.weapon3 = "EMPTY";
+				this.weapon4 = "EMPTY";
+				this.currentWeapon = this.weapon1;
+				this.visibility = 7;
+				break;
+				
 			default:
 				break;
 		}
@@ -843,11 +855,13 @@ function BGTile(img, grid_x, grid_y, index){
 if(!DT_ONLINE){
 	connectToServer();
 }
-if(document.getElementById("loading_screen").complete){
-	connectToServer();
-}
 else{
-	document.getElementById("loading_screen").onload = function(){
+	if(document.getElementById("loading_screen").complete){
 		connectToServer();
+	}
+	else{
+		document.getElementById("loading_screen").onload = function(){
+			connectToServer();
+		}
 	}
 }
