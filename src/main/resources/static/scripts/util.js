@@ -195,10 +195,17 @@ function connectToServer(){
 		serverSocket.onmessage = message_handler;
 	}
 	else{
-		temp = ["", "", "", "build", "builder", map_width, map_height]; //msg type, password, game_id(not needed), game_type, role, bg tile width, bg tile height 
+		temp = ["", "test_password", "test_game_id", "build", "builder", map_width, map_height]; //msg type, password, game_id(not needed), game_type, role, bg tile width, bg tile height 
 		setup(temp);
 		requestAnimationFrame(run); //more synchronized method similar to setInterval
 	}
+}
+
+function invitePlayerToMatch(host_un, guest_un, game_id, pw){
+	let message = "plr_inv:" + game_id + ":" + host_un + ":" + pw + ":" + guest_un;
+	console.log(message);
+	//sendMessageToServer(message);
+	//TODO: implement this on the server side
 }
 
 function sendMessageToServer(msg){

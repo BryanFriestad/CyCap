@@ -51,6 +51,7 @@ function GameState(role, pw, type){
 	this.player = new Player(grid_length, grid_length, player_images, 64, 64, role, "1", client_id); //the current player on this client
 	this.pw = pw;
 	
+	this.num_of_players = 1; //TODO: increment this everytime a player joins the game
 	this.intp_entities = [];
 	this.walls = []; //all of the walls in the game
 	this.part_fx = []; //particle effects
@@ -670,7 +671,16 @@ function Player(width, height, img, x, y, role, team, client_id) {
 		}
 		
 		if(snapshot.keys_pnr.includes(73)){
-			//TODO: pressing "i" opens up the player invite prompt
+			if(gameState.num_of_players < 8){
+				var guest_player_id = prompt("input the username of the player you want to invite");
+				if(guest_player_id != "" && guest_player_id != null && !guest_player_id.includes(":")){
+					console.log("inviting player to match: " + guest_player_id);
+					invitePlayerToMatch(client_id, guest_player_id, input_handler.game_id, gameState.pw);
+				}
+			}
+		}
+		if(snapshot.keys_pnr.includes(79)){
+			//TODO: pressing "o" opens up the option menu
 		}
 	}
 	
@@ -812,6 +822,19 @@ function Player(width, height, img, x, y, role, team, client_id) {
 				}
 			}
 		}
+	}
+}
+
+function BuildMenu(){
+	this.is_open = false;
+	//other build menu options
+	
+	this.openMenu = function(){
+		
+	}
+	
+	this.closeMenu = function(){
+		
 	}
 }
 
