@@ -17,7 +17,6 @@ public interface AccountRepository extends CrudRepository<Account, String> {
 
 	@Query("SELECT DISTINCT account FROM Account account")
 	@Transactional(readOnly = true)
-
 	Collection<Account> findAllUsers();
 
 	/* Collection<Account> findByUserID(@Param("userID") String userID); */

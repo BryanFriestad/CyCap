@@ -1,6 +1,7 @@
 package com.cycapservers.system;
 
 import java.awt.Point;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +41,7 @@ import com.cycapservers.account.Profiles;
 import com.cycapservers.account.ProfilesRepository;
 import com.cycapservers.account.RoleLevels;
 import com.cycapservers.game.Utils;
+import com.google.common.hash.Hashing;
 
 
 @Controller
@@ -128,7 +131,7 @@ public class HomepageController {
     
     //TODO: fix the login checks on the profile pages
     
-    @RequestMapping(value = "/accounts/register", method = RequestMethod.GET)
+    @GetMapping(value = "/accounts/register")
     public ModelAndView register(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts registration controller Layer");
     	String view = "accounts/registration";
@@ -145,7 +148,7 @@ public class HomepageController {
 	 *            session attribute for a user, set when a user logs in
 	 * @return String html page for logging in
 	 */
-	@RequestMapping(value = "/accounts/registration", method = RequestMethod.POST)
+	@PostMapping(value = "/accounts/registration")
 	public String registration(Model model, @ModelAttribute("account") Account account) {
 		logger.info("Entered into post account registration controller Layer");
 		String s1 = account.getEmail();
@@ -183,18 +186,28 @@ public class HomepageController {
     }
     
     
-    @RequestMapping(value = "/accounts/log", method =  RequestMethod.GET)
+    @GetMapping(value = "/accounts/log")
     public ModelAndView log(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts login controller Layer");
     	String view = "accounts/login";
     	return new ModelAndView(view, "command", model);
     }
     
-    @RequestMapping(value="/accounts/login", method = RequestMethod.POST)
+    @PostMapping(value="/accounts/login")
     public String login(Model model, @ModelAttribute("account") Account account){ 
     	String user = account.getUserID();
+    	
+    	Account acnt = this.accountsRepository.findByUserID(user); //find the DB user with the submitted UN
+    	String db_salt = acnt.getSalt(); //get that DB user's salt
+    	
+    	account.setSalt(db_salt); //set the salt of the account to compare
+    	account.setPassword(account.getPlaintext_pw()); //hash the password with correct salt
+    	account.setPlaintext_pw(null); //scrub the plaintext password from server
     	String pswd = account.getPassword();
-    	Account acnt = this.accountsRepository.findByUserID(user);
+    	
+    	System.out.printf("hash algo test: %s\r\n", Hashing.sha256().hashString("passwordsaltyboi", StandardCharsets.UTF_8).toString());
+    	
+    	System.out.printf("Submitted un (%s) and pw (%s) with salt (%s). Compared to un (%s) and pw (%s) with salt (%s)\r\n", user, pswd, account.getSalt(), acnt.getUserID(), acnt.getPassword(), acnt.getSalt());
     	if(acnt!=null && acnt.getUserID().compareTo(user)==0 && acnt.getPassword().compareTo(pswd)==0){
     		return "accounts/successfullogin";
     	}
@@ -247,7 +260,7 @@ public class HomepageController {
     }
     
     
-    @RequestMapping(value = "/accounts/friendAdd", method =  RequestMethod.POST)
+    @PostMapping(value = "/accounts/friendAdd")
     public View friendAdd(HttpServletRequest request, @SessionAttribute("account") Account account, @ModelAttribute("friend") Friend friend){
     	logger.info("Entered into get friends ADD controller Layer");
     	String f1 = friend.getUserID();
@@ -260,7 +273,7 @@ public class HomepageController {
     	return new RedirectView("/accounts/friends");
     }
     
-    @RequestMapping(value = "/accounts/friendRemove", method =  RequestMethod.POST)
+    @PostMapping(value = "/accounts/friendRemove")
     public View friendRemove(HttpServletRequest request, @SessionAttribute("account") Account account, @ModelAttribute("friend") Friend friend){
     	logger.info("Entered into get friends REMOVE controller Layer");
     
@@ -275,7 +288,7 @@ public class HomepageController {
     	return new RedirectView("/accounts/friends");
     }
 
-    @RequestMapping(value = "/accounts/chat", method =  RequestMethod.GET)
+    @GetMapping(value = "/accounts/chat")
     public String friendChat2(HttpServletRequest request, @SessionAttribute("account") Account account){
     	if(account.getUserID() != null) {
     		logger.info("Entered into get Chat controller Layer");
@@ -705,7 +718,7 @@ public class HomepageController {
     	}
 	}
 
-	@RequestMapping(value = "/accounts/AdminControls", method = RequestMethod.POST)
+	@PostMapping(value = "/accounts/AdminControls")
 	public String AdminControlsPost(@RequestParam("player") String player, HttpServletRequest request, Model model,
 			@SessionAttribute("account") Account account, @ModelAttribute("AccountsList") AccountsList accountsList,
 			@ModelAttribute("Account") Account playeraccount) {

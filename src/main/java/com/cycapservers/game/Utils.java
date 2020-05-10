@@ -534,7 +534,7 @@ public final class Utils{
 	 * @param length
 	 * @return
 	 */
-	private static String createString(int length){
+	public static String createString(int length){
 		String s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
 		Random rand = new Random();
 		String pass = "";
