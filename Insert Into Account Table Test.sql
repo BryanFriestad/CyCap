@@ -7,8 +7,7 @@ ALTER DATABASE db309sd1 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_
 
 #drop table db309sd1.account;
 create table db309sd1.account(
-Id int NOT NULL AUTO_INCREMENT,
-UserID varchar(255) NOT NULL,
+UserID varchar(255),
 salt char(8) NOT NULL,
 hashed_password char(64) NOT NULL,
 Creation_Date date NOT NULL,
@@ -16,9 +15,8 @@ Email varchar(255) NOT NULL,
 Member TINYINT(1) NOT NULL,
 Administrator TINYINT(1) NOT NULL,
 Developer TINYINT(1) NOT NULL,
-primary key (Id)
+primary key (UserID)
 );
-ALTER TABLE account AUTO_INCREMENT=1;
 
 #drop table db309sd1.friend;
 create table db309sd1.friend(

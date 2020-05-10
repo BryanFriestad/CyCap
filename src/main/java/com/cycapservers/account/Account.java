@@ -22,13 +22,8 @@ import com.google.common.hash.Hashing;
 @Entity
 @Table(name = "account")
 public class Account {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private int id = 0;
 
-	@NotNull
-	// @GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
 	@Column(name = "UserID")
 	private String userID;
 	
