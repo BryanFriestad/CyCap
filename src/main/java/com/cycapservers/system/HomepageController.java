@@ -132,10 +132,12 @@ public class HomepageController {
     //TODO: fix the login checks on the profile pages
     
     @GetMapping(value = "/accounts/register")
-    public ModelAndView register(Model model, HttpServletRequest request){
+    public String register(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts registration controller Layer");
-    	String view = "accounts/registration";
-    	return new ModelAndView(view, "command", model);
+    	
+    	model.addAttribute("account", new Account());
+    	
+    	return "accounts/registration";
     }
     
     /**
@@ -149,14 +151,16 @@ public class HomepageController {
 	 * @return String html page for logging in
 	 */
 	@PostMapping(value = "/accounts/registration")
-	public String registration(Model model, @ModelAttribute("account") Account account) {
-		logger.info("Entered into post account registration controller Layer");
+	public String registration(@ModelAttribute("account") Account account) {
+		logger.info("New user " + account.getUserID() + " entered into post account registration controller Layer");
+		
+		// validation checks for email and user name already existing
 		String s1 = account.getEmail();
 		String[] s2 = s1.split("\\@");
-		// validation checks for email and user name already existing
 		if (s2[0].length() > 0 && s2.length == 2) {
 			String[] s3 = s2[1].split("\\.");
 			if (s3.length == 2 && s3[0].length() > 0 && s3[1].length() == 3) {
+				
 				String user = account.getUserID();
 				Account acnt = this.accountsRepository.findByUserID(user);
 				if (acnt == null) {
@@ -204,8 +208,6 @@ public class HomepageController {
     	account.setPassword(account.getPlaintext_pw()); //hash the password with correct salt
     	account.setPlaintext_pw(null); //scrub the plaintext password from server
     	String pswd = account.getPassword();
-    	
-    	System.out.printf("hash algo test: %s\r\n", Hashing.sha256().hashString("passwordsaltyboi", StandardCharsets.UTF_8).toString());
     	
     	System.out.printf("Submitted un (%s) and pw (%s) with salt (%s). Compared to un (%s) and pw (%s) with salt (%s)\r\n", user, pswd, account.getSalt(), acnt.getUserID(), acnt.getPassword(), acnt.getSalt());
     	if(acnt!=null && acnt.getUserID().compareTo(user)==0 && acnt.getPassword().compareTo(pswd)==0){
