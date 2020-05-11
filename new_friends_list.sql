@@ -5,6 +5,6 @@ recipient varchar(255),
 date_of_relationship date NOT NULL,
 r_status ENUM("unaccepted", "accepted", "denied", "blocked") NOT NULL,
 primary key (sender, recipient),
-foreign key (sender) references account (UserId) on delete cascade on update cascade,
-foreign key (recipient) references account (UserId) on delete cascade on update cascade
+foreign key (sender) references account (UserID) on delete cascade on update cascade,
+foreign key (recipient) references account (UserID) on delete cascade on update cascade
 );
