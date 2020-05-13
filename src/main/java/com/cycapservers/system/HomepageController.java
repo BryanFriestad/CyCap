@@ -1,7 +1,5 @@
 package com.cycapservers.system;
 
-import java.awt.Point;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,8 +38,6 @@ import com.cycapservers.account.PlayerLBDataList;
 import com.cycapservers.account.Profiles;
 import com.cycapservers.account.ProfilesRepository;
 import com.cycapservers.account.RoleLevels;
-import com.cycapservers.game.Utils;
-import com.google.common.hash.Hashing;
 
 
 @Controller
