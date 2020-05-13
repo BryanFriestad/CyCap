@@ -1,4 +1,5 @@
 use db309sd1;
+#drop table if exists friend_list;
 create table friend_list(
 sender varchar(255),
 recipient varchar(255),
