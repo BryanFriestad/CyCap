@@ -1,0 +1,23 @@
+* {
+	box-sizing: border-box;
+}
+
+.friends_column{
+	float: left;
+	width: 30%;
+}
+
+.friends_add_column{
+	float: left;
+	width: 10%;
+}
+
+.friends_body::after{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+form{
+	display: inline;
+}

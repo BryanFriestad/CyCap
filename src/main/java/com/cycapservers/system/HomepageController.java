@@ -16,23 +16,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
-
 import com.cycapservers.account.Account;
 //import org.springframework.web.bind.annotation.GetMapping;
 import com.cycapservers.account.AccountRepository;
 import com.cycapservers.account.AccountsList;
 import com.cycapservers.account.CareerTotals;
-import com.cycapservers.account.Friend;
-import com.cycapservers.account.FriendRepository;
-import com.cycapservers.account.Friends;
+import com.cycapservers.account.FriendListRepository;
 import com.cycapservers.account.PlayerLBData;
 import com.cycapservers.account.PlayerLBDataList;
 import com.cycapservers.account.Profiles;
@@ -54,7 +47,7 @@ public class HomepageController {
 	 * Autowires FriendsRepository interface for database connection
 	 */
     @Autowired
-    private FriendRepository friendsRepository;
+    private FriendListRepository friendsListRepo;
     
     /**
 	 * Autowires ProfilesRepository interface for database connection
@@ -198,6 +191,9 @@ public class HomepageController {
     	String user = account.getUserID();
     	
     	Account acnt = this.accountsRepository.findByUserID(user); //find the DB user with the submitted UN
+    	if(acnt == null)
+    		return "accounts/unsuccessfullogin";
+    	
     	String db_salt = acnt.getSalt(); //get that DB user's salt
     	
     	account.setSalt(db_salt); //set the salt of the account to compare
@@ -222,6 +218,8 @@ public class HomepageController {
     public String unsuccessfulLogin() {
         return "accounts/unsuccessfullogin";
     }
+    
+    /*
     
     @ModelAttribute(value = "friends")
     public Friends newFriends(){
@@ -284,6 +282,68 @@ public class HomepageController {
     	}
     	
     	return new RedirectView("/accounts/friends");
+    }
+    */
+    
+    @GetMapping(value = "/accounts/block_list")
+    public String showBlockedUsers(Model model, 
+    		@SessionAttribute("account") Account account,
+    		@RequestParam(name="unblock", required=false) String unblock_username
+    ){
+    	if(unblock_username != null){
+    		System.out.printf("Unblocking user %s\r\n", unblock_username);
+    		int status = friendsListRepo.UnblockUser(account.getUserID(), unblock_username);
+    		if(status != 1)
+    			logger.error("Failed to unblock user " + unblock_username);
+    	}
+    	
+    	model.addAttribute("blocked", friendsListRepo.FindBlockedByUser(account.getUserID()));
+    	model.addAttribute("account", account);
+    	
+    	return "accounts/block_list";
+    }
+    
+    @GetMapping(value = "/accounts/friends")
+    public String showFriendsList(Model model, 
+    		@SessionAttribute("account") Account account,
+    		@RequestParam(name="add", required=false) String un_add,
+    		@RequestParam(name="block", required=false) String un_block,
+    		@RequestParam(name="accept", required=false) String un_acpt,
+    		@RequestParam(name="deny", required=false) String un_deny
+    ){
+    	if(un_add != null){
+    		Account user_to_add = accountsRepository.findOne(un_add);
+    		if(user_to_add != null){
+    			friendsListRepo.SendFriendRequest(account.getUserID(), un_add); //TODO error here
+    		}
+    		else{
+    			System.out.printf("User %s does not exist\r\n", un_add);
+    		}
+    	}
+    	
+    	if(un_block != null){
+    		System.out.printf("Blocking user %s\r\n", un_block);
+    		int rows_updated = friendsListRepo.BlockUser(account.getUserID(), un_block);
+    	}
+    	
+    	if(un_deny != null){
+    		System.out.printf("Denying user %s\r\n", un_deny);
+    		int status = friendsListRepo.DenyFriendRequest(un_deny, account.getUserID());
+    		if(status != 1)
+    			logger.error("Failed to deny friend request from " + un_deny + " to " + account.getUserID());
+    	}
+    	else if(un_acpt != null){
+    		System.out.printf("Accepting user %s\r\n", un_acpt);
+    		int status = friendsListRepo.AcceptFriendRequest(un_acpt, account.getUserID());
+    		if(status != 1)
+    			logger.error("Failed to accept friend request from " + un_acpt + " to " + account.getUserID());
+    	}
+    	
+    	model.addAttribute("acceptedFriends", friendsListRepo.FindAcceptedFriends(account.getUserID()));
+    	model.addAttribute("pendingRcvd", friendsListRepo.FindPendingReceived(account.getUserID()));
+    	model.addAttribute("pendingSent", friendsListRepo.FindPendingSent(account.getUserID()));
+    	model.addAttribute("account", account);
+    	return "accounts/friends";
     }
 
     @GetMapping(value = "/accounts/chat")

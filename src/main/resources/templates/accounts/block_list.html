@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Block List</title>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}"/>
+		<link rel="stylesheet" th:href="@{/css/friends_list.css}" />
+	</head>
+	
+	<body>
+		
+		<div class="topnav">
+			<h1>CyCap</h1>
+			<a href="/about" id="logo"><img th:src="@{/res/webpage/Team_IA_logo10.png}" width="128" height="128"/></a>
+			<a href="/">Home</a>
+			<a href="/how_to">How To Play</a>
+			<a href="/about">About the Team</a>
+			<a href="/game_list">Find Game</a>
+			<a href="/accounts/profile">Profile Page</a>
+			<a href="/accounts/chat">Chat</a>
+			<a href="/logout">Log Out</a>
+		</div>
+		
+		<div class="friends_header">
+			<a href="/accounts/friends">&larr; Back to Friends List</a>
+			<h2 th:text="${account.getUserID()} + '\'s Blocked Users'" style="display: inline-block">John Doe's Blocked Users</h2>
+		</div>
+		
+		<div class="friends_body">
+			<span class="friends_column">
+				<h2>Blocked Users</h2>
+				<table>
+					<tr>
+						<th>Username</th>
+						<th>Actions</th>
+					</tr>
+					<tr th:each="user : ${blocked}">
+						<td th:text="${user}">Johnny Test</td>
+						<td>
+							<form th:action="@{/accounts/block_list}" method="get">
+								<button type="submit" name="unblock" th:value="${user}">Unblock</button>
+							</form>
+						</td>
+					</tr>
+				</table>
+			</span>
+		</div>
+		
+	</body>
+</html>
