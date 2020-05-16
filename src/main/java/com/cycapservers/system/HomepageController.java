@@ -313,12 +313,14 @@ public class HomepageController {
     ){
 		String action_message = null;
 		
+		//TODO: may need to try/catch in the case of custom mysql errors
+		
     	if(un_add != null){
     		Account user_to_add = accountsRepository.findOne(un_add);
     		if(user_to_add != null){
     			int rows_updated = friendsListRepo.SendFriendRequest(account.getUserID(), un_add);
 				if(rows_updated == 0){
-					action_message = "Cannot send friend request to user " + un_add ". You may already be friends, you have blocked them, or they have blocked you";
+					action_message = "Cannot send friend request to user " + un_add + ". You may already be friends, you have blocked them, or they have blocked you";
 				}
     		}
     		else{

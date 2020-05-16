@@ -18,14 +18,6 @@ Developer TINYINT(1) NOT NULL,
 primary key (UserID)
 );
 
-#drop table db309sd1.friend;
-create table db309sd1.friend(
-Id int NOT NULL AUTO_INCREMENT,
-PlayerID varchar(255) NOT NULL,
-UserID varchar(255) NOT NULL,
-primary key (Id)
-);
-
 #drop table db309sd1.profiles;
 create table db309sd1.profiles(
 Id int NOT NULL AUTO_INCREMENT,
