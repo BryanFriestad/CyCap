@@ -10,9 +10,9 @@ foreign key (sender) references account (UserID) on delete cascade on update cas
 foreign key (recipient) references account (UserID) on delete cascade on update cascade
 );
 
-#drop trigger if exists CheckSenderRecipientPair;
+#drop trigger if exists CheckSenderRecipientSwap;
 DELIMITER //
-create trigger CheckSenderRecipientPair
+create trigger CheckSenderRecipientSwap
 	before insert on friend_list
     for each row
     BEGIN
@@ -21,6 +21,19 @@ create trigger CheckSenderRecipientPair
             set MESSAGE_TEXT = "Sender-Recipient pair already exists in reverse";
         end if;
     END //
+DELIMITER ;
+
+#drop trigger if exists CheckSenderRecipientMatch;
+DELIMITER //
+create trigger CheckSenderRecipientMatch
+	before insert on friend_list
+	for each row
+	BEGIN
+		if new.sender = new.recipient then
+			signal sqlstate '45000'
+			set MESSAGE_TEXT = "Sender is the same as the recipient";
+		end if;
+	END //
 DELIMITER ;
 
 #drop procedure if exists FindAcceptedFriends;
@@ -74,8 +87,13 @@ DELIMITER ;
 DELIMITER //
 create procedure SendFriendRequest(in sender_un varchar(255), in rec_un varchar(255))
 	BEGIN
-    insert into friend_list values (sender_un, rec_un, curdate(), "unaccepted");
-    select row_count();
+	if exists (select * from friend_list where sender = rec_un and recipient = sender_un and r_status = "unaccepted") then
+		update friend_list set r_status = "accepted" where sender = rec_un and recipient = sender_un;
+		select row_count();
+	else
+		insert into friend_list values (sender_un, rec_un, curdate(), "unaccepted");
+		select row_count();
+	end if;
     END //
 DELIMITER ;
 
@@ -104,13 +122,19 @@ DELIMITER //
 create procedure BlockUser(in sender_un varchar(255), in blocked_un varchar(255))
 	BEGIN
     if exists (select * from friend_list where sender = blocked_un and recipient = sender_un) then
-		update friend_list set r_status = "blocked", date_of_relationship = curdate()
-        where sender = blocked_un and recipient = sender_un;
-        select row_count();
+		if exists (select * from friend_list where sender = blocked_un and recipient = sender_un and r_status = "blocked") then
+			select -1;
+		else
+			delete from friend_list where sender = blocked_un and recipient = sender_un;
+			
+			insert into friend_list values (sender_un, blocked_un, curdate(), "blocked")
+			on duplicate key update r_status = "blocked", date_of_relationship = curdate();
+			select row_count();
+		end if;
 	else
-		insert into friend_list values (sender_un, blocked_un, curdate(), "blocked")
-        on duplicate key update r_status = "blocked", date_of_relationship = curdate();
-        select row_count();
+		insert into friend_list values (sender_un, blocked_un, curdate(), "blocked") 
+		on duplicate key update r_status = "blocked", date_of_relationship = curdate();
+		select row_count();
 	end if;
     END //
 DELIMITER ;
