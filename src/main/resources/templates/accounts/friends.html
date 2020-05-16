@@ -26,6 +26,10 @@
 			<h2 th:text="${account.getUserID()} + '\'s Friends'" style="display: inline-block">John Doe's Friends</h2>
 		</div>
 		
+		<div class="friends_header" th:unless="${message} == null">
+			<p th:text="'Server message: ' + ${message}">Message: null</p>
+		</div>
+		
 		<div class="friends_body">
 			<span class="friends_column">
 				<h2>Friends</h2>

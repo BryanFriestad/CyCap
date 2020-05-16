@@ -311,19 +311,30 @@ public class HomepageController {
     		@RequestParam(name="accept", required=false) String un_acpt,
     		@RequestParam(name="deny", required=false) String un_deny
     ){
+		String action_message = null;
+		
     	if(un_add != null){
     		Account user_to_add = accountsRepository.findOne(un_add);
     		if(user_to_add != null){
-    			friendsListRepo.SendFriendRequest(account.getUserID(), un_add); //TODO error here
+    			int rows_updated = friendsListRepo.SendFriendRequest(account.getUserID(), un_add);
+				if(rows_updated == 0){
+					action_message = "Cannot send friend request to user " + un_add ". You may already be friends, you have blocked them, or they have blocked you";
+				}
     		}
     		else{
-    			System.out.printf("User %s does not exist\r\n", un_add);
+    			action_message = "User " + un_add + " does not exist";
     		}
     	}
     	
     	if(un_block != null){
     		System.out.printf("Blocking user %s\r\n", un_block);
-    		int rows_updated = friendsListRepo.BlockUser(account.getUserID(), un_block);
+			Account user_to_block = accountsRepository.findOne(un_block);
+    		if(user_to_block != null){
+				int rows_updated = friendsListRepo.BlockUser(account.getUserID(), un_block);
+			}
+			else{
+    			action_message = "User " + un_block + " does not exist";
+    		}
     	}
     	
     	if(un_deny != null){
@@ -339,6 +350,8 @@ public class HomepageController {
     			logger.error("Failed to accept friend request from " + un_acpt + " to " + account.getUserID());
     	}
     	
+		//TODO: get this message to display on the webpage
+		model.addAttribute("message", action_message); //adds a message for the user to see
     	model.addAttribute("acceptedFriends", friendsListRepo.FindAcceptedFriends(account.getUserID()));
     	model.addAttribute("pendingRcvd", friendsListRepo.FindPendingReceived(account.getUserID()));
     	model.addAttribute("pendingSent", friendsListRepo.FindPendingSent(account.getUserID()));
