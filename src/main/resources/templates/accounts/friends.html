@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Friends List</title>
-		<link rel="stylesheet" th:href="@{/css/cycap_style.css}"/>
-		<link rel="stylesheet" th:href="@{/css/topnav_style.css}"/>
-		<link rel="stylesheet" th:href="@{/css/friends_list.css}" />
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/friends_list.css}" href="../../static/css/friends_list.css"/>
 	</head>
 	
 	<body>
 		
 		<div class="topnav">
 			<h1>CyCap</h1>
-			<a href="/about" id="logo"><img th:src="@{/res/webpage/Team_IA_logo10.png}" width="128" height="128"/></a>
+			<a href="/about" id="logo"><img th:src="@{/res/webpage/Team_IA_logo10.png}" src="../../static/res/webpage/Team_IA_logo10.png" width="128" height="128"/></a>
 			<a href="/">Home</a>
 			<a href="/how_to">How To Play</a>
 			<a href="/about">About the Team</a>
@@ -89,7 +89,7 @@
 					<input type="text" th:name="block" />
 					<input type="submit" value="Block" />
 				</form>
-				<a th:href="@{/accounts/block_list}" style="text-decoration: underline">Blocked Users</a>
+				<a th:href="@{/accounts/block_list}"  href="block_list.html" style="text-decoration: underline">Blocked Users</a>
 				<br />
 			</span>
 		</div>
