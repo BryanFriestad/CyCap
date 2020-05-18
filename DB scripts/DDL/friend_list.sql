@@ -10,7 +10,7 @@ foreign key (sender) references account (UserID) on delete cascade on update cas
 foreign key (recipient) references account (UserID) on delete cascade on update cascade
 );
 
-#drop trigger if exists CheckSenderRecipientSwap;
+drop trigger if exists CheckSenderRecipientSwap;
 DELIMITER //
 create trigger CheckSenderRecipientSwap
 	before insert on friend_list
@@ -23,7 +23,7 @@ create trigger CheckSenderRecipientSwap
     END //
 DELIMITER ;
 
-#drop trigger if exists CheckSenderRecipientMatch;
+drop trigger if exists CheckSenderRecipientMatch;
 DELIMITER //
 create trigger CheckSenderRecipientMatch
 	before insert on friend_list
@@ -36,7 +36,7 @@ create trigger CheckSenderRecipientMatch
 	END //
 DELIMITER ;
 
-#drop procedure if exists FindAcceptedFriends;
+drop procedure if exists FindAcceptedFriends;
 DELIMITER //
 create procedure FindAcceptedFriends(in username varchar(255))
 	BEGIN
@@ -52,7 +52,7 @@ create procedure FindAcceptedFriends(in username varchar(255))
 	END //
 DELIMITER ;
 
-#drop procedure if exists FindPendingReceived;
+drop procedure if exists FindPendingReceived;
 DELIMITER //
 create procedure FindPendingReceived(in username varchar(255))
 	BEGIN
@@ -62,7 +62,7 @@ create procedure FindPendingReceived(in username varchar(255))
 	END //
 DELIMITER ;
 
-#drop procedure if exists FindPendingSent;
+drop procedure if exists FindPendingSent;
 DELIMITER //
 create procedure FindPendingSent(in username varchar(255))
 	BEGIN
@@ -73,7 +73,7 @@ create procedure FindPendingSent(in username varchar(255))
 	END //
 DELIMITER ;
 
-#drop procedure if exists FindBlockedByUser;
+drop procedure if exists FindBlockedByUser;
 DELIMITER //
 create procedure FindBlockedByUser(in username varchar(255))
 	BEGIN
@@ -83,7 +83,7 @@ create procedure FindBlockedByUser(in username varchar(255))
 	END //
 DELIMITER ;
 
-#drop procedure if exists SendFriendRequest;
+drop procedure if exists SendFriendRequest;
 DELIMITER //
 create procedure SendFriendRequest(in sender_un varchar(255), in rec_un varchar(255))
 	BEGIN
@@ -116,7 +116,7 @@ create procedure SendFriendRequest(in sender_un varchar(255), in rec_un varchar(
     END //
 DELIMITER ;
 
-#drop procedure if exists AcceptFriendRequest;
+drop procedure if exists AcceptFriendRequest;
 DELIMITER //
 create procedure AcceptFriendRequest(in sender_un varchar(255), in rec_un varchar(255))
 	BEGIN
@@ -126,7 +126,7 @@ create procedure AcceptFriendRequest(in sender_un varchar(255), in rec_un varcha
     END //
 DELIMITER ;
 
-#drop procedure if exists DenyFriendRequest;
+drop procedure if exists DenyFriendRequest;
 DELIMITER //
 create procedure DenyFriendRequest(in sender_un varchar(255), in rec_un varchar(255))
 	BEGIN
@@ -136,7 +136,7 @@ create procedure DenyFriendRequest(in sender_un varchar(255), in rec_un varchar(
     END //
 DELIMITER ;
 
-#drop procedure if exists BlockUser;
+drop procedure if exists BlockUser;
 DELIMITER //
 create procedure BlockUser(in sender_un varchar(255), in blocked_un varchar(255))
 	BEGIN
@@ -159,7 +159,7 @@ create procedure BlockUser(in sender_un varchar(255), in blocked_un varchar(255)
     END //
 DELIMITER ;
 
-#drop procedure if exists UnblockUser;
+drop procedure if exists UnblockUser;
 DELIMITER //
 create procedure UnblockUser(in sender_un varchar(255), in unblock_un varchar(255))
 	BEGIN

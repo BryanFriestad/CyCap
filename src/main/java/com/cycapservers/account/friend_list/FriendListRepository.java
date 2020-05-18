@@ -1,6 +1,4 @@
-package com.cycapservers.account;
-
-import com.cycapservers.account.FriendList;
+package com.cycapservers.account.friend_list;
 
 import java.sql.SQLException;
 import java.util.List;

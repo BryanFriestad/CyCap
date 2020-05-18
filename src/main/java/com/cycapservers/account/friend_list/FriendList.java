@@ -1,4 +1,4 @@
-package com.cycapservers.account;
+package com.cycapservers.account.friend_list;
 
 import java.sql.Date;
 import java.time.LocalDate;
