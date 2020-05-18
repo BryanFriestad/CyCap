@@ -268,7 +268,7 @@ public final class Utils{
 	 * @param p The player which we are setting the role/class data
 	 */
 	public static void setRole(GameCharacter p) {
-		String role = p.role;
+		String role = p.getRole();
 		if(role.equals("recruit")) {
 			p.speed = 140;
 			p.max_health = 100;

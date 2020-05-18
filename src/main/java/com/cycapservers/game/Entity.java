@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 public class Entity {
 	
-	protected String entity_id;
+	private String entity_id;
 	
 	protected int imageId;
 	
@@ -31,13 +31,13 @@ public class Entity {
 		this.drawHeight = h;
 		this.rotation = r;
 		this.alpha = a;
-		this.entity_id = entity_id;
+		this.set_entity_id(entity_id);
 		updateCollision_radius();
 	}
 	
 	public String toDataString(String client_id){
 		String output = "";
-		output += entity_id + ",";
+		output += get_entity_id() + ",";
 		output += imageId + ",";
 		output += spriteIndex + ",";
 		output += Utils.roundToSpecifiedPlace(x, 2) + ",";
@@ -47,6 +47,14 @@ public class Entity {
 		output += Utils.roundToSpecifiedPlace(rotation, 3) + ",";
 		output += Utils.roundToSpecifiedPlace(alpha, 3);
 		return output;
+	}
+
+	public String get_entity_id() {
+		return entity_id;
+	}
+
+	public void set_entity_id(String entity_id) {
+		this.entity_id = entity_id;
 	}
 
 	public int getImageId() {

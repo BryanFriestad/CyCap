@@ -85,7 +85,7 @@ public class FreeForAll extends GameState {
 		while(bullet_iter.hasNext()){
 			Bullet temp = bullet_iter.next();
 		    if(temp.update(this)) {
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	bullet_iter.remove(); //remove the bullet from the list if it is done (animation done/hit a wall/etc)
 		    }
 		}
@@ -94,7 +94,7 @@ public class FreeForAll extends GameState {
 		while(part_iter.hasNext()){
 			Particle temp = part_iter.next();
 		    if(temp.update(this)) {
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	part_iter.remove();
 		    }
 		}
@@ -103,7 +103,7 @@ public class FreeForAll extends GameState {
 		while(mask_iter.hasNext()){
 			GroundMask temp = mask_iter.next();
 		    if(temp.update()) {
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	mask_iter.remove();
 		    }
 		}
@@ -163,36 +163,36 @@ public class FreeForAll extends GameState {
 		
 		//////ADD PLAYER MESSAGES///////
 		for(int i = 0; i < players.size(); i++) {
-			if((players.get(i).team == p.team) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
-				output += players.get(i).toDataString(p.entity_id) + ":";
+			if((players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+				output += players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD AI PLAYER MESSAGES///////
 		for (int i = 0; i < AI_players.size(); i++) {
-			if((AI_players.get(i).team == p.team) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
-				output += AI_players.get(i).toDataString(p.entity_id) + ":";
+			if((AI_players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+				output += AI_players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD ITEM MESSAGES//////
 		for (Item i : this.current_item_list) {
-			output += i.toDataString(p.entity_id) + ":";
+			output += i.toDataString(p.get_entity_id()) + ":";
 		}
 		
 		//////ADD PARTICLES//////
 		for(Particle parts : particles) {
-			output += parts.toDataString(p.entity_id) + ":";
+			output += parts.toDataString(p.get_entity_id()) + ":";
 		}
 		
 		//////ADD GROUND MASKS//////
 		for(GroundMask gm : ground_masks) {
-			output += gm.toDataString(p.entity_id) + ":";
+			output += gm.toDataString(p.get_entity_id()) + ":";
 		}
 		
 		//////ADD BULLET MESSAGES//////
 		for(int i = 0; i < bullets.size(); i++) {
-			output += bullets.get(i).toDataString(p.entity_id);
+			output += bullets.get(i).toDataString(p.get_entity_id());
 			if(i != bullets.size() - 1) output += ":";
 		}
 		

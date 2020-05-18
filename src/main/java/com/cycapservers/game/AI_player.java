@@ -40,7 +40,7 @@ public class AI_player extends GameCharacter {
 																											// is
 																											// capture
 			// the flag
-			if (this.team == 1) {
+			if (this.getTeam() == 1) {
 				if (((CaptureTheFlag) g).team1_flag.grabbed) {// if our flag is grabbed
 					target = ((CaptureTheFlag) g).team1_flag.grabber;
 				}
@@ -85,12 +85,12 @@ public class AI_player extends GameCharacter {
 			// be to a player
 			ArrayList<GameCharacter> targetable_players = new ArrayList<GameCharacter>();
 			for(int i = 0;i < g.players.size();i++) {
-				if(g.players.get(i).team != this.team && !g.players.get(i).isDead) {
+				if(g.players.get(i).getTeam() != this.getTeam() && !g.players.get(i).isDead) {
 					targetable_players.add(g.players.get(i));
 				}
 			}
 			for(int i = 0;i < g.AI_players.size();i++) {
-				if(g.AI_players.get(i).team != this.team && !g.AI_players.get(i).isDead) {
+				if(g.AI_players.get(i).getTeam() != this.getTeam() && !g.AI_players.get(i).isDead) {
 					targetable_players.add(g.AI_players.get(i));
 				}
 			}
@@ -104,12 +104,12 @@ public class AI_player extends GameCharacter {
 		if (g.getClass().equals(TeamDeathMatch.class)) {
 			ArrayList<GameCharacter> targetable_players = new ArrayList<GameCharacter>();
 			for(int i = 0;i < g.players.size();i++) {
-				if(g.players.get(i).team != this.team && !g.players.get(i).isDead) {
+				if(g.players.get(i).getTeam() != this.getTeam() && !g.players.get(i).isDead) {
 					targetable_players.add(g.players.get(i));
 				}
 			}
 			for(int i = 0;i < g.AI_players.size();i++) {
-				if(g.AI_players.get(i).team != this.team && !g.AI_players.get(i).isDead) {
+				if(g.AI_players.get(i).getTeam() != this.getTeam() && !g.AI_players.get(i).isDead) {
 					targetable_players.add(g.AI_players.get(i));
 				}
 			}
@@ -170,7 +170,7 @@ public class AI_player extends GameCharacter {
 					 */
 
 					for (Player p : g.players) {
-						if (p.team != this.team) {
+						if (p.getTeam() != this.getTeam()) {
 							double distance = Utils.distanceBetween(this, p);
 							if (distance <= (9 * 32) && Utils.checkLineOfSight(this, p, g) && p.isDead == false) {
 								InputSnapshot ai_snapshot = new InputSnapshot(
@@ -187,7 +187,7 @@ public class AI_player extends GameCharacter {
 						}
 					}
 					for (AI_player p : g.AI_players) {
-						if (p.team != this.team) {
+						if (p.getTeam() != this.getTeam()) {
 							double distance = Utils.distanceBetween(this, p);
 							if (distance <= (9 * 32) && Utils.checkLineOfSight(this, p, g) && p.isDead == false) {
 								InputSnapshot ai_snapshot = new InputSnapshot(
@@ -300,7 +300,7 @@ public class AI_player extends GameCharacter {
 	@Override
 	protected void respawn(GameState g) {
 		// re-spawn player
-		SpawnNode n = Utils.getRandomSpawn(g.spawns, team);
+		SpawnNode n = Utils.getRandomSpawn(g.spawns, getTeam());
 		this.x = n.getX();
 		this.y = n.getY();
 		// set isDead to false

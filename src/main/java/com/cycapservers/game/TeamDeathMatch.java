@@ -42,7 +42,7 @@ public class TeamDeathMatch extends GameState {
 		//////CHECK TO SEE IF END GAME CONDITIONS ARE MET//////
 		int team1Kills = 0, team2Kills = 0;
 		for(Player p: players){
-			if(p.team == 1){
+			if(p.getTeam() == 1){
 				team1Kills += p.stats.getKills();
 			}
 			else{
@@ -50,7 +50,7 @@ public class TeamDeathMatch extends GameState {
 			}
 		}
 		for(AI_player p: AI_players){
-			if(p.team == 1){
+			if(p.getTeam() == 1){
 				team1Kills += p.stats.getKills();
 			}
 			else{
@@ -103,7 +103,7 @@ public class TeamDeathMatch extends GameState {
 		while(bullet_iter.hasNext()){
 			Bullet temp = bullet_iter.next();
 		    if(temp.update(this)) {
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	bullet_iter.remove(); //remove the bullet from the list if it is done (animation done/hit a wall/etc)
 		    }
 		}
@@ -113,7 +113,7 @@ public class TeamDeathMatch extends GameState {
 		while(part_iter.hasNext()){
 			Particle temp = part_iter.next();
 		    if(temp.update(this)) {
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	part_iter.remove(); //remove the bullet from the list if it is done (animation done/hit a wall/etc)
 		    }
 		}
@@ -122,7 +122,7 @@ public class TeamDeathMatch extends GameState {
 		while(mask_iter.hasNext()){
 			GroundMask temp = mask_iter.next();
 		    if(temp.update()) {
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	mask_iter.remove();
 		    }
 		}
@@ -182,36 +182,36 @@ public class TeamDeathMatch extends GameState {
 		
 		//////ADD PLAYER MESSAGES///////
 		for(int i = 0; i < players.size(); i++) {
-			if((players.get(i).team == p.team) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
-				output += players.get(i).toDataString(p.entity_id) + ":";
+			if((players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+				output += players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD AI PLAYER MESSAGES///////
 		for (int i = 0; i < AI_players.size(); i++) {
-			if((AI_players.get(i).team == p.team) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
-				output += AI_players.get(i).toDataString(p.entity_id) + ":";
+			if((AI_players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+				output += AI_players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD ITEM MESSAGES//////
 		for (Item i : this.current_item_list) {
-			output += i.toDataString(p.entity_id) + ":";
+			output += i.toDataString(p.get_entity_id()) + ":";
 		}
 		
 		//////ADD PARTICLES//////
 		for(Particle parts : particles) {
-			output += parts.toDataString(p.entity_id) + ":";
+			output += parts.toDataString(p.get_entity_id()) + ":";
 		}
 		
 		//////ADD GROUND MASKS//////
 		for(GroundMask gm : ground_masks) {
-			output += gm.toDataString(p.entity_id) + ":";
+			output += gm.toDataString(p.get_entity_id()) + ":";
 		}
 		
 		//////ADD BULLET MESSAGES//////
 		for(int i = 0; i < bullets.size(); i++) {
-			output += bullets.get(i).toDataString(p.entity_id);
+			output += bullets.get(i).toDataString(p.get_entity_id());
 			if(i != bullets.size() - 1) output += ":";
 		}
 		
@@ -275,14 +275,14 @@ public class TeamDeathMatch extends GameState {
 		while(iter.hasNext()){
 			Player temp = iter.next();
 		    if(temp.session.equals(session)) {
-		    	if(temp.team == 1) {
+		    	if(temp.getTeam() == 1) {
 		    		this.playersOnTeam1--;
 		    	}
 		    	else{
 		    		this.playersOnTeam2--;
 		    	}
 		    	temp.leaveGame(); //drops items, et cetera
-		    	this.usedEntityIds.remove(temp.entity_id);
+		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	this.userPasswords.remove(temp.password);
 		    	iter.remove();
 		    	return;

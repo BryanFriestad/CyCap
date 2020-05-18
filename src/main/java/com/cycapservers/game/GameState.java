@@ -168,7 +168,7 @@ public abstract class GameState extends TimerTask
 			ProfileDataUpdate.dbSaveData(p.stats);
 			String message = "endgame:";
 			try {
-				p.session.sendMessage(new TextMessage(message + p.stats.endgame_message));
+				p.session.sendMessage(new TextMessage(message + p.stats.get_endgame_message()));
 			} catch (IOException e) {
 				System.out.println("Error sending endgame message");
 				e.printStackTrace();

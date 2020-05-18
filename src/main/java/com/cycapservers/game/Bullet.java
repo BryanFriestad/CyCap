@@ -44,7 +44,7 @@ public class Bullet extends Entity {
 		this.speed = speed;
 		this.damage = damage;
 		this.owner = p;
-		this.team = this.owner.team;
+		this.team = this.owner.getTeam();
 		
 		this.startX = startX;
 		this.startY = startY;
@@ -87,7 +87,7 @@ public class Bullet extends Entity {
 					continue;
 				}
 				if(Utils.isColliding(this, p)) {
-					if(game.friendlyFire || (p.team != this.team)) {
+					if(game.friendlyFire || (p.getTeam() != this.team)) {
 						p.takeDamage(this.damage, this.owner);
 					}
 					return true;
@@ -98,7 +98,7 @@ public class Bullet extends Entity {
 					continue;
 				}
 				if(Utils.isColliding(this, p)) {
-					if(game.friendlyFire || (p.team != this.team)) {
+					if(game.friendlyFire || (p.getTeam() != this.team)) {
 						p.takeDamage(this.damage, this.owner);
 					}
 					return true;

@@ -1,10 +1,16 @@
-package com.cycapservers.game;
+package com.cycapservers.game.database;
 
 import java.awt.Point;
 import java.util.ArrayList;
 
 import org.springframework.web.socket.WebSocketSession;
 import com.cycapservers.account.*;
+import com.cycapservers.game.CaptureTheFlag;
+import com.cycapservers.game.FreeForAll;
+import com.cycapservers.game.GameCharacter;
+import com.cycapservers.game.GameState;
+import com.cycapservers.game.TeamDeathMatch;
+import com.cycapservers.game.Utils;
 
 public class PlayerStats {
 	
@@ -28,7 +34,7 @@ public class PlayerStats {
 	protected int flag_returns;
 	protected int flag_captures;
 	
-	protected String endgame_message;
+	private String endgame_message;
 	
 
 	//GameSpecific Stats
@@ -39,9 +45,9 @@ public class PlayerStats {
 
 
 	public PlayerStats(GameCharacter player){
-		this.userID = player.entity_id; //need to add this in later
-		this.champion = player.role; //need to ensure role was already assigned
-		this.team = player.team;
+		this.userID = player.get_entity_id(); //need to add this in later
+		this.champion = player.getRole(); //need to ensure role was already assigned
+		this.team = player.getTeam();
 		this.kills = 0;
 		this.deaths = 0; 
 		this.wins = 0; 
@@ -138,6 +144,14 @@ public class PlayerStats {
 		this.gamesplayed = gamesplayed;
 	}
 
+	public String get_endgame_message() {
+		return endgame_message;
+	}
+
+	public void set_endgame_message(String endgame_message) {
+		this.endgame_message = endgame_message;
+	}
+
 	public void setLevelAndXP() {
 		Point p = ProfileDataUpdate.dbGetLevel(userID, champion);
 		this.level = p.x;
@@ -170,16 +184,16 @@ public class PlayerStats {
 			this.experience = p.y;
 			
 			if(wins > losses) {
-				endgame_message = "w:";
+				set_endgame_message("w:");
 			}
 			else {
-				endgame_message = "l:";
+				set_endgame_message("l:");
 			}
-			endgame_message += new_xp + ":";
-			endgame_message += champion + ":";
-			endgame_message += kills + ":";
-			endgame_message += deaths + ":";
-			endgame_message += level;
+			set_endgame_message(get_endgame_message() + new_xp + ":");
+			set_endgame_message(get_endgame_message() + champion + ":");
+			set_endgame_message(get_endgame_message() + kills + ":");
+			set_endgame_message(get_endgame_message() + deaths + ":");
+			set_endgame_message(get_endgame_message() + level);
 		}
 		else if(this.game_type.equals(TeamDeathMatch.class)){
 			int new_xp = this.kills*30;
@@ -198,16 +212,16 @@ public class PlayerStats {
 			this.experience = p.y;
 			
 			if(wins > losses) {
-				endgame_message = "w:";
+				set_endgame_message("w:");
 			}
 			else {
-				endgame_message = "l:";
+				set_endgame_message("l:");
 			}
-			endgame_message += new_xp + ":";
-			endgame_message += champion + ":";
-			endgame_message += kills + ":";
-			endgame_message += deaths + ":";
-			endgame_message += level;
+			set_endgame_message(get_endgame_message() + new_xp + ":");
+			set_endgame_message(get_endgame_message() + champion + ":");
+			set_endgame_message(get_endgame_message() + kills + ":");
+			set_endgame_message(get_endgame_message() + deaths + ":");
+			set_endgame_message(get_endgame_message() + level);
 		}
 		else if(this.game_type.equals(FreeForAll.class)){
 			

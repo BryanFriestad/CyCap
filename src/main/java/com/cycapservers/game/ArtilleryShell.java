@@ -70,14 +70,14 @@ public class ArtilleryShell extends Bullet{
 			//TODO: add sound
 			for(Player p : game.players) {
 				if(Utils.distanceBetween(this, p) <= this.damage_range) {
-					if(game.friendlyFire || (p.team != this.team) || p.equals(this.owner)) {
+					if(game.friendlyFire || (p.getTeam() != this.team) || p.equals(this.owner)) {
 						p.takeDamage(this.damage, this.owner);
 					}
 				}
 			}
 			for(AI_player p : game.AI_players) {
 				if(Utils.distanceBetween(this, p) <= this.damage_range) {
-					if(game.friendlyFire || (p.team != this.team) || p.equals(this.owner)) {
+					if(game.friendlyFire || (p.getTeam() != this.team) || p.equals(this.owner)) {
 						p.takeDamage(this.damage, this.owner);
 					}
 				}

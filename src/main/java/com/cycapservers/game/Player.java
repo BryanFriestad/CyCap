@@ -175,13 +175,13 @@ public class Player extends GameCharacter {
 	
 	@Override
 	public String toDataString(String client_id){
-		if(this.entity_id.equals(client_id)) {
+		if(this.get_entity_id().equals(client_id)) {
 			String output = "";
 			output += "000,";
 			output += this.highestHandledSnapshot + ",";
 			output += super.toDataString(client_id) + ",";
-			output += this.role + ",";
-			output += this.team + ",";
+			output += this.getRole() + ",";
+			output += this.getTeam() + ",";
 			output += this.currentWeapon.toString() + ",";
 			if(this.item_slot == null) {
 				output += "empty" + ",";
@@ -222,7 +222,7 @@ public class Player extends GameCharacter {
 	 */
 	protected void respawn(GameState g) {
 		if(g.getClass().equals(CaptureTheFlag.class) || g.getClass().equals(TeamDeathMatch.class) || g.getClass().equals(GuestCaptureTheFlag.class)) {
-			SpawnNode n = Utils.getRandomSpawn(g.spawns, this.team);
+			SpawnNode n = Utils.getRandomSpawn(g.spawns, this.getTeam());
 			//respawn player
 			this.x = n.getX();
 			this.y = n.getY();

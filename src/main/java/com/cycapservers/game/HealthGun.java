@@ -17,12 +17,12 @@ public class HealthGun extends AutomaticGun {
 	public void fire(GameCharacter p, InputSnapshot s, GameState g) {
 		this.ammo_in_clip--; //lose one bullet from the clip
 		for(Player player : g.players) {
-			if(player.team == p.team && (Utils.distanceBetween(p, player) <= heal_range)) {
+			if(player.getTeam() == p.getTeam() && (Utils.distanceBetween(p, player) <= heal_range)) {
 				player.takeHeals(this.damage);
 			}
 		}
 		for(AI_player player : g.AI_players) {
-			if(player.team == p.team && (Utils.distanceBetween(p, player) <= heal_range)) {
+			if(player.getTeam() == p.getTeam() && (Utils.distanceBetween(p, player) <= heal_range)) {
 				player.takeHeals(this.damage);
 			}
 		}

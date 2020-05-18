@@ -2,10 +2,12 @@ package com.cycapservers.game;
 
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.game.database.PlayerStats;
+
 public abstract class GameCharacter extends Entity {
 
-	protected int team;
-	protected String role;
+	private int team;
+	private String role;
 	
 	protected PlayerStats stats;
 	
@@ -31,8 +33,8 @@ public abstract class GameCharacter extends Entity {
 	public GameCharacter(int id, int sprIdx, double x, double y, double w, double h, double r, double a, String entity_id, int team, String role) {
 		super(id, sprIdx, x, y, w, h, r, a, entity_id);
 		this.spriteIndex = Utils.getSpriteIndexFromTeam(team);
-		this.team = team;
-		this.role = role;
+		this.setTeam(team);
+		this.setRole(role);
 		
 		this.isDead = false;
 		this.is_invincible = false;
@@ -45,13 +47,29 @@ public abstract class GameCharacter extends Entity {
 		this.stats = new PlayerStats(this);
 	}
 	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
+		this.team = team;
+	}
+
 	public void takeDamage(int amount, GameCharacter c) {
 		if(!this.is_invincible){
 			this.health -= amount;
 		}
 		if(this.health <= 0){
 			this.die(); //idk what this is gonna do yet
-			if(!c.entity_id.equals(this.entity_id)) {
+			if(!c.get_entity_id().equals(this.get_entity_id())) {
 				c.stats.addKill(); //adds a kill if you didn't kill yourself lmao
 			}
 		}

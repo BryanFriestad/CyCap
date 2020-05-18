@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.cycapservers.game.PlayerStats;
+import com.cycapservers.game.database.PlayerStats;
 
 /**
  * Static Controller class that allows the database to be updated for user
