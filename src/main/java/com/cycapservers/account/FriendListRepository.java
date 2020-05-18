@@ -2,6 +2,7 @@ package com.cycapservers.account;
 
 import com.cycapservers.account.FriendList;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;

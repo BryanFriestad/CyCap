@@ -87,12 +87,31 @@ DELIMITER ;
 DELIMITER //
 create procedure SendFriendRequest(in sender_un varchar(255), in rec_un varchar(255))
 	BEGIN
-	if exists (select * from friend_list where sender = rec_un and recipient = sender_un and r_status = "unaccepted") then
+    declare rev_rel varchar(255) default null;
+    declare rel varchar(255) default null;
+    
+    select r_status into rev_rel from friend_list where sender = rec_un and recipient = sender_un;
+    if sender_un = rec_un then
+		select -5;
+	elseif rev_rel = "unaccepted" then
 		update friend_list set r_status = "accepted" where sender = rec_un and recipient = sender_un;
-		select row_count();
+		select 1;
+	elseif rev_rel = "accepted" then
+		select -1;
+	elseif rev_rel = "blocked" then
+		select -2;
 	else
-		insert into friend_list values (sender_un, rec_un, curdate(), "unaccepted");
-		select row_count();
+        select r_status into rel from friend_list where sender = sender_un and recipient = rec_un;
+        if rel = "accepted" then
+			select -1;
+		elseif rel = "unaccepted" then
+			select -3;
+		elseif rel = "blocked" then
+			select -4;
+		else
+			insert into friend_list values (sender_un, rec_un, curdate(), "unaccepted");
+			select 1;
+		end if;
 	end if;
     END //
 DELIMITER ;
@@ -121,15 +140,16 @@ DELIMITER ;
 DELIMITER //
 create procedure BlockUser(in sender_un varchar(255), in blocked_un varchar(255))
 	BEGIN
-    if exists (select * from friend_list where sender = blocked_un and recipient = sender_un) then
+    if sender_un = blocked_un then
+		select -2;
+    elseif exists (select * from friend_list where sender = blocked_un and recipient = sender_un) then
 		if exists (select * from friend_list where sender = blocked_un and recipient = sender_un and r_status = "blocked") then
 			select -1;
 		else
 			delete from friend_list where sender = blocked_un and recipient = sender_un;
 			
-			insert into friend_list values (sender_un, blocked_un, curdate(), "blocked")
-			on duplicate key update r_status = "blocked", date_of_relationship = curdate();
-			select row_count();
+			insert into friend_list values (sender_un, blocked_un, curdate(), "blocked");
+			select 1;
 		end if;
 	else
 		insert into friend_list values (sender_un, blocked_un, curdate(), "blocked") 
