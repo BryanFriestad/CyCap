@@ -7,23 +7,29 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.Timer;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
+import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.BeanUtil;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
 import com.cycapservers.game.database.GamesRepository;
 
-
 public class GameManager {
 	
-	@Autowired
-	private GamesRepository gamesRepo;
+	GamesRepository gamesRepo = BeanUtil.getBean(GamesRepository.class);
 	
 	private volatile ArrayList<GameState> games;
-	protected volatile List<String> game_ids;
 	protected final int GAME_ID_LENGTH = 5;
 	
 	/**
@@ -47,15 +53,12 @@ public class GameManager {
 	//Get a method to check last message.
 	
 	public GameManager(){
-		game_ids = new ArrayList<String>();
 		timer = new Timer(true);
 		games = new ArrayList<GameState>();
 		lobbies = new ArrayList<Lobby>();
 		
 		//////MAKE THE GUEST GAME//////
-		String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
-		games.add(new GuestCaptureTheFlag(id));
-		game_ids.add(id);
+		games.add(new GuestCaptureTheFlag(-1));
 		games.get(0).readyToStart = true;
 		timer.scheduleAtFixedRate(games.get(0), 500, 100);
 	}
@@ -88,9 +91,9 @@ public class GameManager {
 		boolean found = false;
 		String[] arr = message.split(":");
 		if(arr[0].equals("input")) {
-			String game_id = arr[1];
+			int game_id = Integer.valueOf(arr[1]);
 			for(GameState g : games) {
-				if(g.game_id.equals(game_id)) {
+				if(g.game_id == game_id) {
 					g.addInputSnap(new InputSnapshot(message));
 				}
 			}
@@ -107,16 +110,17 @@ public class GameManager {
 				}
 			}
 			if(!found){
-				games.get(0).playerJoin(arr[1], session, "recruit", 1); //the player can only play as the recruit in the guest game
+				GuestCaptureTheFlag guestGame = (GuestCaptureTheFlag) games.get(0);
+				guestGame.playerJoin(arr[1], session, "recruit", (guestGame.playersOnTeam1 < guestGame.playersOnTeam2) ? 1 : 2); //the player can only play as the recruit in the guest game
 			}
 		}
 		else if(arr[0].equals("lobby")){
 			if(arr[1].equals("playerList")){
-				GivePlayerList(session,arr[2]);
+				GivePlayerList(session, Integer.valueOf(arr[2]));
 			}
 			else if(arr[1].equals("role")){
 				for(int i  = 0; i < lobbies.size(); i++){
-					if(lobbies.get(i).getId().equals(arr[2])){
+					if(lobbies.get(i).getId() == Integer.valueOf(arr[2])){
 						lobbies.get(i).ChangePlayerClass(session, arr[3], arr[4]);
 					}
 				}
@@ -135,20 +139,9 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
-						/*
 						GamesEntity gameEntity = new GamesEntity(GameType.TDM);
 						gamesRepo.save(gameEntity);
 						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
-						l.addPlayer(arr[3],session);
-						session.sendMessage(new TextMessage("joined:" + l.getId()));
-						lobbies.add(l);
-						games.add(l.getGame());
-						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
-						*/
-						
-						String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
-						Lobby l = new Lobby(TeamDeathMatch.class, id);
-						game_ids.add(id);
 						l.addPlayer(arr[3],session);
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
@@ -168,21 +161,10 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
-						/*
 						GamesEntity gameEntity = new GamesEntity(GameType.CTF);
 						gamesRepo.save(gameEntity);
 						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
 						l.addPlayer(arr[3],session);
-						session.sendMessage(new TextMessage("joined:" + l.getId()));
-						lobbies.add(l);
-						games.add(l.getGame());
-						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
-						*/
-						
-						String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
-						Lobby l = new Lobby(CaptureTheFlag.class, id);
-						game_ids.add(id);
-						l.addPlayer(arr[3], session);
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
 						games.add(l.getGame());
@@ -201,21 +183,10 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
-						/*
 						GamesEntity gameEntity = new GamesEntity(GameType.FFA);
 						gamesRepo.save(gameEntity);
 						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
 						l.addPlayer(arr[3],session);
-						session.sendMessage(new TextMessage("joined:" + l.getId()));
-						lobbies.add(l);
-						games.add(l.getGame());
-						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
-						*/
-						
-						String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
-						Lobby l = new Lobby(FreeForAll.class,  id);
-						game_ids.add(id);
-						l.addPlayer(arr[3], session);
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
 						games.add(l.getGame());
@@ -225,7 +196,7 @@ public class GameManager {
 				else{
 					//For if a game id is given.
 					for(int i = 0; i < lobbies.size(); i++){
-						if(lobbies.get(i).getId().equals(arr[2])){
+						if(lobbies.get(i).getId() == Integer.valueOf(arr[2])){
 							if(lobbies.get(i).hasSpace()){
 								lobbies.get(i).addPlayer(arr[3],session);
 								session.sendMessage(new TextMessage("joined:" + games.get(i).game_id));
@@ -246,10 +217,10 @@ public class GameManager {
 	 * The id of the lobby that the player belongs in.
 	 * @throws IOException
 	 */
-	private void GivePlayerList(WebSocketSession session, String id) throws IOException{
+	private void GivePlayerList(WebSocketSession session, int id) throws IOException{
 		int game = -1;
 		for(int i = 0; i < lobbies.size(); i++){
-			if(lobbies.get(i).getId().equals(id)){
+			if(lobbies.get(i).getId() == id){
 				game = i;
 				break;
 			}

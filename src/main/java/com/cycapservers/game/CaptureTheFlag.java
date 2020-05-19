@@ -23,7 +23,7 @@ public class CaptureTheFlag extends GameState {
 	protected Flag team2_flag;
 	/////////////////////
 	
-	public CaptureTheFlag(String id, int map_number) {
+	public CaptureTheFlag(int id, int map_number) {
 		super(id);
 		this.max_players = 8;
 		this.playersOnTeam1 = 0;

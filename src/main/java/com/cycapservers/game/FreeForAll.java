@@ -20,7 +20,7 @@ public class FreeForAll extends GameState {
 	protected volatile boolean playerOnTeam8;
 	///////////////////
 	
-	public FreeForAll(String id, int map_number) {
+	public FreeForAll(int id, int map_number) {
 		super(id);
 		this.max_players = 8;
 		playerOnTeam1 = false;

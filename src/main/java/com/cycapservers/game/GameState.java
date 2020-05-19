@@ -18,7 +18,7 @@ public abstract class GameState extends TimerTask
 	 * Players that are planning to join the game.
 	 */
 	protected ArrayList<IncomingPlayer> incomingPlayers;
-	protected String game_id;
+	protected int game_id;
 	protected List<String> usedEntityIds;
 	protected int entity_id_len;
 	protected List<String> userPasswords;
@@ -71,7 +71,7 @@ public abstract class GameState extends TimerTask
 	protected long lastGSMessage;
 	protected double currentDeltaTime; //the time since the last game state update in seconds
 	
-	public GameState(String id) {
+	public GameState(int id) {
 		this.game_id = id;
 		this.usedEntityIds = new ArrayList<String>();
 		entity_id_len = 6;

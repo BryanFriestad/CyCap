@@ -51,9 +51,7 @@ public class GamesEntity {
 		java.sql.Date sql_date = java.sql.Date.valueOf(localDate);
 		start_date = sql_date;
 		
-		LocalTime localTime = LocalTime.now();
-		dtf.format(localTime);
-		java.sql.Time sql_time = java.sql.Time.valueOf(localTime);
+		java.sql.Time sql_time = java.sql.Time.valueOf("05:21:00"); //TODO: figure out how to actually do this
 		start_time = sql_time;
 	}
 

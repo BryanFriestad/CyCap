@@ -16,7 +16,7 @@ public class TeamDeathMatch extends GameState {
 	protected volatile int playersOnTeam2;
 	///////////////////
 	
-	public TeamDeathMatch(String id, int map_number) {
+	public TeamDeathMatch(int id, int map_number) {
 		super(id);
 		this.max_players = 8;
 		this.playersOnTeam1 = 0;

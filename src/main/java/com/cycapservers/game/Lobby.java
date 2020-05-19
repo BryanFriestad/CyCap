@@ -55,7 +55,7 @@ public class Lobby {
 	 * @param gamemode
 	 * String representing the game mode.
 	 */
-	public Lobby(Class<? extends GameState> c, String id){
+	public Lobby(Class<? extends GameState> c, int id){
 		this.curSize=0;
 		this.lobby_timer = new Timer();
 		if(c.equals(TeamDeathMatch.class)){
@@ -121,9 +121,9 @@ public class Lobby {
 	/**
 	 * Gets the lobby id which is also the game id.
 	 * @return
-	 * A String representing the game id.
+	 * An integer representing the game id stored in the DB.
 	 */
-	public String getId(){
+	public int getId(){
 		return game.game_id;
 	}
 	

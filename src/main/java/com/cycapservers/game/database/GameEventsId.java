@@ -7,7 +7,7 @@ import java.util.Objects;
 public class GameEventsId implements Serializable{
 
 	private int game_id;
-	private int sequence_number;
+	private int sequence_order;
 	
 	public GameEventsId(){
 		
@@ -15,7 +15,7 @@ public class GameEventsId implements Serializable{
 	
 	public GameEventsId(int id, int seq){
 		game_id = id;
-		sequence_number = seq;
+		sequence_order = seq;
 	}
 
 	@Override
@@ -27,11 +27,11 @@ public class GameEventsId implements Serializable{
 			return false;
 		
 		GameEventsId geid = (GameEventsId) o;
-		return geid.game_id == this.game_id && geid.sequence_number == this.sequence_number;
+		return geid.game_id == this.game_id && geid.sequence_order == this.sequence_order;
 	}
 	
 	@Override
 	public int hashCode(){
-		return Objects.hash(game_id, sequence_number);
+		return Objects.hash(game_id, sequence_order);
 	}
 }
