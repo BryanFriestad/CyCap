@@ -9,6 +9,8 @@ import java.util.ListIterator;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.game.database.GamePlayersEntity;
+
 public class TeamDeathMatch extends GameState {
 	
 	//////PLAYERS//////
@@ -235,6 +237,9 @@ public class TeamDeathMatch extends GameState {
 		this.players.add(p);
 		p.stats.setGameType(this.getClass());
 		this.userPasswords.add(pass);
+		
+		getGame_players().add(new GamePlayersEntity(this.game_id, client_id, team, role, this.started));
+		
 		try {
 			String message = "join:" + pass + ":" + this.game_id + ":" + "TDM:" + role + ":" + this.mapGridWidth + ":" + this.mapGridHeight;
 			for(Wall w : this.walls) {
@@ -261,12 +266,14 @@ public class TeamDeathMatch extends GameState {
 			this.playersOnTeam1++;
 		}
 
-		String s = Utils.getGoodRandomString(this.usedEntityIds, this.entity_id_len);
+		String bot_id = "bot" + Integer.toString(AI_players.size());
 		SpawnNode n = Utils.getRandomSpawn(this.spawns, team);
-		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, s));
-		this.usedEntityIds.add(s);
+		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, bot_id));
+		this.usedEntityIds.add(bot_id);
 		AI_players.get(AI_players.size() - 1).get_path(this);
 		ai_player_delay = false;
+		
+		getGame_players().add(new GamePlayersEntity(this.game_id, bot_id, team, role, this.started));
 	}
 
 	@Override

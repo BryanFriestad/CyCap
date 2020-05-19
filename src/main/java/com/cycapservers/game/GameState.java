@@ -9,7 +9,14 @@ import java.util.TimerTask;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.BeanUtil;
 import com.cycapservers.account.ProfileDataUpdate;
+import com.cycapservers.game.database.GameEventsEntity;
+import com.cycapservers.game.database.GameEventsRepository;
+import com.cycapservers.game.database.GamePlayersEntity;
+import com.cycapservers.game.database.GamePlayersRepository;
+import com.cycapservers.game.database.GamesEntity;
+import com.cycapservers.game.database.GamesRepository;
 
 public abstract class GameState extends TimerTask
 {
@@ -68,6 +75,10 @@ public abstract class GameState extends TimerTask
 	protected int winner;
 	protected int score_limit;
 	
+	//////GAMES DATABASE//////
+	private List<GamePlayersEntity> game_players;
+	private List<GameEventsEntity> game_events;
+	
 	protected long lastGSMessage;
 	protected double currentDeltaTime; //the time since the last game state update in seconds
 	
@@ -97,6 +108,22 @@ public abstract class GameState extends TimerTask
 		this.started = false;
 		this.readyToStart = false;
 		this.gameFinished = false;
+		
+		this.game_players = new ArrayList<GamePlayersEntity>();
+		this.game_events = new ArrayList<GameEventsEntity>();
+	}
+
+	public List<GamePlayersEntity> getGame_players() {
+		return game_players;
+	}
+
+	public void setGame_players(List<GamePlayersEntity> game_players) {
+		this.game_players = game_players;
+	}
+
+	public void addGameEvent(GameEventsEntity event){
+		event.setSequence_order(game_events.size());
+		game_events.add(event);
 	}
 
 	public abstract void updateGameState();
@@ -163,7 +190,10 @@ public abstract class GameState extends TimerTask
 	
 	public void endGame(int winner) {
 		gameFinished = true;
+		List<String> player_ids = new ArrayList<String>();
 		for(Player p : this.players) {
+			player_ids.add(p.get_entity_id());
+			
 			p.stats.updateScore(winner);
 			ProfileDataUpdate.dbSaveData(p.stats);
 			String message = "endgame:";
@@ -174,6 +204,28 @@ public abstract class GameState extends TimerTask
 				e.printStackTrace();
 			}
 		}
+		
+		GamePlayersRepository gamePlayersRepo = BeanUtil.getBean(GamePlayersRepository.class);
+		for(GamePlayersEntity e : game_players){
+			if(player_ids.contains(e.getUser_id())){
+				e.setLeft_early(false);
+			}
+			else{
+				e.setLeft_early(true);
+			}
+			
+			gamePlayersRepo.save(e);
+		}
+		
+		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
+		gameEventsRepo.save(game_events);
+		
+		GamesRepository gamesRepo = BeanUtil.getBean(GamesRepository.class);
+		GamesEntity this_game = gamesRepo.findOne(this.game_id);
+		
+		this_game.setStart_time(start_time);
+		this_game.setWinning_team(winner);
+		gamesRepo.save(this_game);
 	}
 
 	@Override

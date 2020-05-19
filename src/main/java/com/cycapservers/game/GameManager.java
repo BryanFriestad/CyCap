@@ -75,6 +75,7 @@ public class GameManager {
 				lobby_iter.remove();
 			}
 		}
+		
 		//////DELETE FINISHED OR EMPTY GAMES//////
 		ListIterator<GameState> game_iter = this.games.listIterator();
 		while(game_iter.hasNext()){
@@ -88,7 +89,6 @@ public class GameManager {
 			}
 		}
 		
-		boolean found = false;
 		String[] arr = message.split(":");
 		if(arr[0].equals("input")) {
 			int game_id = Integer.valueOf(arr[1]);
@@ -99,6 +99,7 @@ public class GameManager {
 			}
 		}
 		else if(arr[0].equals("join")) {
+			boolean found = false;
 			for(GameState s: games){
 				if(s.gameFinished) {
 					continue;
@@ -139,7 +140,7 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
-						GamesEntity gameEntity = new GamesEntity(GameType.TDM);
+						GamesEntity gameEntity = new GamesEntity(GameType.tdm);
 						gamesRepo.save(gameEntity);
 						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
 						l.addPlayer(arr[3],session);
@@ -161,9 +162,9 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
-						GamesEntity gameEntity = new GamesEntity(GameType.CTF);
+						GamesEntity gameEntity = new GamesEntity(GameType.ctf);
 						gamesRepo.save(gameEntity);
-						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
+						Lobby l = new Lobby(CaptureTheFlag.class, gameEntity.getGame_id());
 						l.addPlayer(arr[3],session);
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
@@ -183,9 +184,9 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
-						GamesEntity gameEntity = new GamesEntity(GameType.FFA);
+						GamesEntity gameEntity = new GamesEntity(GameType.ffa);
 						gamesRepo.save(gameEntity);
-						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
+						Lobby l = new Lobby(FreeForAll.class, gameEntity.getGame_id());
 						l.addPlayer(arr[3],session);
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);

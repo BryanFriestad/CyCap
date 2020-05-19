@@ -2,6 +2,7 @@ package com.cycapservers.game.database;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -30,10 +31,11 @@ public class GamesEntity {
 	private GameType game_type;
 	
 	@NotNull
-	@JsonFormat(pattern = "yyy-MM-dd")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="UTC")
 	private Date start_date;
 	
 	@NotNull
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone="UTC")
 	private Time start_time;
 	
 	private int winning_team;
@@ -48,8 +50,7 @@ public class GamesEntity {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		LocalDate localDate = LocalDate.now();
 		dtf.format(localDate);
-		java.sql.Date sql_date = java.sql.Date.valueOf(localDate);
-		start_date = sql_date;
+		start_date = java.sql.Date.valueOf(localDate);
 		
 		java.sql.Time sql_time = java.sql.Time.valueOf("05:21:00"); //TODO: figure out how to actually do this
 		start_time = sql_time;
@@ -85,6 +86,12 @@ public class GamesEntity {
 
 	public void setStart_time(Time start_time) {
 		this.start_time = start_time;
+	}
+	
+	public void setStart_time(long timestamp){
+		java.util.Date date = new java.util.Date(timestamp);
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		this.start_time = Time.valueOf(sdf.format(date));
 	}
 
 	public int getWinning_team() {

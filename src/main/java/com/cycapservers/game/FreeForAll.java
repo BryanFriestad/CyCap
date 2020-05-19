@@ -7,6 +7,8 @@ import java.util.ListIterator;
 
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.game.database.GamePlayersEntity;
+
 public class FreeForAll extends GameState {
 	
 	//////PLAYERS//////
@@ -213,6 +215,9 @@ public class FreeForAll extends GameState {
 		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, s));
 		this.usedEntityIds.add(s);
 		AI_players.get(AI_players.size() - 1).get_path(this);
+		
+		String bot_id = "bot" + Integer.toString(AI_players.size());
+		getGame_players().add(new GamePlayersEntity(this.game_id, bot_id, team, role, this.started));
 	}
 
 	@Override

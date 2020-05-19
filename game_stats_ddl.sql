@@ -14,7 +14,7 @@ create table games (
 create table game_events (
 	game_id integer not null,
     sequence_order integer not null,
-    event_type ENUM("kill", "grab", "return", "capture") not null,
+    event_type ENUM("kill", "flag_grab", "flag_return", "flag_capture") not null,
     src_player varchar(255) not null,
     target_player varchar(255),
     weapon_used varchar(30),
@@ -40,10 +40,10 @@ create table game_players (
 
 -- create bot player accounts
 insert into account values
-("bot1", "saltsalt", sha2("bot1pw", 256), curdate(), "bot1@no.email", 0, 0, 0),
-("bot2", "saltsalt", sha2("bot2pw", 256), curdate(), "bot2@no.email", 0, 0, 0),
-("bot3", "saltsalt", sha2("bot3pw", 256), curdate(), "bot3@no.email", 0, 0, 0),
-("bot4", "saltsalt", sha2("bot4pw", 256), curdate(), "bot4@no.email", 0, 0, 0),
-("bot5", "saltsalt", sha2("bot5pw", 256), curdate(), "bot5@no.email", 0, 0, 0),
-("bot6", "saltsalt", sha2("bot6pw", 256), curdate(), "bot6@no.email", 0, 0, 0),
-("bot7", "saltsalt", sha2("bot7pw", 256), curdate(), "bot7@no.email", 0, 0, 0);
+("bot0", "saltsalt", sha2("bot1pw", 256), curdate(), "bot1@no.email", 0, 0, 0),
+("bot1", "saltsalt", sha2("bot2pw", 256), curdate(), "bot2@no.email", 0, 0, 0),
+("bot2", "saltsalt", sha2("bot3pw", 256), curdate(), "bot3@no.email", 0, 0, 0),
+("bot3", "saltsalt", sha2("bot4pw", 256), curdate(), "bot4@no.email", 0, 0, 0),
+("bot4", "saltsalt", sha2("bot5pw", 256), curdate(), "bot5@no.email", 0, 0, 0),
+("bot5", "saltsalt", sha2("bot6pw", 256), curdate(), "bot6@no.email", 0, 0, 0),
+("bot6", "saltsalt", sha2("bot7pw", 256), curdate(), "bot7@no.email", 0, 0, 0);

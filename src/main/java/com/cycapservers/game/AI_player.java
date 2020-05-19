@@ -151,7 +151,7 @@ public class AI_player extends GameCharacter {
 			if (this.item_slot == null) {
 				for (Item i : g.current_item_list) {
 					if (Utils.isColliding(this, i)) {
-						i.pickUp(this);
+						i.pickUp(g, this);
 					}
 				}
 			}

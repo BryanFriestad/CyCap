@@ -118,7 +118,6 @@ public class HomepageController {
     	logger.info("Entered into get accounts registration controller Layer");
     	
     	model.addAttribute("account", new Account());
-    	
     	return "accounts/registration";
     }
     
@@ -194,7 +193,6 @@ public class HomepageController {
     	account.setPlaintext_pw(null); //scrub the plaintext password from server
     	String pswd = account.getPassword();
     	
-    	System.out.printf("Submitted un (%s) and pw (%s) with salt (%s). Compared to un (%s) and pw (%s) with salt (%s)\r\n", user, pswd, account.getSalt(), acnt.getUserID(), acnt.getPassword(), acnt.getSalt());
     	if(acnt!=null && acnt.getUserID().compareTo(user)==0 && acnt.getPassword().compareTo(pswd)==0){
     		return "accounts/successfullogin";
     	}
