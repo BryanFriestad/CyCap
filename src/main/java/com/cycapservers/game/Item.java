@@ -11,7 +11,7 @@ public abstract class Item extends Entity {
 		this.name = name;
 	}
 	
-	public void pickUp(GameCharacter grabber) {
+	public void pickUp(GameState game, GameCharacter grabber) {
 		if(!this.grabbed) {
 			this.grabber = grabber;
 			this.grabbed = true;

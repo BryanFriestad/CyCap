@@ -1,5 +1,8 @@
 package com.cycapservers.game;
 
+import com.cycapservers.game.database.GameEventType;
+import com.cycapservers.game.database.GameEventsEntity;
+
 public class Flag extends Item {
 	
 	protected int team;
@@ -28,13 +31,14 @@ public class Flag extends Item {
 	}
 	
 	@Override
-	public void pickUp(GameCharacter grabber){
+	public void pickUp(GameState game, GameCharacter grabber){
 		if(!this.grabbed) {
 			if(grabber.getTeam() == this.team) {
 				if(this.atBase) {
 					return;
 				}
 				else {
+					game.addGameEvent(new GameEventsEntity(game.game_id, GameEventType.flag_return, grabber.get_entity_id()));
 					returnToBase();
 					grabber.stats.addFlagReturn();
 				}
@@ -45,6 +49,8 @@ public class Flag extends Item {
 				this.grabbed = true;
 				grabber.stats.addFlagGrab();
 				this.grabber.item_slot = this;
+				
+				game.addGameEvent(new GameEventsEntity(game.game_id, GameEventType.flag_grab, grabber.get_entity_id()));
 			}
 		}
 	}

@@ -71,14 +71,14 @@ public class ArtilleryShell extends Bullet{
 			for(Player p : game.players) {
 				if(Utils.distanceBetween(this, p) <= this.damage_range) {
 					if(game.friendlyFire || (p.getTeam() != this.team) || p.equals(this.owner)) {
-						p.takeDamage(this.damage, this.owner);
+						p.takeDamage(game, this.damage, this.owner);
 					}
 				}
 			}
 			for(AI_player p : game.AI_players) {
 				if(Utils.distanceBetween(this, p) <= this.damage_range) {
 					if(game.friendlyFire || (p.getTeam() != this.team) || p.equals(this.owner)) {
-						p.takeDamage(this.damage, this.owner);
+						p.takeDamage(game, this.damage, this.owner);
 					}
 				}
 			}

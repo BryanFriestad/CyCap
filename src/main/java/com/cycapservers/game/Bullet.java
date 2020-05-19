@@ -88,7 +88,7 @@ public class Bullet extends Entity {
 				}
 				if(Utils.isColliding(this, p)) {
 					if(game.friendlyFire || (p.getTeam() != this.team)) {
-						p.takeDamage(this.damage, this.owner);
+						p.takeDamage(game, this.damage, this.owner);
 					}
 					return true;
 				}
@@ -99,7 +99,7 @@ public class Bullet extends Entity {
 				}
 				if(Utils.isColliding(this, p)) {
 					if(game.friendlyFire || (p.getTeam() != this.team)) {
-						p.takeDamage(this.damage, this.owner);
+						p.takeDamage(game, this.damage, this.owner);
 					}
 					return true;
 				}

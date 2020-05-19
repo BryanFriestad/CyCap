@@ -2,6 +2,8 @@ package com.cycapservers.game;
 
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.game.database.GameEventType;
+import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.PlayerStats;
 
 public abstract class GameCharacter extends Entity {
@@ -63,7 +65,7 @@ public abstract class GameCharacter extends Entity {
 		this.team = team;
 	}
 
-	public void takeDamage(int amount, GameCharacter c) {
+	public void takeDamage(GameState game, int amount, GameCharacter c) {
 		if(!this.is_invincible){
 			this.health -= amount;
 		}
@@ -71,6 +73,7 @@ public abstract class GameCharacter extends Entity {
 			this.die(); //idk what this is gonna do yet
 			if(!c.get_entity_id().equals(this.get_entity_id())) {
 				c.stats.addKill(); //adds a kill if you didn't kill yourself lmao
+				game.addGameEvent(new GameEventsEntity(game.game_id, GameEventType.kill, c.get_entity_id(), this.get_entity_id(), c.currentWeapon.name));
 			}
 		}
 	}

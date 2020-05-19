@@ -41,7 +41,6 @@ public class Account {
 	
 	@NotNull
 	@Column(name = "Creation_Date")
-	// private DateTimeFormatter dateOfCreation;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfCreation;
 
@@ -68,7 +67,6 @@ public class Account {
 	}
 
 	public String getUserID() {
-
 		return this.userID;
 	}
 
@@ -89,8 +87,6 @@ public class Account {
 	}
 
 	public void setPassword(String plaintext_passwd) {
-		System.out.println("Plaintxt pw is " + plaintext_passwd);
-		System.out.println("salt is " + getSalt());
 		String salted_pw = plaintext_passwd + getSalt(); //concat plaintext_passwd with salt
 		this.hashed_password = Hashing.sha256().hashString(salted_pw, StandardCharsets.UTF_8).toString();
 	}
@@ -116,7 +112,7 @@ public class Account {
 	}
 
 	public void setDateOfCreation() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate localDate = LocalDate.now();
 		dtf.format(localDate);
 		java.sql.Date dat = java.sql.Date.valueOf(localDate);

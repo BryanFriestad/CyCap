@@ -62,7 +62,7 @@ public class Player extends GameCharacter {
 			if(this.item_slot == null) {
 				for(Item i : game.current_item_list) {
 					if(Utils.isColliding(this, i)) {
-						i.pickUp(this);
+						i.pickUp(game, this);
 					}
 				}
 			}

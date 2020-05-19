@@ -34,18 +34,18 @@ public class GameEventsEntity {
 		
 	}
 	
-	public GameEventsEntity(int game_id, int sequence_order, GameEventType event_type, String src_player, String target_player, String weapon_used) {
+	public GameEventsEntity(int game_id, GameEventType event_type, String src_player, String target_player, String weapon_used) {
 		this.game_id = game_id;
-		this.sequence_order = sequence_order;
+		this.sequence_order = -1;
 		this.event_type = event_type;
 		this.src_player = src_player;
 		this.target_player = target_player;
 		this.weapon_used = weapon_used;
 	}
 	
-	public GameEventsEntity(int game_id, int sequence_order, GameEventType event_type, String src_player) {
+	public GameEventsEntity(int game_id, GameEventType event_type, String src_player) {
 		this.game_id = game_id;
-		this.sequence_order = sequence_order;
+		this.sequence_order = -1;
 		this.event_type = event_type;
 		this.src_player = src_player;
 		this.target_player = null;

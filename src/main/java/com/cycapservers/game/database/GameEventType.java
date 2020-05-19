@@ -1,5 +1,5 @@
 package com.cycapservers.game.database;
 
 public enum GameEventType {
-	KILL, GRAB, RETURN, CAPTURE
+	kill, flag_grab, flag_return, flag_capture
 }

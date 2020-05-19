@@ -9,6 +9,10 @@ import java.util.ListIterator;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.game.database.GameEventType;
+import com.cycapservers.game.database.GameEventsEntity;
+import com.cycapservers.game.database.GamePlayersEntity;
+
 public class CaptureTheFlag extends GameState {
 	
 	//////PLAYERS//////
@@ -23,7 +27,7 @@ public class CaptureTheFlag extends GameState {
 	protected Flag team2_flag;
 	/////////////////////
 	
-	public CaptureTheFlag(String id, int map_number) {
+	public CaptureTheFlag(int id, int map_number) {
 		super(id);
 		this.max_players = 8;
 		this.playersOnTeam1 = 0;
@@ -167,6 +171,8 @@ public class CaptureTheFlag extends GameState {
 			} else if ((this.players.get(i).y < 0 || this.players.get(i).y > (Utils.GRID_LENGTH * this.mapGridHeight)) && !this.players.get(i).isDead) {
 				this.players.get(i).die();
 			}
+			
+			//TODO: find a way to have this counted in the game events table
 		}
 		
 		////// updating AI players ///////
@@ -180,14 +186,20 @@ public class CaptureTheFlag extends GameState {
 		if(!this.team1_flag.atBase && this.team2_flag.atBase && Utils.isColliding(this.team1_flag, team2_base)) {
 			this.team_scores.put(2, this.team_scores.get(2) + 1); //+1 to team 2
 			this.team1_flag.grabber.stats.addFlagCapture(); //give the proper player a flag capture
-			this.team1_flag.returnToBase(); //return the flag to base
+			
+			addGameEvent(new GameEventsEntity(this.game_id, GameEventType.flag_capture, this.team1_flag.grabber.get_entity_id()));
+			
 			if(Utils.DEBUG) System.out.println("FLAG 1 CAPTURED!!");
+			this.team1_flag.returnToBase(); //return the flag to base
 		}
 		else if(!this.team2_flag.atBase && this.team1_flag.atBase && Utils.isColliding(this.team2_flag, team1_base)) {
 			this.team_scores.put(1, this.team_scores.get(1) + 1); //+1 to team 1
 			this.team2_flag.grabber.stats.addFlagCapture(); //give the proper player a flag capture
-			this.team2_flag.returnToBase(); //return the flag to base
+			
+			addGameEvent(new GameEventsEntity(this.game_id, GameEventType.flag_capture, this.team2_flag.grabber.get_entity_id()));
+			
 			if(Utils.DEBUG) System.out.println("FLAG 2 CAPTURED!!");
+			this.team2_flag.returnToBase(); //return the flag to base
 		}
 		
 		pu_handler.update(this); //update the powerups
@@ -266,6 +278,9 @@ public class CaptureTheFlag extends GameState {
 		this.players.add(p);
 		p.stats.setGameType(this.getClass());
 		this.userPasswords.add(pass);
+		
+		getGame_players().add(new GamePlayersEntity(this.game_id, client_id, team, role, this.started));
+		
 		try {
 			
 			String message = "join:" + pass + ":" + this.game_id + ":" + "CTF:" + role + ":" + this.mapGridWidth + ":" + this.mapGridHeight;
@@ -293,12 +308,14 @@ public class CaptureTheFlag extends GameState {
 
 		// make AI player and send map reference
 		// mapNode randomNode = getRandomNode();
-		String s = Utils.getGoodRandomString(this.usedEntityIds, this.entity_id_len);
+		String bot_id = "bot" + Integer.toString(AI_players.size());
 		SpawnNode n = Utils.getRandomSpawn(this.spawns, team);
-		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, s));
-		this.usedEntityIds.add(s);
+		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, bot_id));
+		this.usedEntityIds.add(bot_id);
 		AI_players.get(AI_players.size() - 1).get_path(this);
 		ai_player_delay = false;
+		
+		getGame_players().add(new GamePlayersEntity(this.game_id, bot_id, team, role, this.started));
 	}
 	
 	public void removePlayer(WebSocketSession session) {
