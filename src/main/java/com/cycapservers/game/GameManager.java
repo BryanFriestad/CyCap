@@ -7,12 +7,20 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.Timer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.cycapservers.game.database.GameType;
+import com.cycapservers.game.database.GamesEntity;
+import com.cycapservers.game.database.GamesRepository;
+
 
 public class GameManager {
+	
+	@Autowired
+	private GamesRepository gamesRepo;
 	
 	private volatile ArrayList<GameState> games;
 	protected volatile List<String> game_ids;
@@ -127,6 +135,17 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
+						/*
+						GamesEntity gameEntity = new GamesEntity(GameType.TDM);
+						gamesRepo.save(gameEntity);
+						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
+						l.addPlayer(arr[3],session);
+						session.sendMessage(new TextMessage("joined:" + l.getId()));
+						lobbies.add(l);
+						games.add(l.getGame());
+						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						*/
+						
 						String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
 						Lobby l = new Lobby(TeamDeathMatch.class, id);
 						game_ids.add(id);
@@ -149,6 +168,17 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
+						/*
+						GamesEntity gameEntity = new GamesEntity(GameType.CTF);
+						gamesRepo.save(gameEntity);
+						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
+						l.addPlayer(arr[3],session);
+						session.sendMessage(new TextMessage("joined:" + l.getId()));
+						lobbies.add(l);
+						games.add(l.getGame());
+						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						*/
+						
 						String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
 						Lobby l = new Lobby(CaptureTheFlag.class, id);
 						game_ids.add(id);
@@ -171,6 +201,17 @@ public class GameManager {
 						}
 					}
 					if(!foundGame){
+						/*
+						GamesEntity gameEntity = new GamesEntity(GameType.FFA);
+						gamesRepo.save(gameEntity);
+						Lobby l = new Lobby(TeamDeathMatch.class, gameEntity.getGame_id());
+						l.addPlayer(arr[3],session);
+						session.sendMessage(new TextMessage("joined:" + l.getId()));
+						lobbies.add(l);
+						games.add(l.getGame());
+						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						*/
+						
 						String id = Utils.getGoodRandomString(game_ids, GAME_ID_LENGTH);
 						Lobby l = new Lobby(FreeForAll.class,  id);
 						game_ids.add(id);

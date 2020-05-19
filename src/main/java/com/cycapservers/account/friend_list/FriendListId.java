@@ -3,6 +3,7 @@ package com.cycapservers.account.friend_list;
 import java.io.Serializable;
 import java.util.Objects;
 
+@SuppressWarnings("serial")
 public class FriendListId implements Serializable {
 	private String sender;
 	private String recipient;
