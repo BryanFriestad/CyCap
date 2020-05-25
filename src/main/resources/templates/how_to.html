@@ -3,53 +3,12 @@
 	<head>
 		<title>How to Play</title>
 		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../static/css/cycap_style.css"/>
-		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css"/>
 		<link rel="stylesheet" th:href="@{/css/how_to.css}" href="../static/css/how_to.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css"/>
 	</head>
 	
 	<body>
-		
-		<div class="topnav" th:fragment="topnav">
-			<h1>CyCap</h1>
-			<a href="/about" id="logo"><img th:src="@{/res/webpage/Team_IA_logo10.png}" src="../static/res/webpage/Team_IA_logo10.png" width="128" height="128"/></a>
-				<ul class="outer_list">
-					<li class="outer_list"><a href="/">Home</a></li>
-					<li class="outer_list">Game
-						<ul class="inner_list">
-							<li class="inner_list"><a href="/how_to">How To Play</a></li>
-							<li class="inner_list" th:if="${account.getUserID()} == null"><a href="/play">Play Now</a></li>
-							<li class="inner_list" th:unless="${account.getUserID()} == null"><a href="/game_list">Find a Game</a></li>
-						</ul>
-					</li>
-					<li class="outer_list" th:if="${account.getUserID()} == null">Account
-						<ul class="inner_list">
-							<li class="inner_list"><a href="/accounts/log">Log in</a></li>
-							<li class="inner_list"><a href="/accounts/regiser">Create an Account</a></li>
-						</ul>
-					</li>
-					<li class="outer_list" th:unless="${account.getUserID()} == null">Account
-						<ul class="inner_list">
-							<li class="inner_list"><a href="/accounts/profile">Profile</a></li>
-							<li class="inner_list"><a href="/accounts/friends">Friend List</a></li>
-							<li class="inner_list"><a href="/accounts/leaderboards">Global Leaderboards</a></li>
-							<li class="inner_list"><a href="/accounts/chat">Chat</a></li>
-						</ul>
-					</li>
-					<li class="outer_list">Info
-						<ul class="inner_list">
-							<li class="inner_list"><a href="/about">About the Team</a></li>
-							<li class="inner_list"><a href="/bugs">Report a Bug</a></li>
-							<li class="inner_list"><a href="/news">News</a></li>
-						</ul>
-					</li>
-					<li class="outer_list" th:unless="${account.getUserID() == null and account.getDeveloper()}">Dev
-						<ul class="inner_list">
-							<li class="inner_list"><a href="/account/admincontrols.html">Admin Controls</a></li>
-						</ul>
-					</li>
-					<li class="outer_list" th:unless="${account.getUserID()} == null"><a href="/logout">Log Out</a></li>
-				</ul>
-		</div>
+		<div th:replace="fragments::topnav"></div>
 		
 		<div class="instructions">
 			<h1 id="article_title">How To Play</h1>
