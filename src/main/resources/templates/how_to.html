@@ -2,27 +2,46 @@
 <html>
 	<head>
 		<title>How to Play</title>
-		<link rel="stylesheet" href="css/cycap_style.css"/>
-		<link rel="stylesheet" href="css/topnav_style.css"/>
-		<link rel="stylesheet" href="css/how_to.css"></link>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../static/css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/how_to.css}" href="../static/css/how_to.css"/>
 	</head>
 	
 	<body>
 		
 		<div class="topnav">
 			<h1>CyCap</h1>
-			<a href="/about" id="logo"><img src="res/webpage/Team_IA_logo10.png" width="128" height="128"/></a> <!-- this would probably lead to the about page when you click on it -->
-			<a href="/">Home</a>
-			<a href="/how_to">How To Play</a>
-			<a href="/about">About the Team</a>
-			<a href="/game_list">Find Game</a>
-			<a href="/accounts/profile">Profile Page</a>
-			<a href="/accounts/chat">Chat</a>
-			<a href="/logout">Log Out</a>
+			<a href="/about" id="logo"><img th:src="@{/res/webpage/Team_IA_logo10.png}" src="../static/res/webpage/Team_IA_logo10.png" width="128" height="128"/></a>
+				<ul class="outer_list">
+					<li class="outer_list"><a href="/">Home</a></li>
+					<li class="outer_list">Game
+						<ul class="inner_list">
+							<li class="inner_list"><a href="/how_to">How To Play</a></li>
+							<li class="inner_list"><a href="/play">Play Now</a></li>
+							<li class="inner_list"><a href="/game_list">Find a Game</a></li>
+						</ul>
+					</li>
+					<li class="outer_list">Account
+						<ul class="inner_list">
+							<li class="inner_list"><a href="/accounts/profile">Profile</a></li>
+							<li class="inner_list"><a href="/accounts/friends">Friend List</a></li>
+							<li class="inner_list"><a href="/accounts/leaderboards">Global Leaderboards</a></li>
+							<li class="inner_list"><a href="/accounts/chat">Chat</a></li>
+						</ul>
+					</li>
+					<li class="outer_list">Info
+						<ul class="inner_list">
+							<li class="inner_list"><a href="/about">About the Team</a></li>
+							<li class="inner_list"><a href="/bugs">Report a Bug</a></li>
+							<li class="inner_list"><a href="/news">News</a></li>
+						</ul>
+					</li>
+					<li class="outer_list"><a href="/logout">Log Out</a></li>
+				</ul>
 		</div>
 		
 		<div class="instructions">
-			<h1 id="article_title">How To Play: CyCap</h1>
+			<h1 id="article_title">How To Play</h1>
 			<h2>Table of Contents</h2>
 			<ol>
 				<li><a href="#controls">Basic Controls</a></li>
