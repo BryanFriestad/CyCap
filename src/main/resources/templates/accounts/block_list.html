@@ -2,24 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Block List</title>
-		<link rel="stylesheet" th:href="@{/css/cycap_style.css}"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css"/>
 		<link rel="stylesheet" th:href="@{/css/topnav_style.css}"/>
 		<link rel="stylesheet" th:href="@{/css/friends_list.css}" />
 	</head>
 	
 	<body>
-		
-		<div class="topnav">
-			<h1>CyCap</h1>
-			<a href="/about" id="logo"><img th:src="@{/res/webpage/Team_IA_logo10.png}" width="128" height="128"/></a>
-			<a href="/">Home</a>
-			<a href="/how_to">How To Play</a>
-			<a href="/about">About the Team</a>
-			<a href="/game_list">Find Game</a>
-			<a href="/accounts/profile">Profile Page</a>
-			<a href="/accounts/chat">Chat</a>
-			<a href="/logout">Log Out</a>
-		</div>
+		<div th:replace="fragments::topnav"></div>
 		
 		<div class="friends_header">
 			<a href="/accounts/friends">&larr; Back to Friends List</a>

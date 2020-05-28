@@ -3,21 +3,11 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<title>Lobby</title>
-		<link rel="stylesheet" href="/css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css"/>
 		<link rel="stylesheet" href="/css/topnav_style.css"/>
 	</head>
 	<body>
-		<div class="topnav">
-			<h1>CyCap</h1>
-			<a href="/about" id="logo"><img src="res/webpage/Team_IA_logo10.png" width="128" height="128"/></a> <!-- this would probably lead to the about page when you click on it -->
-			<a href="/">Home</a>
-			<a href="/how_to">How To Play</a>
-			<a href="/about">About the Team</a>
-			<a href="/game_list">Find Game</a>
-			<a href="/accounts/profile">Profile Page</a>
-			<a href="/accounts/chat">Chat</a>
-			<a href="/logout">Log Out</a>
-		</div>
+		<div th:replace="fragments::topnav"></div>
 	
 		<h2 id = "name">Lobby Name</h2>
 		<h3 id = "players">Number of Players</h3>
