@@ -65,6 +65,7 @@ public class GameManager {
 	
 	//Ask about sending purpose of message;
 	public void getMessage(WebSocketSession session, String message) throws IOException{
+		
 		//////DELTED EMPTY OR STARTED LOBBIES//////
 		ListIterator<Lobby> lobby_iter = this.lobbies.listIterator();
 		while(lobby_iter.hasNext()){
@@ -147,7 +148,13 @@ public class GameManager {
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
 						games.add(l.getGame());
-						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						try{
+							timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						}
+						catch (IllegalStateException e){
+							timer = new Timer(true);
+							timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						}
 					}
 				}
 				else if(arr[2].equals("Capture")){
@@ -169,7 +176,13 @@ public class GameManager {
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
 						games.add(l.getGame());
-						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						try{
+							timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						}
+						catch (IllegalStateException e){
+							timer = new Timer(true);
+							timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						}
 					}
 				}
 				else if(arr[2].equals("FFA")){
@@ -191,7 +204,13 @@ public class GameManager {
 						session.sendMessage(new TextMessage("joined:" + l.getId()));
 						lobbies.add(l);
 						games.add(l.getGame());
-						timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						try{
+							timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						}
+						catch (IllegalStateException e){
+							timer = new Timer(true);
+							timer.scheduleAtFixedRate(l.getGame(), 0, 100);
+						}
 					}
 				}
 				else{
