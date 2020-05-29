@@ -29,27 +29,26 @@ public class AI_player extends GameCharacter {
 
 	public void get_path(GameState g) {
 		Random r = new Random();
+		Entity target = null;
+		
 		/*
 		 * if it has the flag then path to home base if enemy has the flag path
 		 * to them and shoot
 		 */
-		Entity target = null;
-		// System.out.println("Class for gamestate: " + g.getClass());
-		if (g.getClass().equals(CaptureTheFlag.class) || g.getClass().equals(GuestCaptureTheFlag.class)) {// game
-																											// type
-																											// is
-																											// capture
-			// the flag
+		if (g.getClass().equals(CaptureTheFlag.class) || g.getClass().equals(GuestCaptureTheFlag.class)) {
 			if (this.getTeam() == 1) {
 				if (((CaptureTheFlag) g).team1_flag.grabbed) {// if our flag is grabbed
 					target = ((CaptureTheFlag) g).team1_flag.grabber;
 				}
-				else {
+				else 
+				{
 					if (this.item_slot == ((CaptureTheFlag) g).team2_flag) {
 						// quick fix to target to base
 						Entity e = new Entity(0, 0, (double) ((CaptureTheFlag) g).team1_base.getX(), (double) ((CaptureTheFlag) g).team1_base.getY(), 0.0, 0.0, 0.0, 0.0, "");
 						target = e;
-					} else {
+					} 
+					else 
+					{
 						if (r.nextInt(10) < 8) {
 							target = ((CaptureTheFlag) g).team2_flag;
 						} else {
@@ -58,11 +57,14 @@ public class AI_player extends GameCharacter {
 						}
 					}
 				}
-			} else {
-				if (((CaptureTheFlag) g).team2_flag.grabbed) {// if our flag is
-																// grabbed
+			} 
+			else 
+			{
+				if (((CaptureTheFlag) g).team2_flag.grabbed) {// if our flag is grabbed
 					target = ((CaptureTheFlag) g).team2_flag.grabber;
-				} else {
+				} 
+				else 
+				{
 					if (this.item_slot == ((CaptureTheFlag) g).team1_flag) {
 						// quick fix to target to base
 						Entity e = new Entity(0, 0, (double) ((CaptureTheFlag) g).team2_base.getX(),
@@ -81,8 +83,7 @@ public class AI_player extends GameCharacter {
 			}
 		}
 		if (g.getClass().equals(FreeForAll.class)) {
-			// path to either a power up or enemy player, for now it will just
-			// be to a player
+			// path to either a power up or enemy player, for now it will just be to a player
 			ArrayList<GameCharacter> targetable_players = new ArrayList<GameCharacter>();
 			for(int i = 0;i < g.players.size();i++) {
 				if(g.players.get(i).getTeam() != this.getTeam() && !g.players.get(i).isDead) {
@@ -94,9 +95,17 @@ public class AI_player extends GameCharacter {
 					targetable_players.add(g.AI_players.get(i));
 				}
 			}
+			
+			if(targetable_players.size() < 1) {
+				System.out.println("All enemies are dead!");
+				return;
+			}
+			
 			if(g.started) {
 				target = targetable_players.get(Utils.RANDOM.nextInt(targetable_players.size()));
-			}else {
+			}
+			else 
+			{
 				return;
 			}
 			
@@ -113,9 +122,17 @@ public class AI_player extends GameCharacter {
 					targetable_players.add(g.AI_players.get(i));
 				}
 			}
+			
+			if(targetable_players.size() < 1) {
+				System.out.println("All enemies are dead!");
+				return;
+			}
+			
 			if(g.started) {
 				target = targetable_players.get(Utils.RANDOM.nextInt(targetable_players.size()));
-			}else {
+			}
+			else 
+			{
 				return;
 			}
 		}
@@ -162,10 +179,9 @@ public class AI_player extends GameCharacter {
 
 					/*
 					 * - see if anyone is within 7 * 32 pixels on the other team
-					 * - see if they are in the line of sight - shoot if they
-					 * are, do not if not - if multiple people, shoot flag
-					 * carrier or random
-					 * 
+					 * - see if they are in the line of sight 
+					 * - shoot if they are, do not if not 
+					 * - if multiple people, shoot flag carrier or random
 					 * - currently shoots first person in sight, not on team
 					 */
 
