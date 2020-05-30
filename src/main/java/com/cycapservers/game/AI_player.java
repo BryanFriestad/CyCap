@@ -97,7 +97,6 @@ public class AI_player extends GameCharacter {
 			}
 			
 			if(targetable_players.size() < 1) {
-				System.out.println("All enemies are dead!");
 				return;
 			}
 			
@@ -124,7 +123,6 @@ public class AI_player extends GameCharacter {
 			}
 			
 			if(targetable_players.size() < 1) {
-				System.out.println("All enemies are dead!");
 				return;
 			}
 			

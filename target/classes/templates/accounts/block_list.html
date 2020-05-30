@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Block List</title>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}"/>
+		<link rel="stylesheet" th:href="@{/css/friends_list.css}" />
+	</head>
+	
+	<body>
+		<div th:replace="fragments::topnav"></div>
+		
+		<div class="friends_header">
+			<a href="/accounts/friends">&larr; Back to Friends List</a>
+			<h2 th:text="${account.getUserID()} + '\'s Blocked Users'" style="display: inline-block">John Doe's Blocked Users</h2>
+		</div>
+		
+		<div class="friends_body">
+			<span class="friends_column">
+				<h2>Blocked Users</h2>
+				<table>
+					<tr>
+						<th>Username</th>
+						<th>Actions</th>
+					</tr>
+					<tr th:each="user : ${blocked}">
+						<td th:text="${user}">Johnny Test</td>
+						<td>
+							<form th:action="@{/accounts/block_list}" method="get">
+								<button type="submit" name="unblock" th:value="${user}">Unblock</button>
+							</form>
+						</td>
+					</tr>
+				</table>
+			</span>
+		</div>
+		
+	</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Friends List</title>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/friends_list.css}" href="../../static/css/friends_list.css"/>
+	</head>
+	
+	<body>
+		<div th:replace="fragments::topnav"></div>
+		
+		<div class="friends_header">
+			<a href="/accounts/profile">&larr; Back to Profile</a>
+			<h2 th:text="${account.getUserID()} + '\'s Friends'" style="display: inline-block">John Doe's Friends</h2>
+		</div>
+		
+		<div class="friends_header" th:unless="${message} == null" style="text-align: center">
+			<p th:text="'Server message: ' + ${message}">Message: null</p>
+		</div>
+		
+		<div class="friends_body">
+			<span class="friends_column">
+				<h2>Friends</h2>
+				<table>
+					<tr>
+						<th>Username</th>
+						<th>Since</th>
+					</tr>
+					<tr th:each="user : ${acceptedFriends}">
+						<td th:text="${user[0].toString()}">Johnny Test</td>
+						<td th:text="${user[1].toString()}">1970-01-01</td>
+					</tr>
+				</table>
+			</span>
+			
+			<span class="friends_column">
+				<h2>Pending - Received</h2>
+				<table>
+					<tr>
+						<th>Username</th>
+						<th>Actions</th>
+					</tr>
+					<tr th:each="user : ${pendingRcvd}">
+						<td th:text="${user}">Johnny Test</td>
+						<td>
+							<form th:action="@{/accounts/friends}" method="get">
+								<button type="submit" name="accept" th:value="${user}">Accept</button>
+							</form>
+							<form th:action="@{/accounts/friends}" method="get">
+								<button type="submit" name="deny" th:value="${user}">Deny</button>
+							</form>
+						</td>
+					</tr>
+				</table>
+			</span>
+			
+			<span class="friends_column">
+				<h2>Pending - Sent</h2>
+				<table>
+					<tr>
+						<th>Username</th>
+						<th>Date</th>
+					</tr>
+					<tr th:each="user : ${pendingSent}">
+						<td th:text="${user[0].toString()}">Johnny Test</td>
+						<td th:text="${user[1].toString()}">1970-01-01</td>
+					</tr>
+				</table>
+			</span>
+			
+			<span class="friends_add_column">
+				<h2 style="margin-bottom: 0px">Add Friend</h2>
+				<form th:action="@{/accounts/friends}" method="get" style="display: block">
+					<input type="text" th:name="add" />
+					<input type="submit" value="Add" />
+				</form>
+				<br />
+				
+				<h2 style="margin-bottom: 0px">Block User</h2>
+				<form th:action="@{/accounts/friends}" method="get" style="display: block">
+					<input type="text" th:name="block" />
+					<input type="submit" value="Block" />
+				</form>
+				<a th:href="@{/accounts/block_list}"  href="block_list.html" style="text-decoration: underline">Blocked Users</a>
+				<br />
+			</span>
+		</div>
+		
+	</body>
+</html>

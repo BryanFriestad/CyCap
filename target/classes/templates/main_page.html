@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>CyCap</title>
+		<link rel="stylesheet" href="css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css"/>
+		<link rel="stylesheet" href="css/main_page.css"/>
+	</head>
+	
+	<body>
+		<div th:replace="fragments::topnav"></div>
+
+		<div class = "section2">
+			<button><a href="/play">Play Now</a></button>
+			<button><a href="/accounts/log">Log In</a></button>
+			<button><a href="/accounts/register">Create Account</a></button>
+		</div>
+	</body>
+</html>

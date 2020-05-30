@@ -1,0 +1,26 @@
+<HTML>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>CyCap</title>
+		<link rel="stylesheet" href="/css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css"/>
+	</head>
+
+	<body>
+		<div th:replace="fragments::topnav"></div>
+
+		<h2>Successfully Logged in </h2>
+		<h2 id="user"></h2>
+		<button><a href="/accounts/chat">Chat Now</a></button>
+		<button><a href="/game_list">View Available Games</a></button>
+		<button><a href="/accounts/profile">Profile</a></button>
+	</body>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		
+		document.getElementById("user").innerHTML = /*[[${account.getUserID()}]]*/ '';
+		
+		/*]]>*/
+	</script>
+</HTML>
