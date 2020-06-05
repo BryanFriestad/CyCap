@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Report a Bug</title>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css" />
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css" />
+	</head>
+	
+	<body>
+		
+		<div th:replace="fragments::topnav"></div>
+		
+		<h2>CyCap Bug Reporting</h2>
+		
+		<form th:action="@{/info/bug}"  method="post" th:object="${report}">
+			<p>Short Description - 50 characters max.</p>
+			<input type="text" maxlength="50" size="50" th:field="*{short_description}" required autofocus />
+			
+			<p>Location Found - 30 characters max.</p>
+			<p style="text-indent: 45px">Examples: "In-Game", "Accounts", or "On How To page"</p>
+			<input type="text" maxlength="30" size="30" th:field="*{location}" required />
+			
+			<p>Date Encountered</p>
+			<input type="date" min="2020-05-01" th:field="*{date}" required />
+			
+			<p>Long Description (optional) - 500 characters max.</p>
+			<textarea maxlength="500" cols="75" rows="7" th:field="*{long_description}" placeholder="Include the approximate time of bug and if possible, steps to recreate it. Include anything else you feel is relevant."></textarea>
+
+			</br>
+			<input type="submit" value="Submit" /> <input type="reset" value="Reset" />
+		</form>
+		
+		<hr>
+		
+		<p><a href="#">Help squash open bugs! &rarr; (Coming Soon)</a></p>
+	</body>
+</html>
