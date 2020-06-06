@@ -9,5 +9,5 @@ create table bug_reports(
     encounter_date date NOT NULL,
     long_description varchar(500),
     primary key (id),
-    foreign key (sender) references account (UserID) on delete no action on update cascade
+    foreign key (reporting_user) references account (UserID) on delete no action on update cascade
 );

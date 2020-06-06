@@ -12,25 +12,25 @@
 		
 		<h2>CyCap Bug Reporting</h2>
 		
-		<form th:action="@{/info/bug}"  method="post" th:object="${report}">
+		<form th:action="@{/bugs}"  method="post" th:object="${report}">
 			<p>Short Description - 50 characters max.</p>
-			<input type="text" maxlength="50" size="50" th:field="*{short_description}" required autofocus />
+			<input type="text" maxlength="50" size="50" th:field="*{short_description}" required="true" autofocus="true" />
 			
 			<p>Location Found - 30 characters max.</p>
-			<p style="text-indent: 45px">Examples: "In-Game", "Accounts", or "On How To page"</p>
-			<input type="text" maxlength="30" size="30" th:field="*{location}" required />
+			<p style="text-indent: 45px"> Examples: "In-Game", "Accounts", or "On How To page"</p>
+			<input type="text" maxlength="30" size="30" th:field="*{location}" required="true" />
 			
 			<p>Date Encountered</p>
-			<input type="date" min="2020-05-01" th:field="*{date}" required />
+			<input type="date" min="2020-05-01" th:field="*{encounter_date}" required="true" />
 			
 			<p>Long Description (optional) - 500 characters max.</p>
 			<textarea maxlength="500" cols="75" rows="7" th:field="*{long_description}" placeholder="Include the approximate time of bug and if possible, steps to recreate it. Include anything else you feel is relevant."></textarea>
 
-			</br>
+			<br/>
 			<input type="submit" value="Submit" /> <input type="reset" value="Reset" />
 		</form>
 		
-		<hr>
+		<hr/>
 		
 		<p><a href="#">Help squash open bugs! &rarr; (Coming Soon)</a></p>
 	</body>
