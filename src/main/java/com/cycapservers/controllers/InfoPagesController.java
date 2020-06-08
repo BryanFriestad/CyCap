@@ -47,7 +47,7 @@ public class InfoPagesController {
     	return "info/bug_report";
     }
     
-    @PostMapping("bugs")
+    @PostMapping("bug_submit")
     public String submitBugReport(Model model,
     		@SessionAttribute("account") Account account,
     		@ModelAttribute("report") BugReport report
@@ -61,7 +61,7 @@ public class InfoPagesController {
     	
     	bugReportRepo.save(report);
     	
-    	return "info/bug_report";
+    	return "info/bug_submit";
     }
 
 }
