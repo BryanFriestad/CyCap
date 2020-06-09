@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import com.cycapservers.account.Account;
-//import org.springframework.web.bind.annotation.GetMapping;
 import com.cycapservers.account.AccountRepository;
 import com.cycapservers.account.AccountsList;
 import com.cycapservers.account.CareerTotals;
@@ -86,11 +85,6 @@ public class HomepageController {
         return "how_to";
     }
     
-    @GetMapping("about")
-    public String about_the_team() {
-    	return "about";
-    }
-    
     @GetMapping("/play")
     public String playNow(Model model, @SessionAttribute("account") Account account) {
     	if(account.getUserID() != null) {
@@ -113,7 +107,7 @@ public class HomepageController {
     
     //TODO: fix the login checks on the profile pages
     
-    @GetMapping(value = "/accounts/register")
+    @GetMapping("/accounts/register")
     public String register(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts registration controller Layer");
     	
@@ -131,7 +125,7 @@ public class HomepageController {
 	 *            session attribute for a user, set when a user logs in
 	 * @return String html page for logging in
 	 */
-	@PostMapping(value = "/accounts/registration")
+	@PostMapping("/accounts/registration")
 	public String registration(@ModelAttribute("account") Account account) {
 		logger.info("New user " + account.getUserID() + " entered into post account registration controller Layer");
 		
@@ -171,14 +165,14 @@ public class HomepageController {
     }
     
     
-    @GetMapping(value = "/accounts/log")
+    @GetMapping("/accounts/log")
     public ModelAndView log(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts login controller Layer");
     	String view = "accounts/login";
     	return new ModelAndView(view, "command", model);
     }
     
-    @PostMapping(value="/accounts/login")
+    @PostMapping("/accounts/login")
     public String login(Model model, @ModelAttribute("account") Account account){ 
     	String user = account.getUserID();
     	
@@ -210,7 +204,7 @@ public class HomepageController {
         return "accounts/unsuccessfullogin";
     }
 
-    @GetMapping(value = "/accounts/chat")
+    @GetMapping("/accounts/chat")
     public String friendChat2(HttpServletRequest request, @SessionAttribute("account") Account account){
     	if(account.getUserID() != null) {
     		logger.info("Entered into get Chat controller Layer");
@@ -244,7 +238,7 @@ public class HomepageController {
     	}
     }
     
-    @ModelAttribute(value = "careerTotals")
+    @ModelAttribute("careerTotals")
 	public CareerTotals newCareerTotals() {
 		return new CareerTotals();
 	}
@@ -394,7 +388,7 @@ public class HomepageController {
     	}
 	}
 
-	@ModelAttribute(value = "roleLevels")
+	@ModelAttribute("roleLevels")
 	public RoleLevels newRoleLevels() {
 		return new RoleLevels();
 	}
@@ -558,7 +552,7 @@ public class HomepageController {
 	 * 
 	 * @return PlayerLBDataList
 	 */
-	@ModelAttribute(value = "PlayerLBDataList")
+	@ModelAttribute("PlayerLBDataList")
 	public PlayerLBDataList newPlayerLBDataList() {
 		return new PlayerLBDataList();
 	}
@@ -609,7 +603,7 @@ public class HomepageController {
     	}
 	}
 	
-	@ModelAttribute(value = "accountsList")
+	@ModelAttribute("accountsList")
 	public AccountsList newAccountsList() {
 		return new AccountsList();
 	}
@@ -640,7 +634,7 @@ public class HomepageController {
     	}
 	}
 
-	@PostMapping(value = "/accounts/AdminControls")
+	@PostMapping("/accounts/AdminControls")
 	public String AdminControlsPost(@RequestParam("player") String player, HttpServletRequest request, Model model,
 			@SessionAttribute("account") Account account, @ModelAttribute("AccountsList") AccountsList accountsList,
 			@ModelAttribute("Account") Account playeraccount) {

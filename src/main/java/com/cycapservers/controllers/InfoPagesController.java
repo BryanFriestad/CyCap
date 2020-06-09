@@ -26,21 +26,27 @@ import com.cycapservers.bug_reports.BugReportRepository;
 @SessionAttributes("account")
 public class InfoPagesController {
 	
-	/**
-	 * Autowires AccountsRepository interface for database connection
-	 **/
-	@Autowired
-    private AccountRepository accountsRepository;
-	
 	@Autowired
 	private BugReportRepository bugReportRepo;
+	
+//	@ModelAttribute("account")
+//    public void addUserAccount(Model model){
+//    	if(!model.containsAttribute("account")){
+//    		model.addAttribute("account", new Account());
+//    	}
+//    }
     
     private final Logger logger = LoggerFactory.getLogger(InfoPagesController.class);
+    
+    @GetMapping("/500test")
+    public String serverErrorTest() throws IllegalArgumentException{
+    	throw new IllegalArgumentException("Test Exception");
+    }
     
     @GetMapping("bugs")
     public String getBugReportPage(Model model, @SessionAttribute("account") Account account){
     	if(account.getUserID() == null){
-    		return "accounts/login";
+    			return "accounts/login";
     	}
     	
     	model.addAttribute("report", new BugReport());
@@ -62,6 +68,11 @@ public class InfoPagesController {
     	bugReportRepo.save(report);
     	
     	return "info/bug_submit";
+    }
+    
+    @GetMapping("about")
+    public String about_the_team() {
+    	return "about";
     }
 
 }

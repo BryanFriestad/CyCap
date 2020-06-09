@@ -10,11 +10,13 @@ C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\ga
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\PowerUpNode.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\Lobby.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\WebSocketConfig.java
+C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\controllers\InfoPagesController.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\GameState.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\DamageBuff.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\Node.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\InputSnapshot.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\Flag.java
+C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\bug_reports\BugReport.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\database\GamesRepository.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\account\ProfileDataUpdate.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\ParticleEffect.java
@@ -62,6 +64,7 @@ C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\ac
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\AmmoPack.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\TeamDeathMatch.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\Weapon.java
+C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\bug_reports\BugReportRepository.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\HealthGun.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\game\Player.java
 C:\Users\Bryan Friestad\Desktop\projects\CyCap\src\main\java\com\cycapservers\account\RoleLevels.java

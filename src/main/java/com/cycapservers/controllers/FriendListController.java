@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -29,6 +30,13 @@ public class FriendListController {
 	 */
     @Autowired
     private FriendListRepository friendsListRepo;
+    
+//    @ModelAttribute("account")
+//    public void addUserAccount(Model model){
+//    	if(!model.containsAttribute("account")){
+//    		model.addAttribute("account", new Account());
+//    	}
+//    }
     
     private final Logger logger = LoggerFactory.getLogger(FriendListController.class);
     
