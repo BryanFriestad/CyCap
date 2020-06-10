@@ -1,0 +1,23 @@
+div.byline{
+	width: 12%;
+	float: left;
+	color: #c8102e;
+}
+
+div.report_body{
+	width: 85%;
+	float: right;
+	border: solid 2px LightSlateGray;
+	border-radius: 5px;
+	color: #c8102e;
+	padding: 1%;
+}
+
+div.title{
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+div.title button{
+	float: right;
+}
