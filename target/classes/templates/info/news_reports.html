@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>Report a Bug</title>
+		<title>CyCap News</title>
 		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css" />
-		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css" />
 		<link rel="stylesheet" th:href="@{/css/news_style.css}" href="../../static/css/news_style.css" />
 	</head>
 	
@@ -19,8 +18,10 @@
 			</div>
 			
 			<div class="report" th:each="report : ${reports}">
-				<div class="byline" th:text="${report.byline}">
-					May 30th 2020 by: Dev #2
+				<div class="byline">
+					<h3 class="byline" th:utext="${report.byline}">
+						May 30th 2020</br>by: Dev #2
+					</h3>
 				</div>
 				
 				<div class="report_body" th:utext="${report.hypertext}">

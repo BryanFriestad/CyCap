@@ -1,7 +1,11 @@
 div.byline{
 	width: 12%;
 	float: left;
-	color: #c8102e;
+	color: #c8102e; /* Cardinal */
+}
+
+h3.byline{
+	color: #F1BE48; /* Gold */
 }
 
 div.report{

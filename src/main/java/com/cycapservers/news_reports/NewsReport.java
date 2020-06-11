@@ -67,12 +67,12 @@ public class NewsReport {
 	}
 
 	public String getByline() {
-		String date = post_date.toString(); //in format yyyy-MM-dd
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+		String date = dtf.format(post_date.toLocalDate());
 		
 		String author = "by: " + posting_dev;
 		
-		String composite = date + "\n" + author;
+		String composite = date + "</br>" + author;
 		return composite;
 	}
 
