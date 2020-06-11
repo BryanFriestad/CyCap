@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Report a Player</title>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css" />
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css" />
+	</head>
+	
+	<body>
+		
+		<div th:replace="fragments::topnav"></div>
+		
+		<div class="main" th:if="${worked}">
+			<h2>CyCap Player Reporting</h2>
+			
+			<h3 th:text="'Thank you! You have successfully reported ' + ${username}">Thank you! You have successfully reported Johnny Test.</h3>
+			<p>If you need to, you can block this player.
+				<form th:action="@{/accounts/friends}" method="get">
+					<button type="submit" name="block" th:value="${username}" th:text="'Block ' + ${username}" >Block Johnny Test</button>
+				</form>
+			</p>
+			<br/>
+			
+			<p><a href="/report_player">&larr; Need to submit another?</a></p>
+		</div>
+		
+		<div class="main" th:unless="${worked}">
+			<h2>CyCap Player Reporting</h2>
+			
+			<h3 th:text="'Sorry, we could not submit a report for this user. They may not exist or you tried reporting yourself. Please make sure you spelled their username correctly: ' + ${username}">Could not add report for Johnny Test. User does not exist</h3>
+			<br/>
+			
+			<p><a href="/report_player">&larr; Want to try and resubmit?</a></p>
+		</div>
+		
+	</body>
+</html>

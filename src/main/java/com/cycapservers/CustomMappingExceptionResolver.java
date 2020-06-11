@@ -26,7 +26,6 @@ public class CustomMappingExceptionResolver implements HandlerExceptionResolver 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest req, HttpServletResponse res, Object handler, Exception ex) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println("I'm in the resovler");
 		
 		Account account;
 		Object obj = req.getSession().getAttribute("account");
