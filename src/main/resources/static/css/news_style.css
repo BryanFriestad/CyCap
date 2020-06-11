@@ -4,6 +4,11 @@ div.byline{
 	color: #c8102e;
 }
 
+div.report{
+	overflow: hidden;
+	margin-bottom: 30px;
+}
+
 div.report_body{
 	width: 85%;
 	float: right;
@@ -16,6 +21,7 @@ div.report_body{
 div.title{
 	margin-top: 10px;
 	margin-bottom: 20px;
+	overflow: hidden;
 }
 
 div.title button{

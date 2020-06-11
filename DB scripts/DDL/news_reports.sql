@@ -8,3 +8,13 @@ create table news_reports(
     primary key (id),
     foreign key (posting_dev) references account (UserID) on delete no action on update cascade
 );
+
+drop procedure if exists GetRecentNews;
+DELIMITER //
+create procedure GetRecentNews(in count int)
+	BEGIN
+	select * from news_reports
+    order by posting_dev asc
+    limit count;
+	END //
+DELIMITER ;

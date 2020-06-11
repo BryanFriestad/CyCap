@@ -3,6 +3,7 @@ package com.cycapservers.controllers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import com.cycapservers.account.AccountRepository;
 import com.cycapservers.account.friend_list.FriendListRepository;
 import com.cycapservers.bug_reports.BugReport;
 import com.cycapservers.bug_reports.BugReportRepository;
+import com.cycapservers.news_reports.NewsReport;
+import com.cycapservers.news_reports.NewsReportRepository;
 
 @Controller
 @SessionAttributes("account")
@@ -28,6 +31,9 @@ public class InfoPagesController {
 	
 	@Autowired
 	private BugReportRepository bugReportRepo;
+	
+	@Autowired
+    private NewsReportRepository newsRepo;
 	
 	@ModelAttribute("account")
     public Account addUserAccount(){
@@ -65,8 +71,25 @@ public class InfoPagesController {
     }
     
     @GetMapping("news")
-    public String dev_updates_get(){
-    	return "/info/coming_soon"; //TODO
+    public String dev_updates_get(Model model, @RequestParam(name="count", required=false) Integer count){
+    	
+    	List<NewsReport> reports;
+    	
+    	if(count != null){
+    		reports = newsRepo.GetRecentNews(count);
+    	}
+    	else{
+    		reports = newsRepo.GetRecentNews(10);
+    	}
+    	
+    	model.addAttribute("reports", reports);
+    	
+    	return "/info/news_reports";
+    }
+    
+    @GetMapping("add_news")
+    public String addNewsReportGet(){
+    	return"/info/coming_soon";
     }
     
     @GetMapping("about")
