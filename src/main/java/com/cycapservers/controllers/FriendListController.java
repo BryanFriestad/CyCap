@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -30,13 +31,23 @@ public class FriendListController {
     @Autowired
     private FriendListRepository friendsListRepo;
     
+    @ModelAttribute("account")
+    public Account addUserAccount(){
+    	logger.info("Making new Account model attribute in FriendListController");
+		return new Account();
+    }
+    
     private final Logger logger = LoggerFactory.getLogger(FriendListController.class);
     
     @GetMapping(value = "/accounts/block_list")
     public String showBlockedUsers(Model model, 
-    		@SessionAttribute("account") Account account,
+    		@ModelAttribute("account") Account account,
     		@RequestParam(name="unblock", required=false) String unblock_username
     ){
+    	if(account.getUserID() == null){
+			return "/accounts/login";
+		}
+    	
     	if(unblock_username != null){
     		System.out.printf("Unblocking user %s\r\n", unblock_username);
     		int status = friendsListRepo.UnblockUser(account.getUserID(), unblock_username);
@@ -45,20 +56,24 @@ public class FriendListController {
     	}
     	
     	model.addAttribute("blocked", friendsListRepo.FindBlockedByUser(account.getUserID()));
-    	model.addAttribute("account", account);
+    	//model.addAttribute("account", account); should be already added
     	
     	return "accounts/block_list";
     }
     
     @GetMapping(value = "/accounts/friends")
     public String showFriendsList(Model model, 
-    		@SessionAttribute("account") Account account,
+    		@ModelAttribute("account") Account account,
     		@RequestParam(name="add", required=false) String un_add,
     		@RequestParam(name="block", required=false) String un_block,
     		@RequestParam(name="accept", required=false) String un_acpt,
     		@RequestParam(name="deny", required=false) String un_deny
     ){
 		String action_message = null;
+		
+		if(account.getUserID() == null){
+			return "/accounts/login";
+		}
 		
     	if(un_add != null){
     		Account user_to_add = accountsRepository.findOne(un_add);
@@ -131,7 +146,7 @@ public class FriendListController {
     	model.addAttribute("acceptedFriends", friendsListRepo.FindAcceptedFriends(account.getUserID()));
     	model.addAttribute("pendingRcvd", friendsListRepo.FindPendingReceived(account.getUserID()));
     	model.addAttribute("pendingSent", friendsListRepo.FindPendingSent(account.getUserID()));
-    	model.addAttribute("account", account);
+    	//model.addAttribute("account", account); should be already added
     	return "accounts/friends";
     }
 

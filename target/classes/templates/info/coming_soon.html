@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Coming Soon!</title>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css" />
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css" />
+	</head>
+	
+	<body>
+		
+		<div th:replace="fragments::topnav"></div>
+		
+		<div class="main" style="text-align: center">
+			<h2>Sorry, this feature is not quite ready!</h2>
+			<p>Check back soon, and keep an eye on the Recent Updates page for more information.</p>
+			<button><a href="/">Go Home</a></button>
+			<button><a href="/news">News</a></button>
+			<br/>
+			<br/>
+			
+			<h3>If you think is in error, please submit a report here:</h3>
+			<p><a href="/bugs">Submit a Bug Report!</a></p>
+		</div>
+	</body>
+</html>

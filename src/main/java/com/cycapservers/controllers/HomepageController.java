@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import com.cycapservers.account.Account;
-//import org.springframework.web.bind.annotation.GetMapping;
 import com.cycapservers.account.AccountRepository;
 import com.cycapservers.account.AccountsList;
 import com.cycapservers.account.CareerTotals;
@@ -52,6 +52,7 @@ public class HomepageController {
     
     @ModelAttribute("account")
     public Account newAccount(){
+    	logger.info("Making new Account model attribute in HomepageController");
     	return new Account();
     }
     
@@ -71,7 +72,7 @@ public class HomepageController {
     }
     
     @GetMapping("game_list")
-    public String gameListPage(@SessionAttribute("account") Account account) {
+    public String gameListPage(@ModelAttribute("account") Account account) {
     	if(account.getUserID() != null) {
     		return "game_list2";
     	}
@@ -86,13 +87,8 @@ public class HomepageController {
         return "how_to";
     }
     
-    @GetMapping("about")
-    public String about_the_team() {
-    	return "about";
-    }
-    
     @GetMapping("/play")
-    public String playNow(Model model, @SessionAttribute("account") Account account) {
+    public String playNow(Model model, @ModelAttribute("account") Account account) {
     	if(account.getUserID() != null) {
 	    	model.addAttribute("user", account.getUserID());
 	    	return "play";
@@ -105,15 +101,15 @@ public class HomepageController {
     }
     
     @GetMapping("/logout")
-    public String logout(Model model, @ModelAttribute("account") Account account){
-    	account.setUserID(null);
-    	return "main_page";
+    public String logout(SessionStatus status){
+    	status.setComplete();
+    	return "redirect:/";
     	
     }
     
     //TODO: fix the login checks on the profile pages
     
-    @GetMapping(value = "/accounts/register")
+    @GetMapping("/accounts/register")
     public String register(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts registration controller Layer");
     	
@@ -131,7 +127,7 @@ public class HomepageController {
 	 *            session attribute for a user, set when a user logs in
 	 * @return String html page for logging in
 	 */
-	@PostMapping(value = "/accounts/registration")
+	@PostMapping("/accounts/registration")
 	public String registration(@ModelAttribute("account") Account account) {
 		logger.info("New user " + account.getUserID() + " entered into post account registration controller Layer");
 		
@@ -171,14 +167,14 @@ public class HomepageController {
     }
     
     
-    @GetMapping(value = "/accounts/log")
+    @GetMapping("/accounts/log")
     public ModelAndView log(Model model, HttpServletRequest request){
     	logger.info("Entered into get accounts login controller Layer");
     	String view = "accounts/login";
     	return new ModelAndView(view, "command", model);
     }
     
-    @PostMapping(value="/accounts/login")
+    @PostMapping("/accounts/login")
     public String login(Model model, @ModelAttribute("account") Account account){ 
     	String user = account.getUserID();
     	
@@ -210,8 +206,8 @@ public class HomepageController {
         return "accounts/unsuccessfullogin";
     }
 
-    @GetMapping(value = "/accounts/chat")
-    public String friendChat2(HttpServletRequest request, @SessionAttribute("account") Account account){
+    @GetMapping("/accounts/chat")
+    public String friendChat2(HttpServletRequest request, @ModelAttribute("account") Account account){
     	if(account.getUserID() != null) {
     		logger.info("Entered into get Chat controller Layer");
         	return "accounts/chat";
@@ -223,7 +219,7 @@ public class HomepageController {
     }
     
     @GetMapping("/Lobby")
-    public String Lobby(@SessionAttribute("account") Account account){
+    public String Lobby(@ModelAttribute("account") Account account){
     	if(account.getUserID() != null) {
     		return "game_list2";
     	}
@@ -234,7 +230,7 @@ public class HomepageController {
     }
     
     @GetMapping("/LobbyScreen")
-    public String LobbyScreen(@SessionAttribute("account") Account account){
+    public String LobbyScreen(@ModelAttribute("account") Account account){
     	if(account.getUserID() != null) {
     		return "LobbyScreen";
     	}
@@ -244,7 +240,7 @@ public class HomepageController {
     	}
     }
     
-    @ModelAttribute(value = "careerTotals")
+    @ModelAttribute("careerTotals")
 	public CareerTotals newCareerTotals() {
 		return new CareerTotals();
 	}
@@ -263,7 +259,7 @@ public class HomepageController {
 	 * @return String returns html page for a user profile
 	 */
 	@GetMapping("/accounts/profile")
-	public String profilePage(Model model, @SessionAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
+	public String profilePage(Model model, @ModelAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get Profile controller Layer");
 
@@ -353,7 +349,7 @@ public class HomepageController {
 	 * @return String returns html page for a user profile
 	 */
 	@GetMapping("/accounts/profileInfantry")
-	public String profilePageInfantry(Model model, @SessionAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
+	public String profilePageInfantry(Model model, @ModelAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get Profile infantry controller Layer");
 
@@ -394,7 +390,7 @@ public class HomepageController {
     	}
 	}
 
-	@ModelAttribute(value = "roleLevels")
+	@ModelAttribute("roleLevels")
 	public RoleLevels newRoleLevels() {
 		return new RoleLevels();
 	}
@@ -413,7 +409,7 @@ public class HomepageController {
 	 * @return String returns html page for a user profile
 	 */
 	@GetMapping("/accounts/profileRecruit")
-	public String profilePageRecruit(Model model, @SessionAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
+	public String profilePageRecruit(Model model, @ModelAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get Profile recruit controller Layer");
 			Profiles recruit = profilesRepository.findByUserID(account.getUserID(), "recruit");
@@ -466,7 +462,7 @@ public class HomepageController {
 	 * @return View returns html page for a user profile
 	 */
 	@GetMapping("/accounts/profileScout")
-	public String profilePageScout(Model model, @SessionAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
+	public String profilePageScout(Model model, @ModelAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get Profile scout controller Layer");
 			Profiles scout = profilesRepository.findByUserID(account.getUserID(), "scout");
@@ -507,7 +503,7 @@ public class HomepageController {
 	}
 
 	@GetMapping("/accounts/profileArtillery")
-	public String profilePageArtillery(Model model, @SessionAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
+	public String profilePageArtillery(Model model, @ModelAttribute("account") Account account, @ModelAttribute("Profiles") Profiles profiles, @ModelAttribute("RoleLevels") RoleLevels roleLevels, @ModelAttribute("CareerTotals") CareerTotals careerTotals) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get Profile Artillery controller Layer");
 
@@ -558,7 +554,7 @@ public class HomepageController {
 	 * 
 	 * @return PlayerLBDataList
 	 */
-	@ModelAttribute(value = "PlayerLBDataList")
+	@ModelAttribute("PlayerLBDataList")
 	public PlayerLBDataList newPlayerLBDataList() {
 		return new PlayerLBDataList();
 	}
@@ -575,7 +571,7 @@ public class HomepageController {
 	 * @return View returns a view of account leaderboards
 	 */
 	@GetMapping("/accounts/leaderboards")
-	public String LeaderBoards(Model model, @SessionAttribute("account") Account account, @ModelAttribute("PlayerLBDataList") PlayerLBDataList playerLBDataList) {
+	public String LeaderBoards(Model model, @ModelAttribute("account") Account account, @ModelAttribute("PlayerLBDataList") PlayerLBDataList playerLBDataList) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get leaderboards controller Layer");
 			Collection<Profiles> overall = profilesRepository.findByAllProfiles();
@@ -609,13 +605,13 @@ public class HomepageController {
     	}
 	}
 	
-	@ModelAttribute(value = "accountsList")
+	@ModelAttribute("accountsList")
 	public AccountsList newAccountsList() {
 		return new AccountsList();
 	}
 
 	@GetMapping("/accounts/AdminControls")
-	public String LeaderBoards(Model model, @SessionAttribute("account") Account account, @ModelAttribute("AccountsList") AccountsList accountsList) {
+	public String LeaderBoards(Model model, @ModelAttribute("account") Account account, @ModelAttribute("AccountsList") AccountsList accountsList) {
 		if(account.getUserID() != null) {
 			logger.info("Entered into get AdminControls controller Layer");
 
@@ -640,9 +636,9 @@ public class HomepageController {
     	}
 	}
 
-	@PostMapping(value = "/accounts/AdminControls")
+	@PostMapping("/accounts/AdminControls") //TODO: this is all sorts of messed up
 	public String AdminControlsPost(@RequestParam("player") String player, HttpServletRequest request, Model model,
-			@SessionAttribute("account") Account account, @ModelAttribute("AccountsList") AccountsList accountsList,
+			@ModelAttribute("account") Account account, @ModelAttribute("AccountsList") AccountsList accountsList,
 			@ModelAttribute("Account") Account playeraccount) {
 		logger.info("Entered into get AdminControls POST controller Layer");
 

@@ -1,0 +1,2 @@
+select table_name as "Table", round(((data_length + index_length) / 1024 / 1024), 6) "Size in MB"
+from information_schema.tables where table_schema = "db309sd1" order by (data_length + index_length) desc;

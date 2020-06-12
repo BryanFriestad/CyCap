@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Page Not Found!</title>
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css" />
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css" />
+	</head>
+	
+	<body>
+		
+		<!-- Can't use the navbar without session account <div th:replace="fragments::topnav"></div> -->
+		
+		<div class="main" style="text-align: center">
+			<h2>404 Error - Page Not Found!</h2>
+			<button><a href="/">Go Home</a></button>
+			<br/>
+			
+			<h3>If you think is in error, please submit a report here:</h3>
+			<p><a href="/bugs">Submit a Bug Report!</a></p>
+		</div>
+	</body>
+</html>
