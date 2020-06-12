@@ -72,7 +72,7 @@ public class NewsReport {
 		
 		String author = "by: " + posting_dev;
 		
-		String composite = date + "</br>" + author;
+		String composite = date + "<br/>" + author;
 		return composite;
 	}
 

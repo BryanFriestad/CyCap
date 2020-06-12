@@ -139,17 +139,17 @@ public class InfoPagesController {
     	
     	model.addAttribute("reports", reports);
     	
-    	return "/info/news_reports";
+    	return "info/news_reports";
     }
     
     @GetMapping("add_news")
     public String addNewsReportGet(){
-    	return"/info/coming_soon";
+    	return"info/coming_soon";
     }
     
     @GetMapping("about")
     public String about_the_team() {
-    	return "/about";
+    	return "about";
     }
 
 }

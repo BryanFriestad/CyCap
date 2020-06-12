@@ -45,7 +45,7 @@ public class FriendListController {
     		@RequestParam(name="unblock", required=false) String unblock_username
     ){
     	if(account.getUserID() == null){
-			return "/accounts/login";
+			return "accounts/login";
 		}
     	
     	if(unblock_username != null){
@@ -56,7 +56,6 @@ public class FriendListController {
     	}
     	
     	model.addAttribute("blocked", friendsListRepo.FindBlockedByUser(account.getUserID()));
-    	//model.addAttribute("account", account); should be already added
     	
     	return "accounts/block_list";
     }
@@ -72,7 +71,7 @@ public class FriendListController {
 		String action_message = null;
 		
 		if(account.getUserID() == null){
-			return "/accounts/login";
+			return "accounts/login";
 		}
 		
     	if(un_add != null){
