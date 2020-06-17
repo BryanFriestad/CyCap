@@ -287,7 +287,16 @@ function setup(arr) {
 	guis.push(new WeaponSelectGUI());
 	guis.push(new ItemSlotGUI(gui_canvas.width - 45, gui_canvas.height - 45));
 	guis.push(new AmmoGUI(30, gui_canvas.height - 50, 20, 200, 5));
-	respawnCounter = new  RespawnCounter(gui_canvas.width/2, gui_canvas.height/2, 9900);
+	
+	let respawn_time = 10000;
+	if(arr[3] == "CTF"){
+		respawn_time = 10000;
+	}
+	else if(arr[3] == "TDM"){
+		respawn_time = 5000;
+	}
+	respawnCounter = new  RespawnCounter(gui_canvas.width/2, gui_canvas.height/2, respawn_time);
+	
 	gameScoreGUI = new GameScoreGUI(gui_canvas.width/2, 0, gameState.game_mode);
 	////////////////////////
 

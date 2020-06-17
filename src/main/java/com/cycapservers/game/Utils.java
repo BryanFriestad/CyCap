@@ -40,14 +40,14 @@ public final class Utils{
 	private Utils(){} //prevents the class from being constructed
 	
 	/**
-	 * returns true if num is between the parameters lower and upper, non-inclusive
+	 * returns true if num is between the parameters lower and upper, inclusive
 	 * @param num
 	 * @param lower
 	 * @param upper
 	 * @return
 	 */
 	public static boolean isBetween(double num, double lower, double upper){
-		if(num > lower && num < upper){
+		if(num >= lower && num <= upper){
 			return true;
 		}
 		else{

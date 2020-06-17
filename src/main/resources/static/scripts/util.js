@@ -156,7 +156,7 @@ function isColliding(ent_1, ent_2){
 	*/
 }
 
-//returns true if num is between lower and upper, exclusive
+//returns true if num is between lower and upper, inclusive
 function isBetween(num, lower, upper){
 	if(num >= lower && num <= upper){
 		return true;
