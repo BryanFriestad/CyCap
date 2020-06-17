@@ -261,6 +261,8 @@ function GameState(role, pw, type){
 //all functions
 function setup(arr) {
 	
+	console.log("in setup");
+	
 	//initialize the game state
 	gameState = new GameState(arr[4], arr[1], arr[3]);
 
@@ -464,7 +466,7 @@ function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
 	this.sprite = this.image.sprites[this.sprIdx];
 	this.x = x;
 	this.y = y;
-	this.collision_radius = distanceBetween(x, y, (x + (dWidth/2)), (y + (dHeight/2))); //TODO: update this if dWidth or dHeight ever changes!
+	this.collision_radius = distanceBetween(x, y, (x + (dWidth/2)), (y + (dHeight/2)));
 	this.dWidth = dWidth;
 	this.dHeight = dHeight;
 	this.r = r;

@@ -28,14 +28,14 @@ public class TeamDeathMatch extends GameState {
 		
 		pu_handler = new PowerUpHandler((short) 20000, (short) 5000);
 		
-		MapLoader.loadPredefinedMap(map_number, this);//load up the map
+		MapLoader.loadPredefinedMap(map_number, this); //load up the map
 		
 		// generate the map when player is constructed
 		this.ai_map = Utils.generate_node_array(this);
 
 		friendlyFire = false;
-		respawnTime = 5000; //10 seconds respawn time TODO: fix this on the client side
-		time_limit = 2 * 60 * 1000; //10 minutes to ms
+		respawnTime = 5000; //5 seconds respawn time
+		time_limit = 2 * 60 * 1000; //2 minutes to ms
 		score_limit = 25; //25 kills
 	}
 

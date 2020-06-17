@@ -189,6 +189,7 @@ public abstract class GameState extends TimerTask
 	public abstract void setUpGame();
 	
 	public void endGame(int winner) {
+		
 		gameFinished = true;
 		List<String> player_ids = new ArrayList<String>();
 		for(Player p : this.players) {
