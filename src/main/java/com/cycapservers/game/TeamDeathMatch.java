@@ -86,7 +86,7 @@ public class TeamDeathMatch extends GameState {
 		this.lastGSMessage = System.currentTimeMillis();
 		
 		//////DEV STUFF//////
-		if(Utils.DEBUG) {
+		if(Utils.GAME_DEBUG) {
 			int error = (int) (this.currentDeltaTime * 1000 - 100);
 			if(error >= GameManager.TOLERABLE_UPDATE_ERROR) {
 				System.out.println("Time error in Gamestate sending: " + error);
@@ -184,14 +184,14 @@ public class TeamDeathMatch extends GameState {
 		
 		//////ADD PLAYER MESSAGES///////
 		for(int i = 0; i < players.size(); i++) {
-			if((players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+			if( players.get(i).getTeam() == p.getTeam() || Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH) || Utils.GAME_DEBUG) {
 				output += players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD AI PLAYER MESSAGES///////
 		for (int i = 0; i < AI_players.size(); i++) {
-			if((AI_players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+			if( AI_players.get(i).getTeam() == p.getTeam() || Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH) || Utils.GAME_DEBUG) {
 				output += AI_players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}

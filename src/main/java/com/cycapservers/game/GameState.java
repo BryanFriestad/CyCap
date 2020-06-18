@@ -248,7 +248,7 @@ public abstract class GameState extends TimerTask
 			this.unhandledInputs.clear(); //empty the queue of unhandled inputs
 		}
 		else if(readyToStart && !gameFinished){
-			if(Utils.DEBUG) System.out.println("Game: " + this.game_id + " - Type: " + this.getClass() +  " - Players size: " + players.size() + " - Incoming size: " + incomingPlayers.size() + " - ReadyTime: " + this.readyTime);
+			if(Utils.GAME_DEBUG) System.out.println("Game: " + this.game_id + " - Type: " + this.getClass() +  " - Players size: " + players.size() + " - Incoming size: " + incomingPlayers.size() + " - ReadyTime: " + this.readyTime);
 			if(players.size() == incomingPlayers.size() || (System.currentTimeMillis() - this.readyTime) >= 15000) {
 				setUpGame();
 			}

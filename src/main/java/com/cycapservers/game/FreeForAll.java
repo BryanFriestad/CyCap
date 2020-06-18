@@ -68,7 +68,7 @@ public class FreeForAll extends GameState {
 		this.lastGSMessage = System.currentTimeMillis();
 		
 		//DEV STUFF
-		if(Utils.DEBUG) {
+		if(Utils.GAME_DEBUG) {
 			int error = (int) (this.currentDeltaTime * 1000 - 100);
 			if(error >= GameManager.TOLERABLE_UPDATE_ERROR) {
 				System.out.println("Time error in Gamestate sending: " + error);
