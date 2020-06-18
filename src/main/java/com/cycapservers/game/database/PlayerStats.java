@@ -156,7 +156,7 @@ public class PlayerStats {
 		Point p = ProfileDataUpdate.dbGetLevel(userID, champion);
 		this.level = p.x;
 		this.experience = p.y;
-		if(Utils.DEBUG) System.out.println("Start - ID: " + userID + "     Role: " + champion + "     Level: " + level + "     XP: " + experience);
+		if(Utils.GAME_DEBUG) System.out.println("Start - ID: " + userID + "     Role: " + champion + "     Level: " + level + "     XP: " + experience);
 	}
 	
 	public void updateScore(int winner){ //could have this take in winning team to double scores potentially

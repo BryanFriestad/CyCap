@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public final class Utils{
-	public final static boolean DEBUG = true;
+	public final static boolean GAME_DEBUG = true;
 	public final static float GRAVITY = (float) 9.81;
 	public final static int GRID_LENGTH = 32;
 	public final static int UP    = 0b1000;
@@ -40,14 +40,14 @@ public final class Utils{
 	private Utils(){} //prevents the class from being constructed
 	
 	/**
-	 * returns true if num is between the parameters lower and upper, non-inclusive
+	 * returns true if num is between the parameters lower and upper, inclusive
 	 * @param num
 	 * @param lower
 	 * @param upper
 	 * @return
 	 */
 	public static boolean isBetween(double num, double lower, double upper){
-		if(num > lower && num < upper){
+		if(num >= lower && num <= upper){
 			return true;
 		}
 		else{

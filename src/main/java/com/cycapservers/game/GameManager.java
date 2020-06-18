@@ -71,7 +71,7 @@ public class GameManager {
 		while(lobby_iter.hasNext()){
 			Lobby temp = lobby_iter.next();
 			if(temp.getCurrentSize() == 0 || temp.getGame().readyToStart) {
-				if(Utils.DEBUG) System.out.println("Deleting lobby: " + temp.getId() + " with game " + temp.getGame().game_id);
+				if(Utils.GAME_DEBUG) System.out.println("Deleting lobby: " + temp.getId() + " with game " + temp.getGame().game_id);
 				temp.lobby_timer.cancel();
 				lobby_iter.remove();
 			}
@@ -83,7 +83,7 @@ public class GameManager {
 			GameState temp = game_iter.next();
 			if((temp.started && temp.players.size() == 0) || temp.gameFinished) {
 				if(!temp.getClass().equals(GuestCaptureTheFlag.class)) {
-					if(Utils.DEBUG) System.out.println("Deleting game: " + temp.game_id);
+					if(Utils.GAME_DEBUG) System.out.println("Deleting game: " + temp.game_id);
 					temp.cancel();
 					game_iter.remove();
 				}
@@ -107,7 +107,7 @@ public class GameManager {
 				}
 				found = s.findIncomingPlayer(arr[1], session);
 				if(found){
-					if(Utils.DEBUG) System.out.println(arr[1] + " joining game " + s.game_id);
+					if(Utils.GAME_DEBUG) System.out.println(arr[1] + " joining game " + s.game_id);
 					break;
 				}
 			}

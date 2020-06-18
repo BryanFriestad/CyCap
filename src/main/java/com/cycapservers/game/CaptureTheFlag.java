@@ -104,7 +104,7 @@ public class CaptureTheFlag extends GameState {
 		this.lastGSMessage = System.currentTimeMillis();
 		
 		//DEV STUFF
-		if(Utils.DEBUG) {
+		if(Utils.GAME_DEBUG) {
 			int error = (int) (this.currentDeltaTime * 1000 - 100);
 			if(error >= GameManager.TOLERABLE_UPDATE_ERROR) {
 				System.out.println("Time error in Gamestate sending: " + error);
@@ -189,7 +189,7 @@ public class CaptureTheFlag extends GameState {
 			
 			addGameEvent(new GameEventsEntity(this.game_id, GameEventType.flag_capture, this.team1_flag.grabber.get_entity_id()));
 			
-			if(Utils.DEBUG) System.out.println("FLAG 1 CAPTURED!!");
+			if(Utils.GAME_DEBUG) System.out.println("FLAG 1 CAPTURED!!");
 			this.team1_flag.returnToBase(); //return the flag to base
 		}
 		else if(!this.team2_flag.atBase && this.team1_flag.atBase && Utils.isColliding(this.team2_flag, team1_base)) {
@@ -198,7 +198,7 @@ public class CaptureTheFlag extends GameState {
 			
 			addGameEvent(new GameEventsEntity(this.game_id, GameEventType.flag_capture, this.team2_flag.grabber.get_entity_id()));
 			
-			if(Utils.DEBUG) System.out.println("FLAG 2 CAPTURED!!");
+			if(Utils.GAME_DEBUG) System.out.println("FLAG 2 CAPTURED!!");
 			this.team2_flag.returnToBase(); //return the flag to base
 		}
 		
@@ -226,14 +226,14 @@ public class CaptureTheFlag extends GameState {
 		
 		//////ADD PLAYER MESSAGES///////
 		for(int i = 0; i < players.size(); i++) {
-			if((players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+			if(players.get(i).getTeam() == p.getTeam() || Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH) || Utils.GAME_DEBUG) {
 				output += players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD AI PLAYER MESSAGES///////
 		for (int i = 0; i < AI_players.size(); i++) {
-			if((AI_players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+			if(AI_players.get(i).getTeam() == p.getTeam() || Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH) || Utils.GAME_DEBUG) {
 				output += AI_players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
@@ -340,7 +340,7 @@ public class CaptureTheFlag extends GameState {
 	
 	@Override
 	public void setUpGame() {
-		if(Utils.DEBUG) System.out.println("Num of Players @ setup: " + players.size());
+		if(Utils.GAME_DEBUG) System.out.println("Num of Players @ setup: " + players.size());
 		for(Player p : players) {
 			p.stats.setLevelAndXP();
 		}
