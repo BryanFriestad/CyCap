@@ -23,6 +23,14 @@ public class Image implements JSON_Stringable {
 		this.imageCode = img_code;
 		this.sprites = Utils.generateSpriteData(image_width, image_height, sprite_rows, sprite_cols);
 	}
+	
+	/**
+	 * 
+	 * @return the length of the sprites array in this image.
+	 */
+	public int getSpritesLength(){
+		return sprites.length;
+	}
 
 	@Override
 	public String toJSONString() {

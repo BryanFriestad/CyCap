@@ -97,6 +97,10 @@ public final class Utils{
 		return Math.sqrt(Math.pow(n.getX() - ent.x, 2.0) + Math.pow(n.getY() - ent.y, 2.0));
 	}
 	
+	public static double distanceBetween(Position p1, Position p2){
+		return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2.0) + Math.pow(p2.getY() - p1.getY(), 2.0));
+	}
+	
 	/**
 	 * returns true if the given node is placed within the entity
 	 * @param ent

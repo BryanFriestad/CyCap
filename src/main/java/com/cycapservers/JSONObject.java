@@ -1,7 +1,5 @@
 package com.cycapservers;
 
-import org.assertj.core.util.Arrays;
-
 public class JSONObject {
 	
 	private String string_representation;
@@ -42,6 +40,21 @@ public class JSONObject {
 			string_representation += value[i].toJSONString();
 		}
 		string_representation += "]";
+		pairCount++;
+	}
+	
+	public void put(String name, JSON_Stringable value){
+		if(pairCount > 0) addComma();
+		addName(name);
+		string_representation += ":" + value.toJSONString();
+		pairCount++;	
+	}
+	
+	public void put(String name, JSONObject value){
+		if(pairCount > 0) addComma();
+		addName(name);
+		string_representation += ":" + value;
+		pairCount++;
 	}
 	
 	private void addName(String name){
