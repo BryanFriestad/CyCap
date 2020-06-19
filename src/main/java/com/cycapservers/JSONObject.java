@@ -2,8 +2,6 @@ package com.cycapservers;
 
 import org.assertj.core.util.Arrays;
 
-import com.cycapservers.game.JSON_Stringable;
-
 public class JSONObject {
 	
 	private String string_representation;

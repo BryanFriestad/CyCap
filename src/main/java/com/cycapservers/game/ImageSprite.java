@@ -1,22 +1,23 @@
 package com.cycapservers.game;
 
 import com.cycapservers.JSONObject;
+import com.cycapservers.JSON_Stringable;
 
-public class GameImageSprite implements JSON_Stringable {
+public class ImageSprite implements JSON_Stringable {
 	
 	private int x;
 	private int y;
 	private int w;
 	private int h;
 
-	public GameImageSprite() {
+	public ImageSprite() {
 		x = 0;
 		y = 0;
 		w = 0;
 		h = 0;
 	}
 
-	public GameImageSprite(int x, int y, int w, int h) {
+	public ImageSprite(int x, int y, int w, int h) {
 		this.x = x;
 		this.y = y;
 		this.w = w;

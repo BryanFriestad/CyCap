@@ -1,4 +1,4 @@
-package com.cycapservers.game;
+package com.cycapservers;
 
 public interface JSON_Stringable {
 	

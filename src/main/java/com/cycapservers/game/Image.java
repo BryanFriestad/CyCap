@@ -4,20 +4,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.cycapservers.JSONObject;
+import com.cycapservers.JSON_Stringable;
 
-public class GameImage implements JSON_Stringable {
+public class Image implements JSON_Stringable {
 	
 	private String src;
-	private GameImageSprite[] sprites;
+	private ImageSprite[] sprites;
 	private int imageCode;
 
-	public GameImage(String source, int img_code, int image_width, int image_height) {
+	public Image(String source, int img_code, int image_width, int image_height) {
 		this.src = source;
 		this.imageCode = img_code;
 		this.sprites = Utils.generateSpriteData(image_width, image_height, 1, 1);
 	}
 	
-	public GameImage(String source, int img_code,  int image_width, int image_height, int sprite_rows, int sprite_cols) {
+	public Image(String source, int img_code,  int image_width, int image_height, int sprite_rows, int sprite_cols) {
 		this.src = source;
 		this.imageCode = img_code;
 		this.sprites = Utils.generateSpriteData(image_width, image_height, sprite_rows, sprite_cols);

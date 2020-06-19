@@ -1,20 +1,20 @@
 package com.cycapservers.game;
 
-public class GridLockedGamePosition extends GamePosition {
+public class GridLockedPosition extends Position {
 
-	public GridLockedGamePosition() {
+	public GridLockedPosition() {
 		super();
 		setX(0);
 		setY(0);
 	}
 
-	public GridLockedGamePosition(double x, double y) {
+	public GridLockedPosition(double x, double y) {
 		super();
 		setX(x);
 		setY(y);
 	}
 	
-	public GridLockedGamePosition(short x, short y) {
+	public GridLockedPosition(short x, short y) {
 		super((x * Utils.GRID_LENGTH) + (Utils.GRID_LENGTH / 2), (y * Utils.GRID_LENGTH) + (Utils.GRID_LENGTH / 2));
 	}
 	

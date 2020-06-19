@@ -1,18 +1,19 @@
 package com.cycapservers.game;
 
 import com.cycapservers.JSONObject;
+import com.cycapservers.JSON_Stringable;
 
-public class GamePosition implements JSON_Stringable{
+public class Position implements JSON_Stringable{
 	
 	private double x;
 	private double y;
 
-	public GamePosition() {
+	public Position() {
 		x = 0;
 		y = 0;
 	}
 
-	public GamePosition(double x, double y) {
+	public Position(double x, double y) {
 		super();
 		this.x = x;
 		this.y = y;
