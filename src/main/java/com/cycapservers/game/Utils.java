@@ -875,6 +875,17 @@ public final class Utils{
 		return p;
 	}
 	
+	public static GameImageSprite[] generateSpriteData(int s_width, int s_height, int rows, int cols){
+		GameImageSprite output[] = new GameImageSprite[rows*cols];
+		for(int i = 0; i < rows; i++){
+			for(int j = 0; j < cols; j++){
+				output[j + i*cols] = new GameImageSprite(s_width*j, s_height*i, s_width, s_height);
+				//output.add(new GameImageSprite(s_width*j, s_height*i, s_width, s_height));
+			}
+		}
+		return output;
+	}
+	
 	public static double roundToSpecifiedPlace(double num, int decimals) {
 		if(decimals < 0) {
 			throw new IllegalArgumentException("Error: decimal must be greater than or equal to 0");
