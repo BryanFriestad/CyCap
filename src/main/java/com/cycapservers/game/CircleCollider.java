@@ -18,11 +18,20 @@ public class CircleCollider extends Collider {
 		}
 		else if(other.getClass().equals(RectangleCollider.class)){
 			RectangleCollider other_rect = (RectangleCollider) other;
-			return false;
+			
+			//find point on rect nearest circle
+			double nearestX = Utils.clamp(other_rect.getBottomLeft().getX(), this.getPos().getX(), other_rect.getTopRight().getX());
+			double nearestY = Utils.clamp(other_rect.getBottomLeft().getY(), this.getPos().getY(), other_rect.getTopRight().getY());
+			
+			return Utils.distanceBetween(this.getPos(), new Position(nearestX, nearestY)) < this.radius;
 		}
 		else{
 			throw new IllegalArgumentException("Unknown collider type: " + other.getClass());
 		}
+	}
+
+	public double getRadius() {
+		return this.radius;
 	}
 
 }

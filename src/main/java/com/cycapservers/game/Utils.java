@@ -55,6 +55,10 @@ public final class Utils{
 		}
 	}
 	
+	public static double clamp(double lowerClamp, double value, double upperClamp){
+		return Math.max(lowerClamp, Math.min(value, upperClamp));
+	}
+	
 	/**
 	 * Returns the distance between two entities in pixels
 	 * @param ent1
