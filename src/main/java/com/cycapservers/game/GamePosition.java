@@ -1,6 +1,8 @@
 package com.cycapservers.game;
 
-public class GamePosition {
+import com.cycapservers.JSONObject;
+
+public class GamePosition implements JSON_Stringable{
 	
 	private double x;
 	private double y;
@@ -38,5 +40,14 @@ public class GamePosition {
 	
 	public short getClosestGridY(){
 		return (short) Math.round((this.y - (Utils.GRID_LENGTH / 2.0)) / Utils.GRID_LENGTH);
+	}
+
+	@Override
+	public String toJSONString() {
+		JSONObject object = new JSONObject();
+		object.put("class", this.getClass().getSimpleName());
+		object.put("x", this.x);
+		object.put("y", this.y);
+		return object.toString();
 	}
 }
