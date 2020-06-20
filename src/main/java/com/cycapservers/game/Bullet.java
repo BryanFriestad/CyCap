@@ -5,7 +5,7 @@ public class Bullet extends Entity {
 	protected double speed;
 	protected int damage;
 	
-	protected GameCharacter owner;
+	protected Character owner;
 	protected int team;
 	
 	protected double startX;
@@ -35,7 +35,7 @@ public class Bullet extends Entity {
 	 * @param p - the owner of the bullet
 	 * @param entity_id - the entity's unique id
 	 */
-	public Bullet(int sprIdx, double startX, double startY, double endX, double endY, double w, double h, double r, double a, double speed, int damage, double variation, GameCharacter p, String entity_id) {
+	public Bullet(int sprIdx, double startX, double startY, double endX, double endY, double w, double h, double r, double a, double speed, int damage, double variation, Character p, String entity_id) {
 		super(2, sprIdx, startX, startY, w, h, r, a, entity_id);
 		
 		this.birthTime = System.currentTimeMillis();

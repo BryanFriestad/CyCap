@@ -31,7 +31,7 @@ public class Flag extends Item {
 	}
 	
 	@Override
-	public void pickUp(GameState game, GameCharacter grabber){
+	public void pickUp(GameState game, Character grabber){
 		if(!this.grabbed) {
 			if(grabber.getTeam() == this.team) {
 				if(this.atBase) {

@@ -7,7 +7,7 @@ import org.springframework.web.socket.WebSocketSession;
 import com.cycapservers.account.*;
 import com.cycapservers.game.CaptureTheFlag;
 import com.cycapservers.game.FreeForAll;
-import com.cycapservers.game.GameCharacter;
+import com.cycapservers.game.Character;
 import com.cycapservers.game.GameState;
 import com.cycapservers.game.TeamDeathMatch;
 import com.cycapservers.game.Utils;
@@ -44,7 +44,7 @@ public class PlayerStats {
 	int gamelosses;
 
 
-	public PlayerStats(GameCharacter player){
+	public PlayerStats(Character player){
 		this.userID = player.get_entity_id(); //need to add this in later
 		this.champion = player.getRole(); //need to ensure role was already assigned
 		this.team = player.getTeam();

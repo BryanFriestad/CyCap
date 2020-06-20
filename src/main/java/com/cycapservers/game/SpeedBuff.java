@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 public class SpeedBuff extends Buff {
 
-	public SpeedBuff(GameCharacter gc, double v, String type, int length) {
+	public SpeedBuff(Character gc, double v, String type, int length) {
 		super(gc, v, type, length);
 		// TODO Auto-generated constructor stub
 	}

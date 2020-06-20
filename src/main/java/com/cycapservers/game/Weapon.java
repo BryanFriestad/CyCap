@@ -1,111 +1,37 @@
 package com.cycapservers.game;
 
-public abstract class Weapon{
+public abstract class Weapon extends Equipment{
 	
-	protected String name;
+	//parameters
+	private long fire_rate;
+	private long reload_time;
+	private int max_reloads;
+	private int reloads_remaining;
 	
-	protected int damage;
-	protected int bullet_type;
+	private Sound fire_sound;
+	private Sound cannot_fire_sound;
+	private Sound reload_sound;
+	private Sound cannot_reload_sound;
 	
-	protected int fire_rate;
-	protected long last_shot;
-	protected int bullet_speed;
-	protected double shot_variation;
-
-	protected int reload_time;
-	protected boolean is_reloading;
-	protected long reload_start_time;
-
-	protected int mag_size;
-	protected int ammo_in_clip;
-	protected int extra_ammo;
-	protected int max_ammo_refill; //the level to which to refill the extra_ammo field when using an ammo pack
-	
-	protected String shot_sound;
-
-	public Weapon(String name, int damage, int bt, int rate, int bullet_speed, int mag_size, int extra_mags, int reload_time, double shot_variation) {
-		this.name = name;
-		this.damage = damage;
-		this.bullet_type = bt;
-		this.fire_rate = rate;
-		this.last_shot = System.currentTimeMillis();
-		this.bullet_speed = bullet_speed;
-		this.shot_variation = shot_variation;
+	public Weapon(String name, long switchCooldown, Drawable icon, 
+			long fire_rate, long reload_time, int max_reloads, int reloads_remaining, 
+			Sound fire_sound, Sound cannot_fire_sound, Sound reload_sound, Sound cannot_reload_sound) {
+		super(name, switchCooldown, icon);
+		this.fire_rate = fire_rate;
 		this.reload_time = reload_time;
-		this.is_reloading = false;
-		this.reload_start_time = 0;
-		this.mag_size = mag_size;
-		this.ammo_in_clip = this.mag_size;
-		this.extra_ammo = extra_mags * this.mag_size;
-		this.max_ammo_refill = this.extra_ammo;
-		this.shot_sound = "m9_gunshot";
+		this.max_reloads = max_reloads;
+		this.reloads_remaining = reloads_remaining;
+		this.fire_sound = fire_sound;
+		this.cannot_fire_sound = cannot_fire_sound;
+		this.reload_sound = reload_sound;
+		this.cannot_reload_sound = cannot_reload_sound;
 	}
 	
+	public abstract boolean fire();
+	public abstract boolean reload();
 	/**
-	 * A copy constructor for Weapon
-	 * @param w the weapon to based the new object on
+	 * Called when the weapon is to have its ammo refilled
 	 */
-	public Weapon(Weapon w) {
-		this.name = w.name;
-		this.damage = w.damage;
-		this.bullet_type = w.bullet_type;
-		this.fire_rate = w.fire_rate;
-		this.last_shot = w.last_shot;
-		this.bullet_speed = w.bullet_speed;
-		this.shot_variation = w.shot_variation;
-		this.reload_time = w.reload_time;
-		this.is_reloading = w.is_reloading;
-		this.reload_start_time = w.reload_start_time;
-		this.mag_size = w.mag_size;
-		this.ammo_in_clip = w.ammo_in_clip;
-		this.extra_ammo = w.extra_ammo;
-		this.max_ammo_refill = w.max_ammo_refill;
-		this.shot_sound = w.shot_sound;
-	}
+	public abstract void refill();
 	
-	/**
-	 * updates important data about this weapon
-	 * @param p - the player who is shooting the bullet
-	 * @param s - the input snapshot which created this bullet
-	 * @param g - the current game state
-	 */
-	public abstract void update(GameCharacter p, InputSnapshot s, GameState g);
-	
-	/**
-	 * checks to see if the weapon is to be fired
-	 * @param p - the player who is shooting the bullet
-	 * @param s - the input snapshot which created this bullet
-	 * @param g - the current game state
-	 */
-	public abstract void checkFire(GameCharacter p, InputSnapshot s, GameState g);
-	
-	/**
-	 * fires a new bullet
-	 * @param p - the player who is shooting the bullet
-	 * @param s - the input snapshot which created this bullet
-	 * @param g - the current game state
-	 */
-	public abstract void fire(GameCharacter p, InputSnapshot s, GameState g);
-	
-	/**
-	 * reloads the weapon
-	 */
-	public void reload() {
-		int bullets_to_refill = this.mag_size - this.ammo_in_clip;
-		if(this.extra_ammo == 0){
-			return;
-		}
-		else if(this.extra_ammo < bullets_to_refill){
-			this.ammo_in_clip += this.extra_ammo;
-			this.extra_ammo = 0;
-		}
-		else{
-			this.ammo_in_clip += bullets_to_refill;
-			this.extra_ammo -= bullets_to_refill;
-		}
-	}
-	
-	public String toString() {
-		return this.name;
-	}
 }

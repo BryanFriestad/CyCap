@@ -98,71 +98,71 @@ public final class Utils{
 	 * @return
 	 */
 	public static double distanceBetween(Entity ent, Node n) {
-		return Math.sqrt(Math.pow(n.getX() - ent.x, 2.0) + Math.pow(n.getY() - ent.y, 2.0));
+		return Math.sqrt(Math.pow(n.getX() - ent.getX(), 2.0) + Math.pow(n.getY() - ent.getY(), 2.0));
 	}
 	
 	public static double distanceBetween(Position p1, Position p2){
 		return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2.0) + Math.pow(p2.getY() - p1.getY(), 2.0));
 	}
 	
-	/**
-	 * returns true if the given node is placed within the entity
-	 * @param ent
-	 * @param n
-	 * @return
-	 */
-	public static boolean isColliding(Entity ent, Node n) {
-		if(distanceBetween(ent, n) >= ent.collision_radius){
-			return false;
-		}
-		else {
-			if(n.getX() > (ent.x - ent.getDrawWidth()/2) && n.getX() < (ent.x + ent.getDrawWidth()/2)) {
-				if(n.getY() > (ent.y - ent.getDrawHeight()/2) && n.getY() < (ent.y + ent.getDrawHeight()/2)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * returns true if the two entities are colliding
-	 * @param ent_1
-	 * @param ent_2
-	 * @return
-	 */
-	public static boolean isColliding(Entity ent_1, Entity ent_2){
-		//QUICK COLLISION DETECTION
-		if(distanceBetween(ent_1, ent_2) >= (ent_1.collision_radius + ent_2.collision_radius)){
-			return false;
-		}
-		
-		//ADVANCED COLLISION DETECTION
-		boolean y_collision = isBetween(ent_1.y - (ent_1.getDrawHeight()/2), ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2)) || isBetween(ent_1.y + (ent_1.getDrawHeight()/2), ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2)) || isBetween(ent_1.y, ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2));
-
-		if(isBetween(ent_1.x - (ent_1.getDrawWidth()/2), ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
-			return true;
-		}
-		else if(isBetween(ent_1.x + (ent_1.getDrawWidth()/2), ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
-			return true;
-		}
-		else if(isBetween(ent_1.x, ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
-			return true;
-		}
-		else{
-			return false;
-		}
-		
-		/* This was the older method of collision detection. it is simpler and could still be used for more basic detection
-		if (isBetween(ent_1.x, (ent_2.x -  (ent_2.dWidth/2)), (ent_2.x +  (ent_2.dWidth/2)))
-		 && isBetween(ent_1.y, (ent_2.y -  (ent_2.dHeight/2)), (ent_2.y +  (ent_2.dHeight/2)))){
-			return true;
-		}
-		else{
-			return false;
-		}
-		*/
-	}
+//	/**
+//	 * returns true if the given node is placed within the entity
+//	 * @param ent
+//	 * @param n
+//	 * @return
+//	 */
+//	public static boolean isColliding(Entity ent, Node n) {
+//		if(distanceBetween(ent, n) >= ent.collision_radius){
+//			return false;
+//		}
+//		else {
+//			if(n.getX() > (ent.x - ent.getDrawWidth()/2) && n.getX() < (ent.x + ent.getDrawWidth()/2)) {
+//				if(n.getY() > (ent.y - ent.getDrawHeight()/2) && n.getY() < (ent.y + ent.getDrawHeight()/2)) {
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
+//	
+//	/**
+//	 * returns true if the two entities are colliding
+//	 * @param ent_1
+//	 * @param ent_2
+//	 * @return
+//	 */
+//	public static boolean isColliding(Entity ent_1, Entity ent_2){
+//		//QUICK COLLISION DETECTION
+//		if(distanceBetween(ent_1, ent_2) >= (ent_1.collision_radius + ent_2.collision_radius)){
+//			return false;
+//		}
+//		
+//		//ADVANCED COLLISION DETECTION
+//		boolean y_collision = isBetween(ent_1.y - (ent_1.getDrawHeight()/2), ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2)) || isBetween(ent_1.y + (ent_1.getDrawHeight()/2), ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2)) || isBetween(ent_1.y, ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2));
+//
+//		if(isBetween(ent_1.x - (ent_1.getDrawWidth()/2), ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
+//			return true;
+//		}
+//		else if(isBetween(ent_1.x + (ent_1.getDrawWidth()/2), ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
+//			return true;
+//		}
+//		else if(isBetween(ent_1.x, ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
+//			return true;
+//		}
+//		else{
+//			return false;
+//		}
+//		
+//		/* This was the older method of collision detection. it is simpler and could still be used for more basic detection
+//		if (isBetween(ent_1.x, (ent_2.x -  (ent_2.dWidth/2)), (ent_2.x +  (ent_2.dWidth/2)))
+//		 && isBetween(ent_1.y, (ent_2.y -  (ent_2.dHeight/2)), (ent_2.y +  (ent_2.dHeight/2)))){
+//			return true;
+//		}
+//		else{
+//			return false;
+//		}
+//		*/
+//	}
 	
 	/**
 	 * returns a random int between 0 and max, not including max
@@ -275,17 +275,17 @@ public final class Utils{
 	 * Sets the role data of the player based off of their "role" field
 	 * @param p The player which we are setting the role/class data
 	 */
-	public static void setRole(GameCharacter p) {
+	public static void setRole(Character p) {
 		String role = p.getRole();
 		if(role.equals("recruit")) {
 			p.speed = 140;
 			p.max_health = 100;
 			p.health = p.max_health;
-			p.weapon1 = new AutomaticGun(ASSAULT_RIFLE);
-			p.weapon2 = new Shotgun(REMINGTON_870);
-			p.weapon3 = null;
-			p.weapon4 = null;
-			p.currentWeapon = p.weapon1;
+			p.equipment1 = new AutomaticGun(ASSAULT_RIFLE);
+			p.equipment2 = new Shotgun(REMINGTON_870);
+			p.equipment3 = null;
+			p.equipment4 = null;
+			p.currentEquipment = p.equipment1;
 			p.visibility = 6;
 			return;
 		}
@@ -293,11 +293,11 @@ public final class Utils{
 			p.speed = 120;
 			p.max_health = 85;
 			p.health = p.max_health;
-			p.weapon1 = new AutomaticGun(SMG);
-			p.weapon2 = new MortarWeapon(MORTAR);
-			p.weapon3 = null;
-			p.weapon4 = null;
-			p.currentWeapon = p.weapon1;
+			p.equipment1 = new AutomaticGun(SMG);
+			p.equipment2 = new MortarWeapon(MORTAR);
+			p.equipment3 = null;
+			p.equipment4 = null;
+			p.currentEquipment = p.equipment1;
 			p.visibility = 6;
 			return;
 		}
@@ -305,11 +305,11 @@ public final class Utils{
 			p.speed = 140;
 			p.max_health = 105;
 			p.health = p.max_health;
-			p.weapon1 = new AutomaticGun(MACHINE_GUN);
-			p.weapon2 = new SmokeGrenade(SMOKE_GRENADE);
-			p.weapon3 = new Pistol(M1911); //pistol
-			p.weapon4 = null;
-			p.currentWeapon = p.weapon1;
+			p.equipment1 = new AutomaticGun(MACHINE_GUN);
+			p.equipment2 = new SmokeGrenade(SMOKE_GRENADE);
+			p.equipment3 = new Pistol(M1911); //pistol
+			p.equipment4 = null;
+			p.currentEquipment = p.equipment1;
 			p.visibility = 5;
 			return;
 		}
@@ -317,11 +317,11 @@ public final class Utils{
 			p.speed = 180;
 			p.max_health = 75;
 			p.health = p.max_health;
-			p.weapon1 = new Shotgun(SAWED_OFF_SHOTGUN);
-			p.weapon2 = new Pistol(M1911); //pistol
-			p.weapon3 = null;
-			p.weapon4 = null;
-			p.currentWeapon = p.weapon1;
+			p.equipment1 = new Shotgun(SAWED_OFF_SHOTGUN);
+			p.equipment2 = new Pistol(M1911); //pistol
+			p.equipment3 = null;
+			p.equipment4 = null;
+			p.currentEquipment = p.equipment1;
 			p.visibility = 7;
 			return;
 		}
@@ -338,8 +338,7 @@ public final class Utils{
 			double x_coord = (ent1.x + (delta_x/8.0) * i);
 			double y_coord = (ent1.y + (delta_y/8.0) * i);
 			
-			Entity e = new Entity(0,0,x_coord, 
-					y_coord, 0.0, 0.0, 0.0, 0.0, "");
+			Entity e = new Entity(0, 0, x_coord, y_coord, 0.0, 0.0, 0.0, 0.0, "");
 			try{
 				Point temp = get_nearest_map_node(e, g);
 				if(temp == null){

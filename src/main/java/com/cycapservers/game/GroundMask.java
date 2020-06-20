@@ -2,17 +2,20 @@ package com.cycapservers.game;
 
 public class GroundMask extends Entity {
 	
+	//params
 	protected int total_time;
 	protected int full_alpha_time;
 	protected int fade_time;
+	
+	//internal
 	protected long start_time;
 
-	public GroundMask(int id, int sprIdx, double x, double y, double w, double h, double r, String entity_id, int time_length, int fade_time) {
-		super(id, sprIdx, x, y, w, h, r, 1.0, entity_id);
-		this.total_time = time_length;
-		this.full_alpha_time = time_length - fade_time;
+	public GroundMask(String id, Drawable model, int total_time, int full_alpha_time, int fade_time, long start_time) {
+		super(id, model);
+		this.total_time = total_time;
+		this.full_alpha_time = full_alpha_time;
 		this.fade_time = fade_time;
-		this.start_time = System.currentTimeMillis();
+		this.start_time = start_time;
 	}
 
 	/**
@@ -33,9 +36,5 @@ public class GroundMask extends Entity {
 		return false;
 	}
 	
-	public String toDataString(String client_id) {
-		String output = "010,";
-		output += super.toDataString(client_id);
-		return output;
-	}
+	
 }

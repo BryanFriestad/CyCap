@@ -1,23 +1,16 @@
 package com.cycapservers.game;
 
-public class CollidingEntity extends Entity implements Collidable {
+public class CollidingGridLockedEntity extends GridLockedEntity implements Collidable {
 	
 	private Collider collider;
 	private int collision_priority;
 	
 	private Position previousPosition; //used in collision handling
 
-	public CollidingEntity(String id, Drawable model, Collider c, int collision_priority) {
+	public CollidingGridLockedEntity(String id, GridLockedDrawable model, Collider collider, int collision_priority) {
 		super(id, model);
-		this.collider = c;
+		this.collider = collider;
 		this.collision_priority = collision_priority;
-	}
-	
-	@Override
-	public boolean update(){
-		previousPosition = this.getModel().getDrawPosition();
-		
-		return true;
 	}
 
 	@Override

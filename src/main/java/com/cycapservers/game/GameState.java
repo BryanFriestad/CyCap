@@ -77,7 +77,6 @@ public abstract class GameState extends TimerTask
 	
 	//////GAMES DATABASE//////
 	private List<GamePlayersEntity> game_players;
-	private List<GameEventsEntity> game_events;
 	
 	protected long lastGSMessage;
 	protected double currentDeltaTime; //the time since the last game state update in seconds
@@ -110,7 +109,6 @@ public abstract class GameState extends TimerTask
 		this.gameFinished = false;
 		
 		this.game_players = new ArrayList<GamePlayersEntity>();
-		this.game_events = new ArrayList<GameEventsEntity>();
 	}
 
 	public List<GamePlayersEntity> getGame_players() {
@@ -119,11 +117,6 @@ public abstract class GameState extends TimerTask
 
 	public void setGame_players(List<GamePlayersEntity> game_players) {
 		this.game_players = game_players;
-	}
-
-	public void addGameEvent(GameEventsEntity event){
-		event.setSequence_order(game_events.size());
-		game_events.add(event);
 	}
 
 	public abstract void updateGameState();
@@ -193,7 +186,7 @@ public abstract class GameState extends TimerTask
 		gameFinished = true;
 		List<String> player_ids = new ArrayList<String>();
 		for(Player p : this.players) {
-			player_ids.add(p.get_entity_id());
+			player_ids.add(p.getEntity_id());
 			
 			p.stats.updateScore(winner);
 			ProfileDataUpdate.dbSaveData(p.stats);
@@ -217,9 +210,6 @@ public abstract class GameState extends TimerTask
 			
 			gamePlayersRepo.save(e);
 		}
-		
-		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
-		gameEventsRepo.save(game_events);
 		
 		GamesRepository gamesRepo = BeanUtil.getBean(GamesRepository.class);
 		GamesEntity this_game = gamesRepo.findOne(this.game_id);

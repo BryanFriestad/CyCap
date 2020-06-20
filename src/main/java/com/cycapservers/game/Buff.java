@@ -3,7 +3,7 @@ package com.cycapservers.game;
 public abstract class Buff {
 	
 	protected double value;
-	protected GameCharacter character;
+	protected Character character;
 	/**
 	 * What type of buff this is
 	 * "multi" for multiplicative
@@ -14,7 +14,7 @@ public abstract class Buff {
 	protected long start_time;
 	protected int time_length;
 	
-	public Buff(GameCharacter gc, double v, String type, int length) {
+	public Buff(Character gc, double v, String type, int length) {
 		this.character = gc;
 		this.type = type;
 		this.value = v;

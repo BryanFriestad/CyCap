@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 public class DamageBuff extends Buff {
 
-	public DamageBuff(GameCharacter gc, double v, String type, int length) {
+	public DamageBuff(Character gc, double v, String type, int length) {
 		super(gc, v, type, length);
 		// TODO Auto-generated constructor stub
 	}

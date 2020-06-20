@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 import org.springframework.web.socket.WebSocketSession;
 
-public class Player extends GameCharacter {
+public class Player extends Character {
 	
 	/**
 	 * the password which the client must send for this player to be updated
@@ -42,7 +42,7 @@ public class Player extends GameCharacter {
 		}
 		this.x = -256;
 		this.y = -256;
-		this.lastDeathTime = System.currentTimeMillis();
+		this.last_time_of_death = System.currentTimeMillis();
 	}
 	
 	public void update(GameState game, InputSnapshot s) {
@@ -51,13 +51,13 @@ public class Player extends GameCharacter {
 		}
 		
 		if(this.isDead){
-			if((System.currentTimeMillis() - this.lastDeathTime) > game.respawnTime) {
+			if((System.currentTimeMillis() - this.last_time_of_death) > game.respawnTime) {
 				this.respawn(game);
 			}
 		}
 		else {
 			this.movePlayer(game, s); //move the player first
-			this.currentWeapon.update(this, s, game); //checks to see if the current weapon is to be fired
+			this.currentEquipment.update(this, s, game); //checks to see if the current weapon is to be fired
 			
 			if(this.item_slot == null) {
 				for(Item i : game.current_item_list) {
@@ -69,19 +69,19 @@ public class Player extends GameCharacter {
 			
 			//WEAPON AND ITEM RELATED KEYPRESSES
 			if(s.keys_pnr.contains(49)){
-				this.switchWeapon(1);
+				this.switchEquipment(1);
 			}
 			else if(s.keys_pnr.contains(50)){
-				this.switchWeapon(2);
+				this.switchEquipment(2);
 			}
 			else if(s.keys_pnr.contains(51)){
-				this.switchWeapon(3);
+				this.switchEquipment(3);
 			}
 			else if(s.keys_pnr.contains(52)){
-				this.switchWeapon(4);
+				this.switchEquipment(4);
 			}
 			if(s.keys_pnr.contains(82)){
-				this.currentWeapon.reload();
+				this.currentEquipment.reload();
 			}
 			if(s.keys_pnr.contains(70)){
 				this.useItem();
@@ -182,7 +182,7 @@ public class Player extends GameCharacter {
 			output += super.toDataString(client_id) + ",";
 			output += this.getRole() + ",";
 			output += this.getTeam() + ",";
-			output += this.currentWeapon.toString() + ",";
+			output += this.currentEquipment.toString() + ",";
 			if(this.item_slot == null) {
 				output += "empty" + ",";
 			}

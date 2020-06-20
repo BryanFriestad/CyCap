@@ -3,7 +3,7 @@ package com.cycapservers.game;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AI_player extends GameCharacter {
+public class AI_player extends Character {
 
 	// Path Related Stuff
 	protected ArrayList<mapNode> path;
@@ -84,7 +84,7 @@ public class AI_player extends GameCharacter {
 		}
 		if (g.getClass().equals(FreeForAll.class)) {
 			// path to either a power up or enemy player, for now it will just be to a player
-			ArrayList<GameCharacter> targetable_players = new ArrayList<GameCharacter>();
+			ArrayList<Character> targetable_players = new ArrayList<Character>();
 			for(int i = 0;i < g.players.size();i++) {
 				if(g.players.get(i).getTeam() != this.getTeam() && !g.players.get(i).isDead) {
 					targetable_players.add(g.players.get(i));
@@ -110,7 +110,7 @@ public class AI_player extends GameCharacter {
 			
 		}
 		if (g.getClass().equals(TeamDeathMatch.class)) {
-			ArrayList<GameCharacter> targetable_players = new ArrayList<GameCharacter>();
+			ArrayList<Character> targetable_players = new ArrayList<Character>();
 			for(int i = 0;i < g.players.size();i++) {
 				if(g.players.get(i).getTeam() != this.getTeam() && !g.players.get(i).isDead) {
 					targetable_players.add(g.players.get(i));
@@ -158,7 +158,7 @@ public class AI_player extends GameCharacter {
 		Random r = new Random();
 
 		if (this.isDead) {
-			if ((System.currentTimeMillis() - this.lastDeathTime) > g.respawnTime) {
+			if ((System.currentTimeMillis() - this.last_time_of_death) > g.respawnTime) {
 				this.respawn(g);
 			}
 		} else {
@@ -189,12 +189,12 @@ public class AI_player extends GameCharacter {
 							if (distance <= (9 * 32) && Utils.checkLineOfSight(this, p, g) && p.isDead == false) {
 								InputSnapshot ai_snapshot = new InputSnapshot(
 										"::test:" + p.x + ":" + p.y + ":0.0:0.0:true:true:::0:0.0");
-								if (this.currentWeapon.ammo_in_clip > 1) {
-									this.currentWeapon.update(this, ai_snapshot, g);
+								if (this.currentEquipment.ammo_in_clip > 1) {
+									this.currentEquipment.update(this, ai_snapshot, g);
 									this.last_shoot_time = System.currentTimeMillis();
 									break;
 								} else {
-									this.currentWeapon.reload();
+									this.currentEquipment.reload();
 									break;
 								}
 							}
@@ -206,12 +206,12 @@ public class AI_player extends GameCharacter {
 							if (distance <= (9 * 32) && Utils.checkLineOfSight(this, p, g) && p.isDead == false) {
 								InputSnapshot ai_snapshot = new InputSnapshot(
 										"::test:" + p.x + ":" + p.y + ":0.0:0.0:true:true:::0:0.0");
-								if (this.currentWeapon.ammo_in_clip > 1) {
-									this.currentWeapon.update(this, ai_snapshot, g);
+								if (this.currentEquipment.ammo_in_clip > 1) {
+									this.currentEquipment.update(this, ai_snapshot, g);
 									this.last_shoot_time = System.currentTimeMillis();
 									break;
 								} else {
-									this.currentWeapon.reload();
+									this.currentEquipment.reload();
 									break;
 								}
 							}
@@ -293,7 +293,7 @@ public class AI_player extends GameCharacter {
 		}
 		this.x = -256;
 		this.y = -256;
-		this.lastDeathTime = System.currentTimeMillis();
+		this.last_time_of_death = System.currentTimeMillis();
 	}
 
 	public mapNode getRandomNode(GameState g) {

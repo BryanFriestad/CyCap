@@ -3,10 +3,17 @@ package com.cycapservers.game;
 import com.cycapservers.JSONObject;
 import com.cycapservers.JSON_Stringable;
 
+/**
+ * A class to represent a drawble image, which includes Image data and a transform specifying where to draw the object.
+ * @author Bryan Friestad
+ *
+ */
 public class Drawable implements JSON_Stringable {
 	
 	private Image image;
 	private int spriteIndex;
+	
+	//TODO: position, width. height, rotation and alpha could be combined into a "DrawTransform", which when combined with a time unit, could become a "DrawKeyframe"
 	private Position drawPosition;
 	private double drawHeight;
 	private double drawWidth;

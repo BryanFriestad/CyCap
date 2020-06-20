@@ -24,17 +24,17 @@ public class AmmoPack extends PowerUp {
 			throw new IllegalStateException("Error, this powerup has no grabber and cannot be used");
 		}
 		if(!this.started){
-			if(this.grabber.weapon1 != null) {
-				this.grabber.weapon1.extra_ammo = this.grabber.weapon1.max_ammo_refill;
+			if(this.grabber.equipment1 != null) {
+				this.grabber.equipment1.extra_ammo = this.grabber.equipment1.max_ammo_refill;
 			}
-			if(this.grabber.weapon2 != null) {
-				this.grabber.weapon2.extra_ammo = this.grabber.weapon2.max_ammo_refill;
+			if(this.grabber.equipment2 != null) {
+				this.grabber.equipment2.extra_ammo = this.grabber.equipment2.max_ammo_refill;
 			}
-			if(this.grabber.weapon3 != null) {
-				this.grabber.weapon3.extra_ammo = this.grabber.weapon3.max_ammo_refill;
+			if(this.grabber.equipment3 != null) {
+				this.grabber.equipment3.extra_ammo = this.grabber.equipment3.max_ammo_refill;
 			}
-			if(this.grabber.weapon4 != null) {
-				this.grabber.weapon4.extra_ammo = this.grabber.weapon4.max_ammo_refill;
+			if(this.grabber.equipment4 != null) {
+				this.grabber.equipment4.extra_ammo = this.grabber.equipment4.max_ammo_refill;
 			}
 			this.startTime = System.currentTimeMillis();
 			this.started = true;

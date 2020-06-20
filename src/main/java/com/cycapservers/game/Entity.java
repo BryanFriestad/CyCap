@@ -37,5 +37,21 @@ public class Entity implements JSON_Stringable{
 	public void setModel(Drawable model) {
 		this.model = model;
 	}
+
+	public double getX() {
+		return this.getModel().getDrawPosition().getX();
+	}
+
+	public double getY() {
+		return this.getModel().getDrawPosition().getY();
+	}
+
+	public String getEntity_id() {
+		return entity_id;
+	}
+
+	public void setEntity_id(String entity_id) {
+		this.entity_id = entity_id;
+	}
 	
 }

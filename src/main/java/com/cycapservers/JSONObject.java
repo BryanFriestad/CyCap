@@ -37,7 +37,12 @@ public class JSONObject {
 		string_representation += ":[";
 		for(int i = 0; i < value.length; i++){
 			if(i > 0) addComma();
-			string_representation += value[i].toJSONString();
+			if(value[i] == null){
+				string_representation += "null";
+			}
+			else{
+				string_representation += value[i].toJSONString();
+			}
 		}
 		string_representation += "]";
 		pairCount++;
@@ -46,11 +51,23 @@ public class JSONObject {
 	public void put(String name, JSON_Stringable value){
 		if(pairCount > 0) addComma();
 		addName(name);
-		string_representation += ":" + value.toJSONString();
+		if(value == null){
+			string_representation += ":null";
+		}
+		else{
+			string_representation += ":" + value.toJSONString();
+		}
 		pairCount++;	
 	}
 	
 	public void put(String name, JSONObject value){
+		if(pairCount > 0) addComma();
+		addName(name);
+		string_representation += ":" + value;
+		pairCount++;
+	}
+	
+	public void put(String name, boolean value) {
 		if(pairCount > 0) addComma();
 		addName(name);
 		string_representation += ":" + value;
@@ -69,4 +86,5 @@ public class JSONObject {
 	public String toString(){
 		return string_representation + " }";
 	}
+	
 }
