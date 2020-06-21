@@ -271,64 +271,64 @@ public final class Utils{
 		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y', invincible);
 	}
 	
-	/**
-	 * Sets the role data of the player based off of their "role" field
-	 * @param p The player which we are setting the role/class data
-	 */
-	public static void setRole(Character p) {
-		String role = p.getRole();
-		if(role.equals("recruit")) {
-			p.speed = 140;
-			p.max_health = 100;
-			p.health = p.max_health;
-			p.equipment1 = new AutomaticGun(ASSAULT_RIFLE);
-			p.equipment2 = new Shotgun(REMINGTON_870);
-			p.equipment3 = null;
-			p.equipment4 = null;
-			p.currentEquipment = p.equipment1;
-			p.visibility = 6;
-			return;
-		}
-		else if(role.equals("artillery")) {
-			p.speed = 120;
-			p.max_health = 85;
-			p.health = p.max_health;
-			p.equipment1 = new AutomaticGun(SMG);
-			p.equipment2 = new MortarWeapon(MORTAR);
-			p.equipment3 = null;
-			p.equipment4 = null;
-			p.currentEquipment = p.equipment1;
-			p.visibility = 6;
-			return;
-		}
-		else if(role.equals("infantry")) {	
-			p.speed = 140;
-			p.max_health = 105;
-			p.health = p.max_health;
-			p.equipment1 = new AutomaticGun(MACHINE_GUN);
-			p.equipment2 = new SmokeGrenade(SMOKE_GRENADE);
-			p.equipment3 = new Pistol(M1911); //pistol
-			p.equipment4 = null;
-			p.currentEquipment = p.equipment1;
-			p.visibility = 5;
-			return;
-		}
-		else if(role.equals("scout")) {	
-			p.speed = 180;
-			p.max_health = 75;
-			p.health = p.max_health;
-			p.equipment1 = new Shotgun(SAWED_OFF_SHOTGUN);
-			p.equipment2 = new Pistol(M1911); //pistol
-			p.equipment3 = null;
-			p.equipment4 = null;
-			p.currentEquipment = p.equipment1;
-			p.visibility = 7;
-			return;
-		}
-		else {
-			throw new IllegalStateException("Player role is unacceptable!");
-		}
-	}
+//	/**
+//	 * Sets the role data of the player based off of their "role" field
+//	 * @param p The player which we are setting the role/class data
+//	 */
+//	public static void setRole(Character p) {
+//		String role = p.getRole();
+//		if(role.equals("recruit")) {
+//			p.setSpeed(140);
+//			p.max_health = 100;
+//			p.health = p.max_health;
+//			p.equipment1 = new AutomaticGun(ASSAULT_RIFLE);
+//			p.equipment2 = new Shotgun(REMINGTON_870);
+//			p.equipment3 = null;
+//			p.equipment4 = null;
+//			p.setCurrentEquipment(p.equipment1);
+//			p.visibility = 6;
+//			return;
+//		}
+//		else if(role.equals("artillery")) {
+//			p.setSpeed(120);
+//			p.max_health = 85;
+//			p.health = p.max_health;
+//			p.equipment1 = new AutomaticGun(SMG);
+//			p.equipment2 = new MortarWeapon(MORTAR);
+//			p.equipment3 = null;
+//			p.equipment4 = null;
+//			p.setCurrentEquipment(p.equipment1);
+//			p.visibility = 6;
+//			return;
+//		}
+//		else if(role.equals("infantry")) {	
+//			p.setSpeed(140);
+//			p.max_health = 105;
+//			p.health = p.max_health;
+//			p.equipment1 = new AutomaticGun(MACHINE_GUN);
+//			p.equipment2 = new SmokeGrenade(SMOKE_GRENADE);
+//			p.equipment3 = new Pistol(M1911); //pistol
+//			p.equipment4 = null;
+//			p.setCurrentEquipment(p.equipment1);
+//			p.visibility = 5;
+//			return;
+//		}
+//		else if(role.equals("scout")) {	
+//			p.setSpeed(180);
+//			p.max_health = 75;
+//			p.health = p.max_health;
+//			p.equipment1 = new Shotgun(SAWED_OFF_SHOTGUN);
+//			p.equipment2 = new Pistol(M1911); //pistol
+//			p.equipment3 = null;
+//			p.equipment4 = null;
+//			p.setCurrentEquipment(p.equipment1);
+//			p.visibility = 7;
+//			return;
+//		}
+//		else {
+//			throw new IllegalStateException("Player role is unacceptable!");
+//		}
+//	}
 	
 	public static boolean checkLineOfSight(Entity ent1, Entity ent2, GameState g){
 		double delta_x = ent1.x - ent2.x;
@@ -577,31 +577,6 @@ public final class Utils{
 			default:
 				throw new IllegalArgumentException("illegal team number, no sprite index associated!");
 		}
-	}
-	
-	/**
-	 * Returns a random spawn node that has the same team as the parameter
-	 * @param nodes
-	 * @param team
-	 * @return
-	 */
-	public static SpawnNode getRandomSpawn(List<SpawnNode> nodes, int team) {
-		List<SpawnNode> goodNodes = new ArrayList<SpawnNode>();
-		for(SpawnNode n : nodes) {
-			if(n.team == team) {
-				goodNodes.add(n);
-			}
-		}
-		return goodNodes.get(RANDOM.nextInt(goodNodes.size()));
-	}
-	
-	/**
-	 * returns a random spawn node from the passed list
-	 * @param nodes
-	 * @return
-	 */
-	public static SpawnNode getRandomSpawn(List<SpawnNode> nodes) {
-		return nodes.get(RANDOM.nextInt(nodes.size()));
 	}
 	
 	/**

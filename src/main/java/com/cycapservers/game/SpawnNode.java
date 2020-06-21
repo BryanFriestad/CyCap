@@ -1,11 +1,19 @@
 package com.cycapservers.game;
 
-public class SpawnNode extends GridLockedNode {
+public class SpawnNode extends GridLockedPosition {
 	
-	protected int team;
+	private int team;
 	
-	public SpawnNode(short gx, short gy, int team) {
-		super(gx, gy);
+	public SpawnNode(double x, double y, int team) {
+		super(x, y);
+		this.team = team;
+	}
+
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
 		this.team = team;
 	}
 

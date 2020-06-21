@@ -1,6 +1,6 @@
 package com.cycapservers.game;
 
-public abstract class Item extends Entity {
+public abstract class Item extends CollidingEntity {
 	
 	protected String name;
 	protected Character grabber = null;
@@ -15,7 +15,7 @@ public abstract class Item extends Entity {
 		if(!this.grabbed) {
 			this.grabber = grabber;
 			this.grabbed = true;
-			this.grabber.item_slot = this;
+			this.grabber.setItem_slot(this);
 		}
 	}
 	
@@ -33,9 +33,7 @@ public abstract class Item extends Entity {
 	}
 	
 	@Override
-	public String toDataString(String client_id) {
-		String output = "020,";
-		output += super.toDataString(client_id);
-		return output;
+	public String toJSONString(){
+		return null; //TODO
 	}
 }

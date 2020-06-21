@@ -21,48 +21,36 @@ public class Player extends Character {
 	 */
 	protected String lastUnsentGameState;
 	
-	public Player(double x, double y, double width, double height, double rotation, double alpha, int team, String role, String client_id, String password, WebSocketSession session){
-		super(0, 0, x, y, width, height, rotation, alpha, client_id, team, role);
 	
+	
+	public Player(String id, Drawable model, Game game, int team, String class_name, int max_health, double speed,
+			int visibility, int inventory_size, String password, WebSocketSession session) {
+		super(id, model, game, team, class_name, max_health, speed, visibility, inventory_size);
 		this.password = password;
 		this.session = session;
 		this.highestHandledSnapshot = 0;
 		this.lastUnsentGameState = null;
 	}
 	
-	/**
-	 * called when the player dies. handles everything related to this, such as moving to the graveyard 
-	 */
-	public void die() {
-		this.isDead = true;
-		this.stats.addDeath(); //give player an extra death
-		if(this.item_slot !=  null) {
-			this.item_slot.drop();
-			this.item_slot = null;
-		}
-		this.x = -256;
-		this.y = -256;
-		this.last_time_of_death = System.currentTimeMillis();
-	}
-	
-	public void update(GameState game, InputSnapshot s) {
+	@Override
+	public boolean update() {
 		if(s.snapshotNum > this.highestHandledSnapshot) {
 			this.highestHandledSnapshot = s.snapshotNum;
 		}
 		
-		if(this.isDead){
-			if((System.currentTimeMillis() - this.last_time_of_death) > game.respawnTime) {
-				this.respawn(game);
+		if(!this.isAlive()){
+			if((System.currentTimeMillis() - this.getLast_time_of_death()) > this.getGame().getRespawn_time()) {
+				this.respawn();
 			}
 		}
 		else {
-			this.movePlayer(game, s); //move the player first
-			this.currentEquipment.update(this, s, game); //checks to see if the current weapon is to be fired
+			this.movePlayer(getGame(), s); //move the player first
+			this.getCurrentEquipment().update(s); //checks to see if the current weapon is to be fired
 			
-			if(this.item_slot == null) {
+			if(this.getItem_slot() == null) {
 				for(Item i : game.current_item_list) {
 					if(Utils.isColliding(this, i)) {
-						i.pickUp(game, this);
+						i.pickUp(getGame(), this);
 					}
 				}
 			}
@@ -81,7 +69,7 @@ public class Player extends Character {
 				this.switchEquipment(4);
 			}
 			if(s.keys_pnr.contains(82)){
-				this.currentEquipment.reload();
+				this.getCurrentEquipment().reload();
 			}
 			if(s.keys_pnr.contains(70)){
 				this.useItem();
@@ -121,32 +109,32 @@ public class Player extends Character {
 		double delta_x = 0;
 		double delta_y = 0;
 		if(movement_code == 0b1010){
-			delta_y = -1 * this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
-			delta_x = -1 * this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
+			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
 		}
 		else if(movement_code == 0b1001){
-			delta_y = -1 * this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
-			delta_x = this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
+			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_x = this.getSpeed() * Utils.SIN_45 * s.frameTime;
 		}
 		else if(movement_code == 0b0110){
-			delta_y = this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
-			delta_x = -1 * this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
+			delta_y = this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
 		}
 		else if(movement_code == 0b0101){
-			delta_y = this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
-			delta_x = this.speed * this.speed_boost * Utils.SIN_45 * s.frameTime;
+			delta_y = this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_x = this.getSpeed() * Utils.SIN_45 * s.frameTime;
 		}
 		else if(movement_code == 0b1000){
-			delta_y = -1 * this.speed * this.speed_boost * s.frameTime;
+			delta_y = -1 * this.getSpeed() * s.frameTime;
 		}
 		else if(movement_code == 0b0100){
-			delta_y = this.speed * this.speed_boost * s.frameTime;
+			delta_y = this.getSpeed() * s.frameTime;
 		}
 		else if(movement_code == 0b0010){
-			delta_x = -1 * this.speed * this.speed_boost * s.frameTime;
+			delta_x = -1 * this.getSpeed() * s.frameTime;
 		}
 		else if(movement_code == 0b0001){
-			delta_x = this.speed * this.speed_boost * s.frameTime;
+			delta_x = this.getSpeed() * s.frameTime;
 		}
 
 		if(delta_x != 0){
@@ -182,12 +170,12 @@ public class Player extends Character {
 			output += super.toDataString(client_id) + ",";
 			output += this.getRole() + ",";
 			output += this.getTeam() + ",";
-			output += this.currentEquipment.toString() + ",";
-			if(this.item_slot == null) {
+			output += this.getCurrentEquipment().toString() + ",";
+			if(this.getItem_slot() == null) {
 				output += "empty" + ",";
 			}
 			else {
-				output += this.item_slot.imageId + ",";
+				output += this.getItem_slot().imageId + ",";
 			}
 			output += this.health + ",";
 			output += this.is_invincible + ",";
@@ -220,37 +208,16 @@ public class Player extends Character {
 	/**
 	 * respawns the player into a proper respawn node, resets their weapons and health
 	 */
-	protected void respawn(GameState g) {
-		if(g.getClass().equals(CaptureTheFlag.class) || g.getClass().equals(TeamDeathMatch.class) || g.getClass().equals(GuestCaptureTheFlag.class)) {
-			SpawnNode n = Utils.getRandomSpawn(g.spawns, this.getTeam());
-			//respawn player
-			this.x = n.getX();
-			this.y = n.getY();
-			//set isDead to false
-			this.isDead = false;
-			//reset ammo and health
-			Utils.setRole(this);
-			return;
-		}
-		else if(g.getClass().equals(FreeForAll.class)) {
-			SpawnNode n = Utils.getRandomSpawn(g.spawns);
-			//respawn player
-			this.x = n.getX();
-			this.y = n.getY();
-			//set isDead to false
-			this.isDead = false;
-			//reset ammo and health
-			Utils.setRole(this);
-			return;
-		}
+	protected void respawn() {
+		SpawnNode n = this.getGame().getValidSpawnNode(this.getTeam());
+		//respawn player
+		this.setX(n.getX());
+		this.setY(n.getY());
+		
+		this.setAlive(true);
+		//reset ammo and health
+		this.resetClass();
+		return;
 	}
 	
-	public void leaveGame() {
-		//TODO
-		if(this.item_slot !=  null) {
-			this.item_slot.drop();
-			this.item_slot = null;
-		}
-		//give XP
-	}
 }

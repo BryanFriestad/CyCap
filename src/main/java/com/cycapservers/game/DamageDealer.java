@@ -17,5 +17,11 @@ public interface DamageDealer {
 	 * @return
 	 */
 	public String getDeathType();
+	
+	/**
+	 * 
+	 * @return an integer representing the team of the owner
+	 */
+	public int getOwnerTeam();
 
 }

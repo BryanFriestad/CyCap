@@ -54,13 +54,13 @@ public class SmokeGrenadeBullet extends Bullet {
 		this.start_width = w;
 		this.start_height = h;
 		
-		this.lifeSpan = 1000; //in milliseconds
+		this.life_span = 1000; //in milliseconds
 		
-		this.xRatio = 1000 * (this.endX - this.startX) / this.lifeSpan; //in pixels per second
-		this.yRatio = 1000 * (this.endY - this.startY) / this.lifeSpan; 
-		this.v_initial = Utils.GRAVITY * this.lifeSpan / 1000;
+		this.xRatio = 1000 * (this.endX - this.startX) / this.life_span; //in pixels per second
+		this.yRatio = 1000 * (this.endY - this.startY) / this.life_span; 
+		this.v_initial = Utils.GRAVITY * this.life_span / 1000;
 		this.max_mulitplier = max_height;
-		this.max_height = (-Utils.GRAVITY * Math.pow(this.lifeSpan/2000, 2)) + (this.v_initial * this.lifeSpan/2000);
+		this.max_height = (-Utils.GRAVITY * Math.pow(this.life_span/2000, 2)) + (this.v_initial * this.life_span/2000);
 		this.formula_m = (this.max_mulitplier - 1)/this.max_height;
 		
 		this.damage_range = (int) (1.5 * Utils.GRID_LENGTH); //TODO: pass this as a parameter
@@ -69,11 +69,11 @@ public class SmokeGrenadeBullet extends Bullet {
 	}
 	
 	public boolean update(GameState game) {
-		double total_time = (double) (System.currentTimeMillis() - this.birthTime) / 1000.0;
-		if((total_time*1000) > (this.lifeSpan + this.smoke_time)) {
+		double total_time = (double) (System.currentTimeMillis() - this.time_of_creation) / 1000.0;
+		if((total_time*1000) > (this.life_span + this.smoke_time)) {
 			return true;
 		}
-		else if((total_time*1000) > this.lifeSpan){
+		else if((total_time*1000) > this.life_span){
 			this.alpha = 0.0; //make sure the bullet is invisible after it hits the ground
 			for(int i = 0; i < this.smoke_intensity; i++) {
 				double tempX = this.endX + ((Utils.RANDOM.nextDouble() * Utils.GRID_LENGTH * 5) - Utils.GRID_LENGTH * 2.5);

@@ -9,6 +9,11 @@ public class CircleCollider extends Collider {
 		this.radius = Utils.GRID_LENGTH / 2.0;
 	}
 
+	public CircleCollider(Position p, double radius) {
+		super(p);
+		this.radius = radius;
+	}
+
 	@Override
 	public boolean isColliding(Collider other) {
 		if(other.getClass().equals(CircleCollider.class)){

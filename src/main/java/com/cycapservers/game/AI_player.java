@@ -42,7 +42,7 @@ public class AI_player extends Character {
 				}
 				else 
 				{
-					if (this.item_slot == ((CaptureTheFlag) g).team2_flag) {
+					if (this.getItem_slot() == ((CaptureTheFlag) g).team2_flag) {
 						// quick fix to target to base
 						Entity e = new Entity(0, 0, (double) ((CaptureTheFlag) g).team1_base.getX(), (double) ((CaptureTheFlag) g).team1_base.getY(), 0.0, 0.0, 0.0, 0.0, "");
 						target = e;
@@ -65,7 +65,7 @@ public class AI_player extends Character {
 				} 
 				else 
 				{
-					if (this.item_slot == ((CaptureTheFlag) g).team1_flag) {
+					if (this.getItem_slot() == ((CaptureTheFlag) g).team1_flag) {
 						// quick fix to target to base
 						Entity e = new Entity(0, 0, (double) ((CaptureTheFlag) g).team2_base.getX(),
 								(double) ((CaptureTheFlag) g).team2_base.getY(), 0.0, 0.0, 0.0, 0.0, "");
@@ -158,12 +158,12 @@ public class AI_player extends Character {
 		Random r = new Random();
 
 		if (this.isDead) {
-			if ((System.currentTimeMillis() - this.last_time_of_death) > g.respawnTime) {
+			if ((System.currentTimeMillis() - this.getLast_time_of_death()) > g.respawnTime) {
 				this.respawn(g);
 			}
 		} else {
 
-			if (this.item_slot == null) {
+			if (this.getItem_slot() == null) {
 				for (Item i : g.current_item_list) {
 					if (Utils.isColliding(this, i)) {
 						i.pickUp(g, this);
@@ -189,12 +189,12 @@ public class AI_player extends Character {
 							if (distance <= (9 * 32) && Utils.checkLineOfSight(this, p, g) && p.isDead == false) {
 								InputSnapshot ai_snapshot = new InputSnapshot(
 										"::test:" + p.x + ":" + p.y + ":0.0:0.0:true:true:::0:0.0");
-								if (this.currentEquipment.ammo_in_clip > 1) {
-									this.currentEquipment.update(this, ai_snapshot, g);
+								if (this.getCurrentEquipment().ammo_in_clip > 1) {
+									this.getCurrentEquipment().update(this, ai_snapshot, g);
 									this.last_shoot_time = System.currentTimeMillis();
 									break;
 								} else {
-									this.currentEquipment.reload();
+									this.getCurrentEquipment().reload();
 									break;
 								}
 							}
@@ -206,12 +206,12 @@ public class AI_player extends Character {
 							if (distance <= (9 * 32) && Utils.checkLineOfSight(this, p, g) && p.isDead == false) {
 								InputSnapshot ai_snapshot = new InputSnapshot(
 										"::test:" + p.x + ":" + p.y + ":0.0:0.0:true:true:::0:0.0");
-								if (this.currentEquipment.ammo_in_clip > 1) {
-									this.currentEquipment.update(this, ai_snapshot, g);
+								if (this.getCurrentEquipment().ammo_in_clip > 1) {
+									this.getCurrentEquipment().update(this, ai_snapshot, g);
 									this.last_shoot_time = System.currentTimeMillis();
 									break;
 								} else {
-									this.currentEquipment.reload();
+									this.getCurrentEquipment().reload();
 									break;
 								}
 							}
@@ -287,13 +287,13 @@ public class AI_player extends Character {
 	public void die() {
 		this.isDead = true;
 		this.stats.addDeath();
-		if (this.item_slot != null) {
-			this.item_slot.drop();
-			this.item_slot = null;
+		if (this.getItem_slot() != null) {
+			this.getItem_slot().drop();
+			this.setItem_slot(null);
 		}
 		this.x = -256;
 		this.y = -256;
-		this.last_time_of_death = System.currentTimeMillis();
+		this.setLast_time_of_death(System.currentTimeMillis());
 	}
 
 	public mapNode getRandomNode(GameState g) {

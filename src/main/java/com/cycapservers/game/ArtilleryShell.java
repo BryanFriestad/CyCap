@@ -46,21 +46,21 @@ public class ArtilleryShell extends Bullet{
 		this.start_width = w;
 		this.start_height = h;
 		
-		this.lifeSpan = 3000; //in milliseconds
+		this.life_span = 3000; //in milliseconds
 		
-		this.xRatio = 1000 * (this.endX - this.startX) / this.lifeSpan; //in pixels per second
-		this.yRatio = 1000 * (this.endY - this.startY) / this.lifeSpan; 
-		this.v_initial = Utils.GRAVITY * this.lifeSpan / 1000;
+		this.xRatio = 1000 * (this.endX - this.startX) / this.life_span; //in pixels per second
+		this.yRatio = 1000 * (this.endY - this.startY) / this.life_span; 
+		this.v_initial = Utils.GRAVITY * this.life_span / 1000;
 		this.max_mulitplier = max_height;
-		this.max_height = (-Utils.GRAVITY * Math.pow(this.lifeSpan/2000, 2)) + (this.v_initial * this.lifeSpan/2000);
+		this.max_height = (-Utils.GRAVITY * Math.pow(this.life_span/2000, 2)) + (this.v_initial * this.life_span/2000);
 		this.formula_m = (this.max_mulitplier - 1)/this.max_height;
 		
 		this.damage_range = (int) (1.5 * Utils.GRID_LENGTH); //TODO: pass this as a parameter
 	}
 	
 	public boolean update(GameState game) {
-		double total_time = (double) (System.currentTimeMillis() - this.birthTime) / 1000.0;
-		if((total_time*1000) > this.lifeSpan){
+		double total_time = (double) (System.currentTimeMillis() - this.time_of_creation) / 1000.0;
+		if((total_time*1000) > this.life_span){
 			String id = Utils.getGoodRandomString(game.usedEntityIds, game.entity_id_len);
 			game.particles.add(new Particle(7, 0, this.endX, this.endY, 2*Utils.GRID_LENGTH, 2*Utils.GRID_LENGTH, 0, 1.0, id, 74, 2500, false, 0, 0, 0, 0, 0, 0));
 			game.usedEntityIds.add(id);

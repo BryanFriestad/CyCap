@@ -6,7 +6,7 @@ import com.cycapservers.game.database.GameEventType;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.PlayerStats;
 
-public abstract class Character extends Entity {
+public abstract class Character extends CollidingEntity {
 	
 	/**
 	 * The game in which this character is playing
@@ -16,27 +16,29 @@ public abstract class Character extends Entity {
 	private int team;
 	private String class_name;
 	
-	protected Equipment[] inventory;
-	protected Equipment currentEquipment;
-	protected Item item_slot;
+	private Equipment[] inventory;
+	private Equipment currentEquipment;
+	private Item item_slot;
 	
-	protected int health;
-	protected int max_health;
-	protected boolean alive;
-	protected long last_time_of_death;
+	private int health;
+	private int max_health;
+	private boolean alive;
+	private long last_time_of_death;
+	/**
+	 * The number of lives remaining for this character. Decremented upon death. Once you reach 0, you can no longer respawn. -1 means you have unlimited lives.
+	 */
+	private int lives_remaining;
 	
-	protected double speed;
-	protected int visibility;
+	private double speed;
+	private int visibility;
 	
-	protected boolean is_invincible;
-	protected double speed_boost;
-	protected double damage_boost;
-	
-	
+	private boolean is_invincible;
+	private double speed_boost;
+	private double damage_boost;
 
 	public Character(String id, Drawable model, Game game, int team, String class_name, int max_health, double speed, int visibility, int inventory_size) {
-		super(id, model);
-		this.game = game;
+		super(id, model, new CircleCollider(model.getDrawPosition(), Math.max(model.getDrawWidth(), model.getDrawHeight())), 10); //TODO pick an appropriate priority for characters
+		this.setGame(game);
 		this.team = team;
 		this.class_name = class_name;
 		this.max_health = max_health;
@@ -46,32 +48,26 @@ public abstract class Character extends Entity {
 		
 		inventory = new Equipment[inventory_size];
 		
-		this.alive = true;
-		this.last_time_of_death = System.currentTimeMillis();
+		this.setAlive(true);
+		this.setLast_time_of_death(System.currentTimeMillis());
 		
 		this.is_invincible = false;
 		this.speed_boost = 1.0;
 		this.damage_boost = 1.0;
 		
-		this.item_slot = null;
-		Utils.setRole(this);
-	}
-
-	public int getTeam() {
-		return team;
-	}
-
-	public void setTeam(int team) {
-		this.team = team;
+		this.setItem_slot(null);
+		this.resetClass();
 	}
 
 	public void takeDamage(DamageDealer d) {
-		if(!this.is_invincible){
-			this.health -= d.getDamageAmount();
-		}
-		if(this.health <= 0){
-			this.die(); //idk what this is gonna do yet
-			game.addGameEvent(new GameEventsEntity(game.getId(), GameEventType.kill, d.getOwnerEntityId(), this.getEntity_id(), d.getDeathType()));
+		if(d.getOwnerTeam() != this.team || !this.getGame().isFriendly_fire()){
+			if(!this.is_invincible){
+				this.health -= d.getDamageAmount();
+			}
+			if(this.health <= 0){
+				this.die(); //idk what this is gonna do yet
+				getGame().addGameEvent(new GameEventsEntity(getGame().getId(), GameEventType.kill, d.getOwnerEntityId(), this.getEntity_id(), d.getDeathType()));
+			}
 		}
 	}
 	
@@ -79,22 +75,33 @@ public abstract class Character extends Entity {
 		this.health = Math.min(this.max_health, this.health + amount);
 	}
 	
-	protected abstract void respawn(GameState g);
+	protected abstract void respawn();
 	
 	public void die(){
-		this.alive = false;
-		this.last_time_of_death = System.currentTimeMillis();
+		this.setAlive(false);
+		if(this.lives_remaining != -1)
+			this.lives_remaining--;
+		this.setLast_time_of_death(System.currentTimeMillis());
+		if(this.getItem_slot() !=  null) {
+			this.getItem_slot().drop();
+			this.setItem_slot(null);
+		}
+		
+		this.setPosition(this.getGame().getGraveyardPosition());
 	}
 	
-	public abstract void update(GameState game, InputSnapshot s);
+	/**
+	 * resets equipment, health, etc. to match the class spawn state
+	 */
+	public abstract void resetClass();
 	
 	protected void useItem() {
-		if(this.item_slot == null){
+		if(this.getItem_slot() == null){
 			return;
 		}
 		else{
-			if(this.item_slot.use()) {
-				this.item_slot = null;
+			if(this.getItem_slot().use()) {
+				this.setItem_slot(null);
 			}
 		}
 	}
@@ -109,10 +116,10 @@ public abstract class Character extends Entity {
 		}
 		
 		if(inventory[equipmentIndex] != null){
-			Equipment old = currentEquipment;
-			if(currentEquipment.unequip()){
+			Equipment old = getCurrentEquipment();
+			if(getCurrentEquipment().unequip()){
 				if(inventory[equipmentIndex].equip()){
-					currentEquipment = inventory[equipmentIndex];
+					setCurrentEquipment(inventory[equipmentIndex]);
 					return true;
 				}
 				else{ //cannot equip new object for some reason
@@ -120,7 +127,7 @@ public abstract class Character extends Entity {
 						return false; //did not equip new object
 					}
 					else{ //cannot re-equip old object
-						currentEquipment = null;
+						setCurrentEquipment(null);
 						throw new IllegalStateException("equipment switch failed and could not switch back.");
 					}
 				}
@@ -146,6 +153,66 @@ public abstract class Character extends Entity {
 
 	public void setClass_name(String class_name) {
 		this.class_name = class_name;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+
+	public long getLast_time_of_death() {
+		return last_time_of_death;
+	}
+
+	public void setLast_time_of_death(long last_time_of_death) {
+		this.last_time_of_death = last_time_of_death;
+	}
+
+	public Equipment getCurrentEquipment() {
+		return currentEquipment;
+	}
+
+	public void setCurrentEquipment(Equipment currentEquipment) {
+		this.currentEquipment = currentEquipment;
+	}
+
+	public Item getItem_slot() {
+		return item_slot;
+	}
+
+	public void setItem_slot(Item item_slot) {
+		this.item_slot = item_slot;
+	}
+	
+	/**
+	 * Returns the speed of this character, multiplied by any current speed boosts
+	 * @return
+	 */
+	public double getSpeed(){
+		return this.speed * this.speed_boost;
+	}
+	
+	public void setSpeed(double newSpeed){
+		this.speed = newSpeed;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	public int getTeam() {
+		return team;
+	}
+
+	public void setTeam(int team) {
+		this.team = team;
 	}
 	
 }

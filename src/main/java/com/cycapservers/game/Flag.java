@@ -48,7 +48,7 @@ public class Flag extends Item {
 				this.grabber = grabber;
 				this.grabbed = true;
 				grabber.stats.addFlagGrab();
-				this.grabber.item_slot = this;
+				this.grabber.setItem_slot(this);
 				
 				game.addGameEvent(new GameEventsEntity(game.game_id, GameEventType.flag_grab, grabber.get_entity_id()));
 			}
@@ -57,7 +57,7 @@ public class Flag extends Item {
 	
 	public void returnToBase() {
 		if(this.grabber != null) {
-			this.grabber.item_slot = null;
+			this.grabber.setItem_slot(null);
 		}
 		this.grabber = null;
 		this.grabbed = false;
