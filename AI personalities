@@ -1,0 +1,55 @@
+Random Thoughts - 
+	Weapons have different ranges, and AI should use them in appropriate circumstances. Power ups are used based on different needs. Exploration and Flag capture are assisted by the speed boost. Longevity of play / defending are assisted by ammo packs. Aggressive play is assisted by med packs to heal mid fight. If you have low health, looking for an alternate route is the best idea because you will avoid fights and might see a health pack. AI should be able to see the state of flags and power ups within 50(?) block range.
+
+Recruit - 
+	speed = 140
+	max_health = 100
+	weapon1 = ASSAULT_RIFLE
+	weapon2 = REMINGTON_870
+	visibility = 6
+	
+	Personality 1 - 
+		Will move towards the room where the flag is. Will determine the entrances and exits to the flag room. They will patrol these entrances until they spot an enemy. When they do, they will move towards the flag and attack the enemy. After not seeing an enemy for 10 seconds, they will resume patrolling.
+	
+	Personality 2 - 
+		
+	
+Infantry - 
+	speed = 140
+	max_health = 105
+	weapon1 = MACHINE_GUN
+	weapon2 = SMOKE_GRENADE
+	weapon3 = M1911
+	visibility = 5
+	
+	Personality 1 - 
+		
+	
+	Personality 2 - 
+		
+
+Artillery -
+	speed = 120
+	max_health = 85
+	weapon1 = SMG
+	weapon2 = MORTAR
+	visibility = 6
+	
+	Personality 1 - 
+		
+	
+	Personality 2 - 
+		
+
+Scout - 
+	speed = 180
+	max_health = 75
+	weapon1 = SAWED_OFF_SHOTGUN
+	weapon2 = M1911
+	visibility = 7
+	
+	Personality 1 - 
+		
+	
+	Personality 2 - 
+		
