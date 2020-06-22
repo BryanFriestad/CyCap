@@ -30,6 +30,7 @@ import com.cycapservers.account.PlayerLBDataList;
 import com.cycapservers.account.Profiles;
 import com.cycapservers.account.ProfilesRepository;
 import com.cycapservers.account.RoleLevels;
+import com.cycapservers.game.Utils;
 
 
 @Controller
@@ -66,6 +67,11 @@ public class HomepageController {
 		return new Profiles();
 	}
 	
+	@ModelAttribute("debug_game")
+	public boolean addGameDebugAttr(){
+		return Utils.GAME_DEBUG;
+	}
+	
     @GetMapping("/")
     public String homepage(){
         return "main_page";
@@ -90,12 +96,12 @@ public class HomepageController {
     @GetMapping("/play")
     public String playNow(Model model, @ModelAttribute("account") Account account) {
     	if(account.getUserID() != null) {
-	    	model.addAttribute("user", account.getUserID());
+	    	model.addAttribute("username", account.getUserID());
 	    	return "play";
     	}
     	else {
 	    	Random rand = new Random();
-	    	model.addAttribute("user", "guest" + rand.nextInt(1000000));
+	    	model.addAttribute("username", "guest" + rand.nextInt(1000000));
 	    	return "play";
     	}
     }

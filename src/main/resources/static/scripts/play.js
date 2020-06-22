@@ -172,6 +172,7 @@ function GameState(role, pw, type){
 					}
 				}
 				if(!found){
+					//console.log("Adding entity " + obj[1]);
 					this.intp_entities.push(new InterpolatingEntity(obj[1], new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9])));
 				}
 			}
@@ -180,6 +181,7 @@ function GameState(role, pw, type){
 		//delete the interpolating entities that weren't updated
 		for(let i = this.intp_entities.length - 1; i >= 0; i--){
 			if(this.intp_entities[i].updated == false){
+				//console.log("Deleting entity " + this.intp_entities[i].entity_id);
 				this.intp_entities.splice(i, 1);
 			}
 		}
@@ -261,6 +263,8 @@ function GameState(role, pw, type){
 //all functions
 function setup(arr) {
 	
+	if(DEBUG) console.log("in setup");
+	
 	//initialize the game state
 	gameState = new GameState(arr[4], arr[1], arr[3]);
 
@@ -287,7 +291,16 @@ function setup(arr) {
 	guis.push(new WeaponSelectGUI());
 	guis.push(new ItemSlotGUI(gui_canvas.width - 45, gui_canvas.height - 45));
 	guis.push(new AmmoGUI(30, gui_canvas.height - 50, 20, 200, 5));
-	respawnCounter = new  RespawnCounter(gui_canvas.width/2, gui_canvas.height/2, 9900);
+	
+	let respawn_time = 10000;
+	if(arr[3] == "CTF"){
+		respawn_time = 10000;
+	}
+	else if(arr[3] == "TDM"){
+		respawn_time = 5000;
+	}
+	respawnCounter = new  RespawnCounter(gui_canvas.width/2, gui_canvas.height/2, respawn_time);
+	
 	gameScoreGUI = new GameScoreGUI(gui_canvas.width/2, 0, gameState.game_mode);
 	////////////////////////
 
@@ -455,7 +468,7 @@ function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
 	this.sprite = this.image.sprites[this.sprIdx];
 	this.x = x;
 	this.y = y;
-	this.collision_radius = distanceBetween(x, y, (x + (dWidth/2)), (y + (dHeight/2))); //TODO: update this if dWidth or dHeight ever changes!
+	this.collision_radius = distanceBetween(x, y, (x + (dWidth/2)), (y + (dHeight/2)));
 	this.dWidth = dWidth;
 	this.dHeight = dHeight;
 	this.r = r;
@@ -486,7 +499,17 @@ function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
 			context.rotate(this.r); //this is in radians
 			context.globalAlpha = this.a;
 			context.drawImage(this.image, this.sprite.x, this.sprite.y, this.sprite.w, this.sprite.h, -this.dWidth/2, -this.dHeight/2, this.dWidth, this.dHeight);
+			
+			if(DEBUG){
+				//draw border
+				context.strokeStyle = '#f00';
+				context.lineWidth = 0.2; 
+				context.strokeRect(-this.dWidth/2, -this.dHeight/2, this.dWidth, this.dHeight);
+			}
+			
+			return 1;
 		}
+		return 0;
 	}
 }
 
@@ -495,6 +518,7 @@ function InterpolatingEntity(entity_id, ent){
 	this.last_ent = null;
 	this.new_ent = ent;
 	
+	//all deltas are in units per second (not ms)
 	this.d_sprIdx = 0;
 	this.d_x = 0;
 	this.d_y = 0;
@@ -503,10 +527,21 @@ function InterpolatingEntity(entity_id, ent){
 	this.d_r = 0;
 	this.d_a = 0;
 	
+	//these are both in seconds
+	this.intp_time_total = 0; //the total time to interpolate between last_ent and new_ent
+	this.intp_time_cur = 0; //the time elapsed in the current interpolation
+	
 	this.updated = true;
 	
+	//global_delta_t is in seconds
 	this.update = function(){
 		if(this.last_ent != null){
+			this.intp_time_cur += global_delta_t;
+			if(this.intp_time_cur >= this.intp_time_total){
+				this.last_ent = this.new_ent;
+				return;
+			}
+		
 			this.last_ent.sprIdx += (this.d_sprIdx * global_delta_t);
 			if(this.last_ent.sprIdx >= this.last_ent.image.sprites.length){
 				this.last_ent.sprIdx = this.last_ent.image.sprites.length - 1;
@@ -531,25 +566,36 @@ function InterpolatingEntity(entity_id, ent){
 		}
 	}
 	
+	//time is in ms
 	this.updateNewEntity = function(ent2, time){
 		if(this.last_ent == null){
 			this.last_ent = this.new_ent;
 		}
 		this.new_ent = ent2;
 		
+		this.intp_time_total = (time / 1000);
+		this.intp_time_cur = 0; //new interpolation, so the current time reset
+		
 		this.last_ent.image = this.new_ent.image;
-		this.d_sprIdx = (this.new_ent.sprIdx - this.last_ent.sprIdx) / (time/1000);
-		this.d_x = (this.new_ent.x - this.last_ent.x) / (time/1000);
-		this.d_y = (this.new_ent.y - this.last_ent.y) / (time/1000);
-		this.delta_width = (this.new_ent.dWidth - this.last_ent.dWidth) / (time/1000);
-		this.delta_height = (this.new_ent.dHeight - this.last_ent.dHeight) / (time/1000);
-		this.d_r = (this.new_ent.r - this.last_ent.r) / (time/1000);
-		this.d_a = (this.new_ent.a - this.last_ent.a) / (time/1000);
+		this.d_sprIdx = (this.new_ent.sprIdx - this.last_ent.sprIdx) 		/ this.intp_time_total;
+		this.d_x = (this.new_ent.x - this.last_ent.x) 						/ this.intp_time_total;
+		this.d_y = (this.new_ent.y - this.last_ent.y) 						/ this.intp_time_total;
+		this.delta_width = (this.new_ent.dWidth - this.last_ent.dWidth) 	/ this.intp_time_total;
+		this.delta_height = (this.new_ent.dHeight - this.last_ent.dHeight) 	/ this.intp_time_total;
+		this.d_r = (this.new_ent.r - this.last_ent.r) 						/ this.intp_time_total;
+		this.d_a = (this.new_ent.a - this.last_ent.a) 						/ this.intp_time_total;
 	}
 	
 	this.draw = function(){
 		if(this.last_ent != null){
-			this.last_ent.draw();
+			if(this.last_ent.draw() && DEBUG){ //draw will return 1 if it draw the entity 
+				//draw entity id
+				context.font = "10px Arial";
+				context.fillText(this.entity_id, 10, -12);
+				let index = this.last_ent.image.src.lastIndexOf("/");
+				context.fillText("img = " + this.last_ent.image.src.substring(index + 1), 10, 0);
+				context.fillText("sprite index = " + this.last_ent.sprIdx, 10, 12);
+			}
 		}
 	}
 }

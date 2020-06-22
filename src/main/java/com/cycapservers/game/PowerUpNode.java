@@ -21,6 +21,7 @@ public class PowerUpNode extends GridLockedNode {
 	public void spawnPowerUp(GameState g) {
 		this.inUse = true;
 		String id = Utils.getGoodRandomString(g.usedEntityIds, g.entity_id_len);
+		
 		int powerup_type = Utils.RANDOM.nextInt(3);
 		switch(powerup_type) {
 			case 0:
@@ -40,6 +41,10 @@ public class PowerUpNode extends GridLockedNode {
 				
 			default:
 				throw new IllegalStateException("Error! No powerup of this type exists.");
+		}
+		
+		if(Utils.GAME_DEBUG){
+			System.out.println("Power up - type = " + this.getPowerUp().getClass() + " \tid = " + id);
 		}
 	}
 	

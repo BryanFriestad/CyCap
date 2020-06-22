@@ -28,14 +28,14 @@ public class TeamDeathMatch extends GameState {
 		
 		pu_handler = new PowerUpHandler((short) 20000, (short) 5000);
 		
-		MapLoader.loadPredefinedMap(map_number, this);//load up the map
+		MapLoader.loadPredefinedMap(map_number, this); //load up the map
 		
 		// generate the map when player is constructed
 		this.ai_map = Utils.generate_node_array(this);
 
 		friendlyFire = false;
-		respawnTime = 5000; //10 seconds respawn time TODO: fix this on the client side
-		time_limit = 2 * 60 * 1000; //10 minutes to ms
+		respawnTime = 5000; //5 seconds respawn time
+		time_limit = 2 * 60 * 1000; //2 minutes to ms
 		score_limit = 25; //25 kills
 	}
 
@@ -86,7 +86,7 @@ public class TeamDeathMatch extends GameState {
 		this.lastGSMessage = System.currentTimeMillis();
 		
 		//////DEV STUFF//////
-		if(Utils.DEBUG) {
+		if(Utils.GAME_DEBUG) {
 			int error = (int) (this.currentDeltaTime * 1000 - 100);
 			if(error >= GameManager.TOLERABLE_UPDATE_ERROR) {
 				System.out.println("Time error in Gamestate sending: " + error);
@@ -184,14 +184,14 @@ public class TeamDeathMatch extends GameState {
 		
 		//////ADD PLAYER MESSAGES///////
 		for(int i = 0; i < players.size(); i++) {
-			if((players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+			if( players.get(i).getTeam() == p.getTeam() || Utils.distanceBetween(p, players.get(i)) <= (p.visibility * Utils.GRID_LENGTH) || Utils.GAME_DEBUG) {
 				output += players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}
 		
 		//////ADD AI PLAYER MESSAGES///////
 		for (int i = 0; i < AI_players.size(); i++) {
-			if((AI_players.get(i).getTeam() == p.getTeam()) || (Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH))) {
+			if( AI_players.get(i).getTeam() == p.getTeam() || Utils.distanceBetween(p, AI_players.get(i)) <= (p.visibility * Utils.GRID_LENGTH) || Utils.GAME_DEBUG) {
 				output += AI_players.get(i).toDataString(p.get_entity_id()) + ":";
 			}
 		}

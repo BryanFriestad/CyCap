@@ -1,0 +1,19 @@
+<h2>Security Updates</h2>
+<p>	The application now officially supports salted and hashed passwords in the database.
+This was one of the most important things I wanted to get done before the website really started getting users.
+The methods described here are fairly standard to my knowledge and should protect against attacks in case of 
+an attacker getting a hold of the database contents. They would have to deploy a primary attack to get that in the
+first place.<br/>
+	The way it works is fairly simple. When you register an account, a random salt is generated. Then, that salt is
+appended to your plaintext password. Finally, the salted password is put through the one-way SHA-256 hashing algorithm
+and that is stored in the database. Your randomly generated salt (which has no connection to your actual password) is
+also stored in the database. From then on, everytime you log in, your salt is retrieved, appended to your password and
+then put through the hashing algorithm again. If the stored hashed password is equal to the newly calculated one, your
+submitted password must be the one you originally submitted.
+</p>
+
+<h2>Friend List>/h2>
+<p>	This update provides a working interface for 
+
+
+<h2>Database Overhaul</h2>
