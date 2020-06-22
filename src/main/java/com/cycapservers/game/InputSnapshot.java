@@ -1,12 +1,12 @@
 package com.cycapservers.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InputSnapshot {
 	
-	protected String password;
-	protected Player client;
+	private Position mouse_position;
 	
 	protected double mapX;
 	protected double mapY;
@@ -15,10 +15,10 @@ public class InputSnapshot {
 	protected boolean mouse_clicked;
 	protected boolean lmb_down;
 	
-	protected List<Integer> keys_down;
-	protected List<Integer> keys_pnr;
+	private List<Integer> keys_down;
+	private List<Integer> keys_pnr;
 	
-	protected int snapshotNum;
+	private int snapshotNum;
 	
 	protected double frameTime;
 	
@@ -27,7 +27,6 @@ public class InputSnapshot {
 	public InputSnapshot(String data) {
 		this.timeStamp = System.currentTimeMillis();
 		String[] arr = data.split(":");
-		this.password = arr[2];
 		
 		this.mapX = Double.parseDouble(arr[3]);
 		this.mapY = Double.parseDouble(arr[4]);
@@ -56,7 +55,16 @@ public class InputSnapshot {
 		this.frameTime = Double.parseDouble(arr[12]);
 	}
 	
-	public void setClient(Player p) {
-		this.client = p;
+	public List<Integer> getDown(){
+		return null; //TODO
 	}
+
+	public Position getMouse_position() {
+		return mouse_position;
+	}
+
+	public int getSnapshotNum() {
+		return snapshotNum;
+	}
+	
 }

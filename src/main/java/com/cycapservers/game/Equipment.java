@@ -30,7 +30,7 @@ public abstract class Equipment implements JSON_Stringable {
 	
 	public abstract boolean unequip();
 	
-	public abstract void update(InputSnapshot inputs);
+	public abstract void update(ClientInputHandler input_handler);
 	
 	/**
 	 * 

@@ -4,35 +4,23 @@ import org.springframework.web.socket.WebSocketSession;
 
 public class Player extends Character {
 	
-	/**
-	 * the password which the client must send for this player to be updated
-	 */
-	protected String password;
+	
 	/**
 	 * the websocket session associated with this player during the gameplay
 	 */
 	protected WebSocketSession session;
-	/**
-	 * the number of the most recent snapshot handled by the server
-	 */
-	protected int highestHandledSnapshot;
 	
-	private InputSnapshot current_input_state;
-	
+	private ClientInputHandler input_handler;
 	
 	public Player(String id, Drawable model, Game game, int team, String class_name, int max_health, double speed,
 			int visibility, int inventory_size, String password, WebSocketSession session) {
 		super(id, model, game, team, class_name, max_health, speed, visibility, inventory_size);
-		this.password = password;
+		this.input_handler = new ClientInputHandler(id, password);
 		this.session = session;
-		this.highestHandledSnapshot = 0;
 	}
 	
 	@Override
 	public boolean update() {
-		if(current_input_state.snapshotNum > this.highestHandledSnapshot) {
-			this.highestHandledSnapshot = current_input_state.snapshotNum;
-		}
 		
 		if(!this.isAlive()){
 			if((System.currentTimeMillis() - this.getLast_time_of_death()) > this.getGame().getRespawn_time() && this.getLives_remaining() > 0) {
@@ -40,23 +28,23 @@ public class Player extends Character {
 			}
 		}
 		else {
-			this.movePlayer(current_input_state); //move the player first
-			this.getCurrentEquipment().update(current_input_state); //checks to see if the current weapon is to be fired
+			this.movePlayer(input_handler); //move the player first
+			this.getCurrentEquipment().update(input_handler); //checks to see if the current weapon is to be fired
 			
 			//WEAPON AND ITEM RELATED KEYPRESSES
-			if(s.keys_pnr.contains(49)){
+			if(input_handler.isPressedAndReleased(InputAction.WEAPON_1_SELECT)){
 				this.switchEquipment(1);
 			}
-			else if(s.keys_pnr.contains(50)){
+			else if(input_handler.isPressedAndReleased(InputAction.WEAPON_2_SELECT)){
 				this.switchEquipment(2);
 			}
-			else if(s.keys_pnr.contains(51)){
+			else if(input_handler.isPressedAndReleased(InputAction.WEAPON_3_SELECT)){
 				this.switchEquipment(3);
 			}
-			else if(s.keys_pnr.contains(52)){
+			else if(input_handler.isPressedAndReleased(InputAction.WEAPON_4_SELECT)){
 				this.switchEquipment(4);
 			}
-			if(s.keys_pnr.contains(82)){
+			if(input_handler.isPressedAndReleased(InputAction.RELOAD)){
 				this.getCurrentEquipment().reload();
 			}
 			if(s.keys_pnr.contains(70)){
@@ -67,22 +55,22 @@ public class Player extends Character {
 	
 	/**
 	 * moves the player based on input snapshot and checks for collision
-	 * @param s - current input snapshot
+	 * @param input_handler - current input snapshot
 	 */
-	private void movePlayer(InputSnapshot s) {
+	private void movePlayer(ClientInputHandler input_handler) {
 		int movement_code  = 0b0000; //the binary code for which directions the player moving
 
 		//this section will probably end up on the server
-		if (s.keys_down.contains(87)) {
+		if (input_handler.keys_down.contains(87)) {
 			movement_code |= Utils.UP; //trying to move up
 		}
-		if (s.keys_down.contains(65)) {
+		if (input_handler.keys_down.contains(65)) {
 			movement_code |= Utils.LEFT; //trying to move left
 		}
-		if (s.keys_down.contains(68)) {
+		if (input_handler.keys_down.contains(68)) {
 			movement_code |= Utils.RIGHT; //trying to move right
 		}
-		if (s.keys_down.contains(83)) {
+		if (input_handler.keys_down.contains(83)) {
 			movement_code |= Utils.DOWN; //trying to move down
 		}
 
@@ -96,32 +84,32 @@ public class Player extends Character {
 		double delta_x = 0;
 		double delta_y = 0;
 		if(movement_code == 0b1010){
-			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
-			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
 		}
 		else if(movement_code == 0b1001){
-			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
-			delta_x = this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_x = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
 		}
 		else if(movement_code == 0b0110){
-			delta_y = this.getSpeed() * Utils.SIN_45 * s.frameTime;
-			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_y = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
 		}
 		else if(movement_code == 0b0101){
-			delta_y = this.getSpeed() * Utils.SIN_45 * s.frameTime;
-			delta_x = this.getSpeed() * Utils.SIN_45 * s.frameTime;
+			delta_y = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_x = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
 		}
 		else if(movement_code == 0b1000){
-			delta_y = -1 * this.getSpeed() * s.frameTime;
+			delta_y = -1 * this.getSpeed() * input_handler.frameTime;
 		}
 		else if(movement_code == 0b0100){
-			delta_y = this.getSpeed() * s.frameTime;
+			delta_y = this.getSpeed() * input_handler.frameTime;
 		}
 		else if(movement_code == 0b0010){
-			delta_x = -1 * this.getSpeed() * s.frameTime;
+			delta_x = -1 * this.getSpeed() * input_handler.frameTime;
 		}
 		else if(movement_code == 0b0001){
-			delta_x = this.getSpeed() * s.frameTime;
+			delta_x = this.getSpeed() * input_handler.frameTime;
 		}
 		
 		setX(getX() + delta_x);
