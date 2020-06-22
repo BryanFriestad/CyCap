@@ -51,4 +51,16 @@ public class RectangleCollider extends Collider {
 		return topRight;
 	}
 
+	@Override
+	public void setWidth(double w) {
+		this.bottomLeft.setX(this.getPos().getX() - w/2.0);
+		this.topRight.setX(this.getPos().getX() + w/2.0);
+	}
+
+	@Override
+	public void setHeight(double h) {
+		this.bottomLeft.setY(this.getPos().getY() - h/2.0);
+		this.topRight.setY(this.getPos().getY() + h/2.0);
+	}
+
 }

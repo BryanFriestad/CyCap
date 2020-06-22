@@ -1,10 +1,7 @@
 package com.cycapservers.game;
 
-import org.springframework.web.socket.WebSocketSession;
-
 import com.cycapservers.game.database.GameEventType;
 import com.cycapservers.game.database.GameEventsEntity;
-import com.cycapservers.game.database.PlayerStats;
 
 public abstract class Character extends CollidingEntity {
 	
@@ -37,7 +34,7 @@ public abstract class Character extends CollidingEntity {
 	private double damage_boost;
 
 	public Character(String id, Drawable model, Game game, int team, String class_name, int max_health, double speed, int visibility, int inventory_size) {
-		super(id, model, new CircleCollider(model.getDrawPosition(), Math.max(model.getDrawWidth(), model.getDrawHeight())), 10); //TODO pick an appropriate priority for characters
+		super(id, model, new CircleCollider(model.getDrawPosition(), Math.max(model.getDrawWidth(), model.getDrawHeight()/2.0)), 10); //TODO pick an appropriate priority for characters
 		this.setGame(game);
 		this.team = team;
 		this.class_name = class_name;
@@ -58,7 +55,19 @@ public abstract class Character extends CollidingEntity {
 		this.setItem_slot(null);
 		this.resetClass();
 	}
+	
+	////ABSTRACT METHODS////
+	public abstract void respawn();
+	
+	/**
+	 * resets equipment, health, etc. to match the class spawn state
+	 */
+	public abstract void resetClass();
 
+	@Override
+	public abstract String toJSONString();
+	
+	////IMPLEMENTED METHODS////
 	public void takeDamage(DamageDealer d) {
 		if(d.getOwnerTeam() != this.team || !this.getGame().isFriendly_fire()){
 			if(!this.is_invincible){
@@ -75,12 +84,10 @@ public abstract class Character extends CollidingEntity {
 		this.health = Math.min(this.max_health, this.health + amount);
 	}
 	
-	protected abstract void respawn();
-	
 	public void die(){
 		this.setAlive(false);
-		if(this.lives_remaining != -1)
-			this.lives_remaining--;
+		if(this.getLives_remaining() != -1)
+			this.setLives_remaining(this.getLives_remaining() - 1);
 		this.setLast_time_of_death(System.currentTimeMillis());
 		if(this.getItem_slot() !=  null) {
 			this.getItem_slot().drop();
@@ -89,11 +96,6 @@ public abstract class Character extends CollidingEntity {
 		
 		this.setPosition(this.getGame().getGraveyardPosition());
 	}
-	
-	/**
-	 * resets equipment, health, etc. to match the class spawn state
-	 */
-	public abstract void resetClass();
 	
 	protected void useItem() {
 		if(this.getItem_slot() == null){
@@ -142,11 +144,38 @@ public abstract class Character extends CollidingEntity {
 	}
 	
 	@Override
-	public String toJSONString(){
-		//TODO
-		return null;
+	public void onCollision(Collidable other) {
+		if(other instanceof Item){
+			if(this.getItem_slot() == null){
+				Item i = (Item) other;
+				i.pickUp(this);
+			}
+		}
+		else if(other instanceof Wall){
+			double delta_x = getX() - getPreviousPosition().getX();
+			double delta_y = getY() - getPreviousPosition().getY();
+			
+			setPosition(getPreviousPosition());
+			int max_depth = 4;
+			for(int i = 1; i <= max_depth; i++){ //get as close to the wall as we can by successive approximation
+				if(!isColliding(other)){
+					setX(getX() + (delta_x / Math.pow(2, i)));
+					setY(getY() + (delta_y / Math.pow(2, i)));
+				}
+				else{
+					setX(getX() - (delta_x / Math.pow(2, i)));
+					setY(getY() - (delta_y / Math.pow(2, i)));
+				}
+			}
+			
+		}
+		else if(other instanceof Character){
+			return;
+		}
+		
 	}
-
+	
+	////GETTERS AND SETTERS////
 	public String getClass_name() {
 		return class_name;
 	}
@@ -175,7 +204,7 @@ public abstract class Character extends CollidingEntity {
 		return currentEquipment;
 	}
 
-	public void setCurrentEquipment(Equipment currentEquipment) {
+	private void setCurrentEquipment(Equipment currentEquipment) {
 		this.currentEquipment = currentEquipment;
 	}
 
@@ -213,6 +242,14 @@ public abstract class Character extends CollidingEntity {
 
 	public void setTeam(int team) {
 		this.team = team;
+	}
+
+	public int getLives_remaining() {
+		return lives_remaining;
+	}
+
+	public void setLives_remaining(int lives_remaining) {
+		this.lives_remaining = lives_remaining;
 	}
 	
 }

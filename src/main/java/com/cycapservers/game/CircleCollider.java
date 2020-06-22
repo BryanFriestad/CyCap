@@ -39,4 +39,14 @@ public class CircleCollider extends Collider {
 		return this.radius;
 	}
 
+	@Override
+	public void setWidth(double w) {
+		radius = Math.max(radius, w/2.0);
+	}
+
+	@Override
+	public void setHeight(double h) {
+		radius = Math.max(radius, h/2.0);
+	}
+
 }

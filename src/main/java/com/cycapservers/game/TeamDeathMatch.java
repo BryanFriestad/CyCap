@@ -11,7 +11,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.game.database.GamePlayersEntity;
 
-public class TeamDeathMatch extends GameState {
+public class TeamDeathMatch extends Game {
 	
 	//////PLAYERS//////
 	protected volatile int playersOnTeam1;

@@ -13,7 +13,7 @@ import com.cycapservers.game.database.GameEventType;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GamePlayersEntity;
 
-public class CaptureTheFlag extends GameState {
+public class CaptureTheFlag extends Game {
 	
 	//////PLAYERS//////
 	protected volatile int playersOnTeam1;
@@ -351,5 +351,47 @@ public class CaptureTheFlag extends GameState {
 		}
 		this.start_time = System.currentTimeMillis();
 		this.started = true;
+	}
+
+	@Override
+	public boolean addCharacter(Character c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeCharacter(Character c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean startGame() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void receiveInputSnapshot(InputSnapshot s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendGameState() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public SpawnNode getValidSpawnNode(int team) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

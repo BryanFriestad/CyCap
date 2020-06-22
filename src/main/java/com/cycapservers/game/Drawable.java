@@ -20,6 +20,8 @@ public class Drawable implements JSON_Stringable {
 	private double rotation; //in radians
 	private double alpha;
 	
+	
+	
 	public Drawable(Image image, int spriteIndex, Position drawPosition, double drawHeight, double drawWidth, double rot, double a) {
 		if(spriteIndex < 0 || spriteIndex >= image.getSpritesLength()){
 			throw new IllegalArgumentException("spriteIndex(" + spriteIndex + ") is invalid");

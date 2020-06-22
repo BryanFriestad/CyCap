@@ -29,6 +29,9 @@ public abstract class Game {
 	private int max_character_lives;
 	private long respawn_time;
 
+	/**
+	 * A list of events that have happened in the game to save to the database
+	 */
 	private List<GameEventsEntity> game_events;
 	
 	public Game(int id, boolean friendly_fire){

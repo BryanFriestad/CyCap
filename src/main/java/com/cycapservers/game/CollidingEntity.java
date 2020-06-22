@@ -15,9 +15,39 @@ public class CollidingEntity extends Entity implements Collidable {
 	
 	@Override
 	public boolean update(){
-		previousPosition = this.getModel().getDrawPosition();
+		setPreviousPosition(this.getModel().getDrawPosition());
 		
 		return true;
+	}
+	
+	@Override
+	public void setX(double x){
+		super.setX(x);
+		this.collider.setX(x);
+	}
+	
+	@Override
+	public void setY(double y){
+		super.setY(y);
+		this.collider.setY(y);
+	}
+	
+	@Override
+	public void setPosition(Position p){
+		super.setPosition(p);
+		this.collider.setPos(p);
+	}
+	
+	@Override
+	public void setWidth(double w){
+		super.setWidth(w);
+		this.collider.setWidth(w);
+	}
+	
+	@Override
+	public void setHeight(double h){
+		super.setHeight(h);
+		this.collider.setHeight(h);
 	}
 
 	@Override
@@ -32,7 +62,7 @@ public class CollidingEntity extends Entity implements Collidable {
 
 	@Override
 	public void onCollision(Collidable other) {
-		this.getModel().setDrawPosition(this.previousPosition);
+		this.getModel().setDrawPosition(this.getPreviousPosition());
 	}
 
 	@Override
@@ -43,6 +73,14 @@ public class CollidingEntity extends Entity implements Collidable {
 	@Override
 	public Collider getCollider() {
 		return this.collider;
+	}
+
+	public Position getPreviousPosition() {
+		return previousPosition;
+	}
+
+	public void setPreviousPosition(Position previousPosition) {
+		this.previousPosition = previousPosition;
 	}
 
 }

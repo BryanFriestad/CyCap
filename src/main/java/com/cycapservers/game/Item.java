@@ -2,21 +2,33 @@ package com.cycapservers.game;
 
 public abstract class Item extends CollidingEntity {
 	
-	protected String name;
-	protected Character grabber = null;
-	protected boolean grabbed = false;
+	private Game game;
 	
-	public Item(int id, int sprIdx, double x, double y, double w, double h, double r, double a, String name, String entity_id) {
-		super(id, sprIdx, x, y, w, h, r, a, entity_id);
+	private String name;
+	protected Character grabber;
+	protected boolean grabbed;
+	
+	public Item(String id, Drawable model, Collider c, int collision_priority, Game g, String name) {
+		super(id, model, c, collision_priority);
+		this.game = g;
 		this.name = name;
+		this.grabber = null;
+		this.grabbed = false;
 	}
-	
-	public void pickUp(GameState game, Character grabber) {
+
+	/**
+	 * 
+	 * @param grabber the character that is trying to pick up this item
+	 * @return
+	 */
+	public boolean pickUp(Character grabber) {
 		if(!this.grabbed) {
 			this.grabber = grabber;
 			this.grabbed = true;
 			this.grabber.setItem_slot(this);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -26,14 +38,27 @@ public abstract class Item extends CollidingEntity {
 	public abstract boolean use();
 	
 	public void drop() {
-		this.x = this.grabber.x;
-		this.y = this.grabber.y;
+		this.setPosition(this.grabber.getPosition());
 		this.grabber = null;
 		this.grabbed = false;
 	}
 	
 	@Override
 	public String toJSONString(){
-		return null; //TODO
+		return null; //TODO: must hold class, entity_id, drawable, grabbed
 	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public Character getGrabber() {
+		return grabber;
+	}
+
+	public boolean isGrabbed() {
+		return grabbed;
+	}
+	
+	
 }

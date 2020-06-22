@@ -183,93 +183,93 @@ public final class Utils{
 		return getRandomInt(upper - lower + 1) + lower;
 	}
 	
-	/**
-	 * generates and adds a breakable wall line to the passed gameState
-	 * @param g
-	 * @param startX
-	 * @param startY
-	 * @param length
-	 * @param axis
-	 */
-	public static void generateWallLine(GameState g, int startX, int startY, int length, char axis) {
-		if(axis == 'x'){
-			for(int i = 0; i < length; i++){
-				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-				g.walls.add(new Wall(0, startX + i, startY, false, s));
-				g.usedEntityIds.add(s);
-			}
-		}
-		else if(axis == 'y'){
-			for(int i = 0; i < length; i++){
-				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-				g.walls.add(new Wall(0, startX, startY + i, false, s));
-				g.usedEntityIds.add(s);
-			}
-		}
-		else{
-			throw new IllegalArgumentException("Error in the function generateWallLine");
-		}
-	}
-	
-	/**
-	 * generates and adds a wall line to the passed gameState. you decide if the walls are breakable or not
-	 * @param g
-	 * @param startX
-	 * @param startY
-	 * @param length
-	 * @param axis
-	 * @param invincible
-	 */
-	public static void generateWallLine(GameState g, int startX, int startY, int length, char axis, boolean invincible) {
-		if(axis == 'x'){
-			for(int i = 0; i < length; i++){
-				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-				g.walls.add(new Wall(0, startX + i, startY, invincible, s));
-				g.usedEntityIds.add(s);
-			}
-		}
-		else if(axis == 'y'){
-			for(int i = 0; i < length; i++){
-				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-				g.walls.add(new Wall(0, startX, startY + i, invincible, s));
-				g.usedEntityIds.add(s);
-			}
-		}
-		else{
-			throw new IllegalArgumentException("Error in the function generateWallLine");
-		}
-	}
-	
-	/**
-	 * places a breakable wall border into the specified gameState, with the given height and width
-	 * @param g
-	 * @param width
-	 * @param height
-	 * @param startX
-	 * @param startY
-	 */
-	public static void placeBorder(GameState g, int width, int height, int startX, int startY){
-		generateWallLine(g, startX, startY, width, 'x');
-		generateWallLine(g, startX, height + startY - 1, width, 'x');
-		generateWallLine(g, startX, startY + 1, height - 2, 'y');
-		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y');
-	}
-	
-	/**
-	 * places a wall border into the specified gameState, with the given height and width. You decide if it is breakable
-	 * @param g
-	 * @param width
-	 * @param height
-	 * @param startX
-	 * @param startY
-	 * @param invincible
-	 */
-	public static void placeBorder(GameState g, int width, int height, int startX, int startY, boolean invincible){
-		generateWallLine(g, startX, startY, width, 'x', invincible);
-		generateWallLine(g, startX, height + startY - 1, width, 'x', invincible);
-		generateWallLine(g, startX, startY + 1, height - 2, 'y', invincible);
-		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y', invincible);
-	}
+//	/**
+//	 * generates and adds a breakable wall line to the passed gameState
+//	 * @param g
+//	 * @param startX
+//	 * @param startY
+//	 * @param length
+//	 * @param axis
+//	 */
+//	public static void generateWallLine(GameState g, int startX, int startY, int length, char axis) {
+//		if(axis == 'x'){
+//			for(int i = 0; i < length; i++){
+//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
+//				g.walls.add(new Wall(0, startX + i, startY, false, s));
+//				g.usedEntityIds.add(s);
+//			}
+//		}
+//		else if(axis == 'y'){
+//			for(int i = 0; i < length; i++){
+//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
+//				g.walls.add(new Wall(0, startX, startY + i, false, s));
+//				g.usedEntityIds.add(s);
+//			}
+//		}
+//		else{
+//			throw new IllegalArgumentException("Error in the function generateWallLine");
+//		}
+//	}
+//	
+//	/**
+//	 * generates and adds a wall line to the passed gameState. you decide if the walls are breakable or not
+//	 * @param g
+//	 * @param startX
+//	 * @param startY
+//	 * @param length
+//	 * @param axis
+//	 * @param invincible
+//	 */
+//	public static void generateWallLine(GameState g, int startX, int startY, int length, char axis, boolean invincible) {
+//		if(axis == 'x'){
+//			for(int i = 0; i < length; i++){
+//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
+//				g.walls.add(new Wall(0, startX + i, startY, invincible, s));
+//				g.usedEntityIds.add(s);
+//			}
+//		}
+//		else if(axis == 'y'){
+//			for(int i = 0; i < length; i++){
+//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
+//				g.walls.add(new Wall(0, startX, startY + i, invincible, s));
+//				g.usedEntityIds.add(s);
+//			}
+//		}
+//		else{
+//			throw new IllegalArgumentException("Error in the function generateWallLine");
+//		}
+//	}
+//	
+//	/**
+//	 * places a breakable wall border into the specified gameState, with the given height and width
+//	 * @param g
+//	 * @param width
+//	 * @param height
+//	 * @param startX
+//	 * @param startY
+//	 */
+//	public static void placeBorder(GameState g, int width, int height, int startX, int startY){
+//		generateWallLine(g, startX, startY, width, 'x');
+//		generateWallLine(g, startX, height + startY - 1, width, 'x');
+//		generateWallLine(g, startX, startY + 1, height - 2, 'y');
+//		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y');
+//	}
+//	
+//	/**
+//	 * places a wall border into the specified gameState, with the given height and width. You decide if it is breakable
+//	 * @param g
+//	 * @param width
+//	 * @param height
+//	 * @param startX
+//	 * @param startY
+//	 * @param invincible
+//	 */
+//	public static void placeBorder(GameState g, int width, int height, int startX, int startY, boolean invincible){
+//		generateWallLine(g, startX, startY, width, 'x', invincible);
+//		generateWallLine(g, startX, height + startY - 1, width, 'x', invincible);
+//		generateWallLine(g, startX, startY + 1, height - 2, 'y', invincible);
+//		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y', invincible);
+//	}
 	
 //	/**
 //	 * Sets the role data of the player based off of their "role" field

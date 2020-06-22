@@ -8,9 +8,12 @@ public class Entity implements JSON_Stringable{
 	private String entity_id;
 	private Drawable model;
 	
+	private long last_update_time;
+	
 	public Entity(String id, Drawable model){
 		entity_id = id;
 		this.model = model;
+		this.last_update_time = System.currentTimeMillis();
 	}
 	
 	/**
@@ -18,6 +21,8 @@ public class Entity implements JSON_Stringable{
 	 * @return returns whether or not the entity should be kept(true) or deleted(false)
 	 */
 	public boolean update(){
+		
+		last_update_time = System.currentTimeMillis();
 		return true;
 	}
 
@@ -54,6 +59,10 @@ public class Entity implements JSON_Stringable{
 		this.getModel().getDrawPosition().setY(y);
 	}
 	
+	public Position getPosition(){
+		return this.getModel().getDrawPosition();
+	}
+	
 	public void setPosition(Position p){
 		this.getModel().getDrawPosition().setX(p.getX());
 		this.getModel().getDrawPosition().setY(p.getY());
@@ -65,6 +74,18 @@ public class Entity implements JSON_Stringable{
 
 	public void setEntity_id(String entity_id) {
 		this.entity_id = entity_id;
+	}
+
+	public void setWidth(double w) {
+		this.model.setDrawWidth(w);
+	}
+	
+	public void setHeight(double h) {
+		this.model.setDrawHeight(h);
+	}
+
+	public long getLast_update_time() {
+		return last_update_time;
 	}
 	
 }

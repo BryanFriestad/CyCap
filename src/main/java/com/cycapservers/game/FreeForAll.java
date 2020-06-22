@@ -9,7 +9,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.game.database.GamePlayersEntity;
 
-public class FreeForAll extends GameState {
+public class FreeForAll extends Game {
 	
 	//////PLAYERS//////
 	protected volatile boolean playerOnTeam1;

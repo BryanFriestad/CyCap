@@ -30,7 +30,7 @@ public abstract class Equipment implements JSON_Stringable {
 	
 	public abstract boolean unequip();
 	
-	public abstract void update(Object inputs); //TODO choose a different object type to pass in inputs
+	public abstract void update(InputSnapshot inputs);
 	
 	/**
 	 * 

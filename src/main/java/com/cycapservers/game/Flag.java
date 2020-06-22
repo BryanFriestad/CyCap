@@ -6,64 +6,70 @@ import com.cycapservers.game.database.GameEventsEntity;
 public class Flag extends Item {
 	
 	protected int team;
-	protected boolean atBase;
-	protected GridLockedNode base;
+	protected GridLockedPosition base;
 	
-	public Flag(GridLockedNode node, double w, double h, double r, double a, String entity_id, int team) {
-		super(4, 0, node.getX(), node.getY(), w, h, r, a, "Flag", entity_id);
+	//internal use
+	private boolean at_base;
+	
+	
+	
+	public Flag(String id, Drawable model, Collider c, int collision_priority, CaptureTheFlag g, String name, int team,
+			GridLockedPosition base) {
+		super(id, model, c, collision_priority, g, name);
 		this.team = team;
-		this.base = node;
-		this.atBase = true;
-		this.spriteIndex = Utils.getSpriteIndexFromTeam(this.team);
+		this.base = base;
 	}
-	
-	public void update() {
-		if(this.grabbed) {
-			this.x = this.grabber.x;
-			this.y = this.grabber.y;
+
+	public boolean update() {
+		if(isGrabbed()) {
+			setPosition(getGrabber().getPosition());
 		}
+		
+		return true;
 	}
 
 	@Override
 	public boolean use() {
-		// TODO Auto-generated method stub
-		return false;
+		if(grabber == null){
+			throw new IllegalStateException("Item was used but grabber is null");
+		}
+		return false; //cannot use the flag
 	}
 	
 	@Override
-	public void pickUp(GameState game, Character grabber){
-		if(!this.grabbed) {
+	public boolean pickUp(Character grabber){
+		if(!this.isGrabbed()) {
 			if(grabber.getTeam() == this.team) {
-				if(this.atBase) {
-					return;
+				if(this.at_base) {
+					return false;
 				}
 				else {
-					game.addGameEvent(new GameEventsEntity(game.game_id, GameEventType.flag_return, grabber.get_entity_id()));
+					getGame().addGameEvent(new GameEventsEntity(getGame().getId(), GameEventType.flag_return, grabber.getEntity_id()));
 					returnToBase();
-					grabber.stats.addFlagReturn();
+					return false;
 				}
 			}
 			else {
-				this.atBase = false;
+				this.at_base = false;
 				this.grabber = grabber;
 				this.grabbed = true;
-				grabber.stats.addFlagGrab();
 				this.grabber.setItem_slot(this);
 				
-				game.addGameEvent(new GameEventsEntity(game.game_id, GameEventType.flag_grab, grabber.get_entity_id()));
+				getGame().addGameEvent(new GameEventsEntity(getGame().getId(), GameEventType.flag_grab, grabber.getEntity_id()));
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public void returnToBase() {
-		if(this.grabber != null) {
-			this.grabber.setItem_slot(null);
+		if(grabber != null) {
+			grabber.setItem_slot(null);
 		}
-		this.grabber = null;
-		this.grabbed = false;
-		this.x = this.base.getX();
-		this.y = this.base.getY();
-		this.atBase = true;
+		grabber = null;
+		grabbed = false;
+		setPosition(base);
+		at_base = true;
 	}
 
 }

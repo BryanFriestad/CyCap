@@ -10,6 +10,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.BeanUtil;
+import com.cycapservers.JSON_Stringable;
 import com.cycapservers.account.ProfileDataUpdate;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GameEventsRepository;
@@ -18,7 +19,7 @@ import com.cycapservers.game.database.GamePlayersRepository;
 import com.cycapservers.game.database.GamesEntity;
 import com.cycapservers.game.database.GamesRepository;
 
-public abstract class GameState extends TimerTask
+public class GameState implements JSON_Stringable
 {
 	//////NITTY GRITTY STUFF//////
 	/**
@@ -243,5 +244,11 @@ public abstract class GameState extends TimerTask
 				setUpGame();
 			}
 		}
+	}
+
+	@Override
+	public String toJSONString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
