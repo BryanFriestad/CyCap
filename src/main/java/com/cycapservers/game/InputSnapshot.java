@@ -7,29 +7,31 @@ import java.util.List;
 public class InputSnapshot {
 	
 	private Position mouse_position;
-	
-	protected double mapX;
-	protected double mapY;
-	protected double canvasX;
-	protected double canvasY;
-	protected boolean mouse_clicked;
-	protected boolean lmb_down;
-	
 	private List<Integer> keys_down;
-	private List<Integer> keys_pnr;
-	
 	private int snapshotNum;
 	
-	protected double frameTime;
+	//unused
+	private double frameTime;
+	private long timeStamp;
+	private double canvasX;
+	private double canvasY;
+	private boolean mouse_clicked;
+	private boolean lmb_down;
+	private List<Integer> keys_pnr;
+	protected double mapX;
+	protected double mapY;
 	
-	protected long timeStamp; //TODO: for bullets in the future
-	
+	/**
+	 * 
+	 * @param data Takes in a string representing the input sent from the client
+	 */
 	public InputSnapshot(String data) {
 		this.timeStamp = System.currentTimeMillis();
 		String[] arr = data.split(":");
 		
 		this.mapX = Double.parseDouble(arr[3]);
 		this.mapY = Double.parseDouble(arr[4]);
+		this.mouse_position = new Position(mapX, mapY);
 		this.canvasX = Double.parseDouble(arr[5]);
 		this.canvasY = Double.parseDouble(arr[6]);
 		this.mouse_clicked = Boolean.parseBoolean(arr[7]);
@@ -41,6 +43,9 @@ public class InputSnapshot {
 			for(int i = 0; i < temp.length; i++) {
 				this.keys_down.add(Integer.parseInt(temp[i]));
 			}
+		}
+		if(lmb_down) {
+			this.keys_down.add(1); //JS keycode 1 is seemingly unused
 		}
 		
 		this.keys_pnr = new ArrayList<Integer>();
@@ -56,7 +61,7 @@ public class InputSnapshot {
 	}
 	
 	public List<Integer> getDown(){
-		return null; //TODO
+		return this.keys_down;
 	}
 
 	public Position getMouse_position() {
