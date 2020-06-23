@@ -35,7 +35,7 @@ public class CaptureTheFlag extends Game {
 		this.team_scores.put(1, 0); //for TDM and CTF only
 		this.team_scores.put(2, 0);
 		
-		pu_handler = new PowerUpHandler((short) 30000, (short) 2500);
+		pu_handler = new PowerUpSpawner((short) 30000, (short) 2500);
 		
 		MapLoader.loadPredefinedMap(map_number, this);//load up the map
 		
@@ -273,7 +273,7 @@ public class CaptureTheFlag extends Game {
 			throw new IllegalStateException("Error in player join. Illegal team for CTF.");
 		}
 		String pass = Utils.getGoodRandomString(this.userPasswords, 6);
-		SpawnNode n = Utils.getRandomSpawn(this.spawns, team);
+		Spawn n = Utils.getRandomSpawn(this.spawns, team);
 		Player p = new Player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, client_id, pass, session);
 		this.players.add(p);
 		p.stats.setGameType(this.getClass());
@@ -309,7 +309,7 @@ public class CaptureTheFlag extends Game {
 		// make AI player and send map reference
 		// mapNode randomNode = getRandomNode();
 		String bot_id = "bot" + Integer.toString(AI_players.size());
-		SpawnNode n = Utils.getRandomSpawn(this.spawns, team);
+		Spawn n = Utils.getRandomSpawn(this.spawns, team);
 		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, bot_id));
 		this.usedEntityIds.add(bot_id);
 		AI_players.get(AI_players.size() - 1).get_path(this);
@@ -390,7 +390,7 @@ public class CaptureTheFlag extends Game {
 	}
 
 	@Override
-	public SpawnNode getValidSpawnNode(int team) {
+	public Spawn getValidSpawnNode(int team) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -15,8 +15,8 @@ public class CollidingEntity extends Entity implements Collidable {
 	
 	@Override
 	public boolean update(){
+		if(!super.update()) return false;
 		setPreviousPosition(this.getModel().getDrawPosition());
-		
 		return true;
 	}
 	

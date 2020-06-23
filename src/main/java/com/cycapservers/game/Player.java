@@ -4,7 +4,6 @@ import org.springframework.web.socket.WebSocketSession;
 
 public class Player extends Character {
 	
-	
 	/**
 	 * the websocket session associated with this player during the gameplay
 	 */
@@ -21,6 +20,7 @@ public class Player extends Character {
 	
 	@Override
 	public boolean update() {
+		if(!super.update()) return false;
 		
 		if(!this.isAlive()){
 			if((System.currentTimeMillis() - this.getLast_time_of_death()) > this.getGame().getRespawn_time() && this.getLives_remaining() > 0) {
@@ -44,13 +44,12 @@ public class Player extends Character {
 			else if(input_handler.isPressedAndReleased(InputAction.WEAPON_4_SELECT)){
 				this.switchEquipment(4);
 			}
-			if(input_handler.isPressedAndReleased(InputAction.RELOAD)){
-				this.getCurrentEquipment().reload();
-			}
-			if(s.keys_pnr.contains(70)){
+			if(input_handler.isPressedAndReleased(InputAction.USE_ITEM)){
 				this.useItem();
 			}
 		}
+		
+		return true;
 	}
 	
 	/**
@@ -61,16 +60,16 @@ public class Player extends Character {
 		int movement_code  = 0b0000; //the binary code for which directions the player moving
 
 		//this section will probably end up on the server
-		if (input_handler.keys_down.contains(87)) {
+		if (input_handler.isPressedAndReleased(InputAction.MOVE_UP)) {
 			movement_code |= Utils.UP; //trying to move up
 		}
-		if (input_handler.keys_down.contains(65)) {
+		if (input_handler.isPressedAndReleased(InputAction.MOVE_LEFT)) {
 			movement_code |= Utils.LEFT; //trying to move left
 		}
-		if (input_handler.keys_down.contains(68)) {
+		if (input_handler.isPressedAndReleased(InputAction.MOVE_RIGHT)) {
 			movement_code |= Utils.RIGHT; //trying to move right
 		}
-		if (input_handler.keys_down.contains(83)) {
+		if (input_handler.isPressedAndReleased(InputAction.MOVE_DOWN)) {
 			movement_code |= Utils.DOWN; //trying to move down
 		}
 
@@ -84,32 +83,32 @@ public class Player extends Character {
 		double delta_x = 0;
 		double delta_y = 0;
 		if(movement_code == 0b1010){
-			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
-			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * delta_update_time;
+			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * delta_update_time;
 		}
 		else if(movement_code == 0b1001){
-			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
-			delta_x = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_y = -1 * this.getSpeed() * Utils.SIN_45 * delta_update_time;
+			delta_x = this.getSpeed() * Utils.SIN_45 * delta_update_time;
 		}
 		else if(movement_code == 0b0110){
-			delta_y = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
-			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_y = this.getSpeed() * Utils.SIN_45 * delta_update_time;
+			delta_x = -1 * this.getSpeed() * Utils.SIN_45 * delta_update_time;
 		}
 		else if(movement_code == 0b0101){
-			delta_y = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
-			delta_x = this.getSpeed() * Utils.SIN_45 * input_handler.frameTime;
+			delta_y = this.getSpeed() * Utils.SIN_45 * delta_update_time;
+			delta_x = this.getSpeed() * Utils.SIN_45 * delta_update_time;
 		}
 		else if(movement_code == 0b1000){
-			delta_y = -1 * this.getSpeed() * input_handler.frameTime;
+			delta_y = -1 * this.getSpeed() * delta_update_time;
 		}
 		else if(movement_code == 0b0100){
-			delta_y = this.getSpeed() * input_handler.frameTime;
+			delta_y = this.getSpeed() * delta_update_time;
 		}
 		else if(movement_code == 0b0010){
-			delta_x = -1 * this.getSpeed() * input_handler.frameTime;
+			delta_x = -1 * this.getSpeed() * delta_update_time;
 		}
 		else if(movement_code == 0b0001){
-			delta_x = this.getSpeed() * input_handler.frameTime;
+			delta_x = this.getSpeed() * delta_update_time;
 		}
 		
 		setX(getX() + delta_x);
@@ -147,17 +146,13 @@ public class Player extends Character {
 //		}
 		return null; //TODO
 	}
-	
-	public String getPassword() {
-		return password;
-	}
 
 	@Override
 	/**
 	 * respawns the player into a proper respawn node, resets their weapons and health
 	 */ 
 	public void respawn() {
-		SpawnNode n = this.getGame().getValidSpawnNode(this.getTeam());
+		Spawn n = this.getGame().getValidSpawnNode(this.getTeam());
 		this.setX(n.getX());
 		this.setY(n.getY());
 		
@@ -172,13 +167,19 @@ public class Player extends Character {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public InputSnapshot getCurrent_input_state() {
-		return current_input_state;
-	}
-
-	public void setCurrent_input_state(InputSnapshot current_input_state) {
-		this.current_input_state = current_input_state;
+	
+	/**
+	 * This function will check if the snapshot's passcode is valid and then add
+	 * the snapshot to the ClientInputHandler.
+	 * @param i The input snapshot to add to this player
+	 * @return Whether or not the addition of this new snapshot was successful
+	 */
+	public boolean addNewInputSnapshot(InputSnapshot i){
+		if(!i.getPassword().equals(input_handler.getInput_passcode())){
+			return false;
+		}
+		input_handler.addNewInputSnapshot(i);
+		return true;
 	}
 	
 }

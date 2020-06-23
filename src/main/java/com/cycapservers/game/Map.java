@@ -6,6 +6,7 @@ public class Map implements JSON_Stringable {
 	
 	private Wall[] walls;
 	private Position graveyardPosition;
+	private Spawn[] spawns;
 
 	@Override
 	public String toJSONString() {

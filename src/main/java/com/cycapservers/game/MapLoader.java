@@ -75,12 +75,12 @@ public final class MapLoader {
 	
 	private static void loadMap0_CTFElements(CaptureTheFlag g) {
 		//make a list of nodes
-		List<PowerUpNode> pu_nodes = new ArrayList<PowerUpNode>();
-		pu_nodes.add(new PowerUpNode((short) 7, (short) 8));
-		pu_nodes.add(new PowerUpNode((short) 13, (short) 20));
-		pu_nodes.add(new PowerUpNode((short) 27, (short) 25));
-		pu_nodes.add(new PowerUpNode((short) 33, (short) 6));
-		pu_nodes.add(new PowerUpNode((short) 37, (short) 27));
+		List<PowerUpSpawn> pu_nodes = new ArrayList<PowerUpSpawn>();
+		pu_nodes.add(new PowerUpSpawn((short) 7, (short) 8));
+		pu_nodes.add(new PowerUpSpawn((short) 13, (short) 20));
+		pu_nodes.add(new PowerUpSpawn((short) 27, (short) 25));
+		pu_nodes.add(new PowerUpSpawn((short) 33, (short) 6));
+		pu_nodes.add(new PowerUpSpawn((short) 37, (short) 27));
 		g.pu_handler.setNodeList(pu_nodes);
 		
 		g.team1_base = new GridLockedNode((short) 4, (short) 25);
@@ -93,54 +93,54 @@ public final class MapLoader {
 		g.usedEntityIds.add(id);
 		
 		//TODO sometimes, for some reason, spawning in a corner keeps the player from moving, idk
-		g.spawns.add(new SpawnNode((short) 2, (short) 16, 1));
-		g.spawns.add(new SpawnNode((short) 6, (short) 20, 1));
-		g.spawns.add(new SpawnNode((short) 6, (short) 28, 1));
-		g.spawns.add(new SpawnNode((short) 38, (short) 1, 2));
-		g.spawns.add(new SpawnNode((short) 35, (short) 4, 2));
-		g.spawns.add(new SpawnNode((short) 39, (short) 10, 2));
+		g.spawns.add(new Spawn((short) 2, (short) 16, 1));
+		g.spawns.add(new Spawn((short) 6, (short) 20, 1));
+		g.spawns.add(new Spawn((short) 6, (short) 28, 1));
+		g.spawns.add(new Spawn((short) 38, (short) 1, 2));
+		g.spawns.add(new Spawn((short) 35, (short) 4, 2));
+		g.spawns.add(new Spawn((short) 39, (short) 10, 2));
 	}
 	
 	private static void loadMap0_FFAElements(FreeForAll g) {
 		//make a list of nodes
-		List<PowerUpNode> pu_nodes = new ArrayList<PowerUpNode>();
-		pu_nodes.add(new PowerUpNode((short) 7, (short) 8));
-		pu_nodes.add(new PowerUpNode((short) 13, (short) 20));
-		pu_nodes.add(new PowerUpNode((short) 27, (short) 25));
-		pu_nodes.add(new PowerUpNode((short) 33, (short) 6));
-		pu_nodes.add(new PowerUpNode((short) 37, (short) 27));
+		List<PowerUpSpawn> pu_nodes = new ArrayList<PowerUpSpawn>();
+		pu_nodes.add(new PowerUpSpawn((short) 7, (short) 8));
+		pu_nodes.add(new PowerUpSpawn((short) 13, (short) 20));
+		pu_nodes.add(new PowerUpSpawn((short) 27, (short) 25));
+		pu_nodes.add(new PowerUpSpawn((short) 33, (short) 6));
+		pu_nodes.add(new PowerUpSpawn((short) 37, (short) 27));
 		g.pu_handler.setNodeList(pu_nodes);
 		
 		//TODO sometimes, for some reason, spawning in a corner keeps the player from moving, idk
-		g.spawns.add(new SpawnNode((short) 2, (short) 16, 1));
-		g.spawns.add(new SpawnNode((short) 6, (short) 20, 2));
-		g.spawns.add(new SpawnNode((short) 6, (short) 28, 3));
-		g.spawns.add(new SpawnNode((short) 38, (short) 1, 4));
-		g.spawns.add(new SpawnNode((short) 35, (short) 4, 5));
-		g.spawns.add(new SpawnNode((short) 39, (short) 10, 6));
-		g.spawns.add(new SpawnNode((short) 35, (short) 4, 7));
-		g.spawns.add(new SpawnNode((short) 39, (short) 10, 8));
+		g.spawns.add(new Spawn((short) 2, (short) 16, 1));
+		g.spawns.add(new Spawn((short) 6, (short) 20, 2));
+		g.spawns.add(new Spawn((short) 6, (short) 28, 3));
+		g.spawns.add(new Spawn((short) 38, (short) 1, 4));
+		g.spawns.add(new Spawn((short) 35, (short) 4, 5));
+		g.spawns.add(new Spawn((short) 39, (short) 10, 6));
+		g.spawns.add(new Spawn((short) 35, (short) 4, 7));
+		g.spawns.add(new Spawn((short) 39, (short) 10, 8));
 	}
 	
 	private static void loadMap0_TDMElements(TeamDeathMatch g) {
 		//TODO: change up the powerup and spawn nodes
 		//make a list of nodes
-		List<PowerUpNode> pu_nodes = new ArrayList<PowerUpNode>();
-		pu_nodes.add(new PowerUpNode((short) 7, (short) 8));
-		pu_nodes.add(new PowerUpNode((short) 13, (short) 20));
-		pu_nodes.add(new PowerUpNode((short) 27, (short) 25));
-		pu_nodes.add(new PowerUpNode((short) 33, (short) 6));
-		pu_nodes.add(new PowerUpNode((short) 37, (short) 27));
+		List<PowerUpSpawn> pu_nodes = new ArrayList<PowerUpSpawn>();
+		pu_nodes.add(new PowerUpSpawn((short) 7, (short) 8));
+		pu_nodes.add(new PowerUpSpawn((short) 13, (short) 20));
+		pu_nodes.add(new PowerUpSpawn((short) 27, (short) 25));
+		pu_nodes.add(new PowerUpSpawn((short) 33, (short) 6));
+		pu_nodes.add(new PowerUpSpawn((short) 37, (short) 27));
 		g.pu_handler.setNodeList(pu_nodes);
 		
 		//TODO sometimes, for some reason, spawning in a corner keeps the player from moving, idk
-		g.spawns.add(new SpawnNode((short) 2, (short) 16, 1));
-		g.spawns.add(new SpawnNode((short) 6, (short) 20, 1));
-		g.spawns.add(new SpawnNode((short) 6, (short) 28, 1));
+		g.spawns.add(new Spawn((short) 2, (short) 16, 1));
+		g.spawns.add(new Spawn((short) 6, (short) 20, 1));
+		g.spawns.add(new Spawn((short) 6, (short) 28, 1));
 		
-		g.spawns.add(new SpawnNode((short) 38, (short) 1, 2));
-		g.spawns.add(new SpawnNode((short) 35, (short) 4, 2));
-		g.spawns.add(new SpawnNode((short) 39, (short) 10, 2));
+		g.spawns.add(new Spawn((short) 38, (short) 1, 2));
+		g.spawns.add(new Spawn((short) 35, (short) 4, 2));
+		g.spawns.add(new Spawn((short) 39, (short) 10, 2));
 	}
 	//////END MAP 0//////
 	
@@ -216,15 +216,15 @@ public final class MapLoader {
 	
 	private static void loadMap1_CTFElements(CaptureTheFlag g) {
 		//make a list of nodes
-		List<PowerUpNode> pu_nodes = new ArrayList<PowerUpNode>();
-		pu_nodes.add(new PowerUpNode((short) 2, (short) 2));
-		pu_nodes.add(new PowerUpNode((short) 11, (short) 7));
-		pu_nodes.add(new PowerUpNode((short) 15, (short) 21));
-		pu_nodes.add(new PowerUpNode((short) 20, (short) 9));
-		pu_nodes.add(new PowerUpNode((short) 27, (short) 14));
-		pu_nodes.add(new PowerUpNode((short) 34, (short) 13));
-		pu_nodes.add(new PowerUpNode((short) 38, (short) 15));
-		pu_nodes.add(new PowerUpNode((short) 44, (short) 19));
+		List<PowerUpSpawn> pu_nodes = new ArrayList<PowerUpSpawn>();
+		pu_nodes.add(new PowerUpSpawn((short) 2, (short) 2));
+		pu_nodes.add(new PowerUpSpawn((short) 11, (short) 7));
+		pu_nodes.add(new PowerUpSpawn((short) 15, (short) 21));
+		pu_nodes.add(new PowerUpSpawn((short) 20, (short) 9));
+		pu_nodes.add(new PowerUpSpawn((short) 27, (short) 14));
+		pu_nodes.add(new PowerUpSpawn((short) 34, (short) 13));
+		pu_nodes.add(new PowerUpSpawn((short) 38, (short) 15));
+		pu_nodes.add(new PowerUpSpawn((short) 44, (short) 19));
 		g.pu_handler.setNodeList(pu_nodes);
 		
 		g.team1_base = new GridLockedNode((short) 47, (short) 5);
@@ -236,62 +236,62 @@ public final class MapLoader {
 		g.team2_flag = new Flag(g.team2_base, Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, id, 2);
 		g.usedEntityIds.add(id);
 		
-		g.spawns.add(new SpawnNode((short) 33, (short) 2, 1));
-		g.spawns.add(new SpawnNode((short) 37, (short) 5, 1));
-		g.spawns.add(new SpawnNode((short) 42, (short) 5, 1));
-		g.spawns.add(new SpawnNode((short) 47, (short) 2, 1));
+		g.spawns.add(new Spawn((short) 33, (short) 2, 1));
+		g.spawns.add(new Spawn((short) 37, (short) 5, 1));
+		g.spawns.add(new Spawn((short) 42, (short) 5, 1));
+		g.spawns.add(new Spawn((short) 47, (short) 2, 1));
 		
-		g.spawns.add(new SpawnNode((short) 1, (short) 11, 2));
-		g.spawns.add(new SpawnNode((short) 2, (short) 21, 2));
-		g.spawns.add(new SpawnNode((short) 10, (short) 22, 2));
-		g.spawns.add(new SpawnNode((short) 20, (short) 15, 2));
+		g.spawns.add(new Spawn((short) 1, (short) 11, 2));
+		g.spawns.add(new Spawn((short) 2, (short) 21, 2));
+		g.spawns.add(new Spawn((short) 10, (short) 22, 2));
+		g.spawns.add(new Spawn((short) 20, (short) 15, 2));
 	}
 	
 	private static void loadMap1_FFAElements(FreeForAll g) {
 		//make a list of nodes
-		List<PowerUpNode> pu_nodes = new ArrayList<PowerUpNode>();
-		pu_nodes.add(new PowerUpNode((short) 2, (short) 2));
-		pu_nodes.add(new PowerUpNode((short) 11, (short) 7));
-		pu_nodes.add(new PowerUpNode((short) 15, (short) 21));
-		pu_nodes.add(new PowerUpNode((short) 20, (short) 9));
-		pu_nodes.add(new PowerUpNode((short) 27, (short) 14));
-		pu_nodes.add(new PowerUpNode((short) 34, (short) 13));
-		pu_nodes.add(new PowerUpNode((short) 38, (short) 15));
-		pu_nodes.add(new PowerUpNode((short) 44, (short) 19));
+		List<PowerUpSpawn> pu_nodes = new ArrayList<PowerUpSpawn>();
+		pu_nodes.add(new PowerUpSpawn((short) 2, (short) 2));
+		pu_nodes.add(new PowerUpSpawn((short) 11, (short) 7));
+		pu_nodes.add(new PowerUpSpawn((short) 15, (short) 21));
+		pu_nodes.add(new PowerUpSpawn((short) 20, (short) 9));
+		pu_nodes.add(new PowerUpSpawn((short) 27, (short) 14));
+		pu_nodes.add(new PowerUpSpawn((short) 34, (short) 13));
+		pu_nodes.add(new PowerUpSpawn((short) 38, (short) 15));
+		pu_nodes.add(new PowerUpSpawn((short) 44, (short) 19));
 		g.pu_handler.setNodeList(pu_nodes);
 		
-		g.spawns.add(new SpawnNode((short) 3, (short) 2, 1));
-		g.spawns.add(new SpawnNode((short) 8, (short) 21, 2));
-		g.spawns.add(new SpawnNode((short) 15, (short) 23, 3));
-		g.spawns.add(new SpawnNode((short) 20, (short) 9, 4));
-		g.spawns.add(new SpawnNode((short) 27, (short) 15, 5));
-		g.spawns.add(new SpawnNode((short) 33, (short) 6, 6));
-		g.spawns.add(new SpawnNode((short) 47, (short) 2, 7));
-		g.spawns.add(new SpawnNode((short) 4, (short) 19, 8));
+		g.spawns.add(new Spawn((short) 3, (short) 2, 1));
+		g.spawns.add(new Spawn((short) 8, (short) 21, 2));
+		g.spawns.add(new Spawn((short) 15, (short) 23, 3));
+		g.spawns.add(new Spawn((short) 20, (short) 9, 4));
+		g.spawns.add(new Spawn((short) 27, (short) 15, 5));
+		g.spawns.add(new Spawn((short) 33, (short) 6, 6));
+		g.spawns.add(new Spawn((short) 47, (short) 2, 7));
+		g.spawns.add(new Spawn((short) 4, (short) 19, 8));
 	}
 	
 	private static void loadMap1_TDMElements(TeamDeathMatch g) {
 		//make a list of nodes
-		List<PowerUpNode> pu_nodes = new ArrayList<PowerUpNode>();
-		pu_nodes.add(new PowerUpNode((short) 2, (short) 2));
-		pu_nodes.add(new PowerUpNode((short) 11, (short) 7));
-		pu_nodes.add(new PowerUpNode((short) 15, (short) 21));
-		pu_nodes.add(new PowerUpNode((short) 20, (short) 9));
-		pu_nodes.add(new PowerUpNode((short) 27, (short) 14));
-		pu_nodes.add(new PowerUpNode((short) 34, (short) 13));
-		pu_nodes.add(new PowerUpNode((short) 38, (short) 15));
-		pu_nodes.add(new PowerUpNode((short) 44, (short) 19));
+		List<PowerUpSpawn> pu_nodes = new ArrayList<PowerUpSpawn>();
+		pu_nodes.add(new PowerUpSpawn((short) 2, (short) 2));
+		pu_nodes.add(new PowerUpSpawn((short) 11, (short) 7));
+		pu_nodes.add(new PowerUpSpawn((short) 15, (short) 21));
+		pu_nodes.add(new PowerUpSpawn((short) 20, (short) 9));
+		pu_nodes.add(new PowerUpSpawn((short) 27, (short) 14));
+		pu_nodes.add(new PowerUpSpawn((short) 34, (short) 13));
+		pu_nodes.add(new PowerUpSpawn((short) 38, (short) 15));
+		pu_nodes.add(new PowerUpSpawn((short) 44, (short) 19));
 		g.pu_handler.setNodeList(pu_nodes);
 		
-		g.spawns.add(new SpawnNode((short) 33, (short) 2, 1));
-		g.spawns.add(new SpawnNode((short) 37, (short) 5, 1));
-		g.spawns.add(new SpawnNode((short) 42, (short) 5, 1));
-		g.spawns.add(new SpawnNode((short) 47, (short) 2, 1));
+		g.spawns.add(new Spawn((short) 33, (short) 2, 1));
+		g.spawns.add(new Spawn((short) 37, (short) 5, 1));
+		g.spawns.add(new Spawn((short) 42, (short) 5, 1));
+		g.spawns.add(new Spawn((short) 47, (short) 2, 1));
 		
-		g.spawns.add(new SpawnNode((short) 1, (short) 11, 2));
-		g.spawns.add(new SpawnNode((short) 2, (short) 21, 2));
-		g.spawns.add(new SpawnNode((short) 10, (short) 22, 2));
-		g.spawns.add(new SpawnNode((short) 20, (short) 15, 2));
+		g.spawns.add(new Spawn((short) 1, (short) 11, 2));
+		g.spawns.add(new Spawn((short) 2, (short) 21, 2));
+		g.spawns.add(new Spawn((short) 10, (short) 22, 2));
+		g.spawns.add(new Spawn((short) 20, (short) 15, 2));
 	}
 	//////END MAP 1//////
 }

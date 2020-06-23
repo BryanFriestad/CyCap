@@ -56,6 +56,10 @@ public class ClientInputHandler {
 		keys_pnr = new ArrayList<Integer>();
 	}
 	
+	/**
+	 * At this point it is already assumed that the input snapshot has been validated
+	 * @param i The new input snapshot
+	 */
 	public void addNewInputSnapshot(InputSnapshot i){
 		if(i.getSnapshotNum() <= highest_snapshot_number){
 			throw new IllegalArgumentException("This client has already handled an input snapshot of greater or equal snapshot number");
@@ -82,6 +86,10 @@ public class ClientInputHandler {
 	
 	public boolean isPressedAndReleased(InputAction action){
 		return keys_pnr.contains(input_mapping.get(action));
+	}
+
+	public String getInput_passcode() {
+		return input_passcode;
 	}
 
 }

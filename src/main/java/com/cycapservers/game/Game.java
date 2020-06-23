@@ -1,11 +1,19 @@
 package com.cycapservers.game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.socket.TextMessage;
+
 import com.cycapservers.BeanUtil;
+import com.cycapservers.account.ProfileDataUpdate;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GameEventsRepository;
+import com.cycapservers.game.database.GamePlayersEntity;
+import com.cycapservers.game.database.GamePlayersRepository;
+import com.cycapservers.game.database.GamesEntity;
+import com.cycapservers.game.database.GamesRepository;
 
 /**
  * A game is held and managed by a Lobby
@@ -22,12 +30,14 @@ public abstract class Game {
 	private GameState game_state;
 	
 	private Map map;
-	private SpawnNode[] spawnNodes;
 	
 	//Game options
 	private boolean friendly_fire;
 	private int max_character_lives;
 	private long respawn_time;
+	private boolean enable_power_ups;
+	
+	private PowerUpSpawner power_up_spawner;
 
 	/**
 	 * A list of events that have happened in the game to save to the database
@@ -58,7 +68,7 @@ public abstract class Game {
 	
 	public abstract void sendGameState();
 	
-	public abstract SpawnNode getValidSpawnNode(int team);
+	public abstract Spawn getValidSpawnNode(int team);
 	
 	public void endGame(int winner){
 		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
@@ -92,5 +102,69 @@ public abstract class Game {
 	public void setRespawn_time(long respawn_time) {
 		this.respawn_time = respawn_time;
 	}
+	
+//	public void endGame(int winner) {
+//		
+//		gameFinished = true;
+//		List<String> player_ids = new ArrayList<String>();
+//		for(Player p : this.players) {
+//			player_ids.add(p.getEntity_id());
+//			
+//			p.stats.updateScore(winner);
+//			ProfileDataUpdate.dbSaveData(p.stats);
+//			String message = "endgame:";
+//			try {
+//				p.session.sendMessage(new TextMessage(message + p.stats.get_endgame_message()));
+//			} catch (IOException e) {
+//				System.out.println("Error sending endgame message");
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		GamePlayersRepository gamePlayersRepo = BeanUtil.getBean(GamePlayersRepository.class);
+//		for(GamePlayersEntity e : game_players){
+//			if(player_ids.contains(e.getUser_id())){
+//				e.setLeft_early(false);
+//			}
+//			else{
+//				e.setLeft_early(true);
+//			}
+//			
+//			gamePlayersRepo.save(e);
+//		}
+//		
+//		GamesRepository gamesRepo = BeanUtil.getBean(GamesRepository.class);
+//		GamesEntity this_game = gamesRepo.findOne(this.game_id);
+//		
+//		this_game.setStart_time(start_time);
+//		this_game.setWinning_team(winner);
+//		gamesRepo.save(this_game);
+//	}
+//
+//	@Override
+//	public void run() {
+//		if(started && !gameFinished) {
+//			////UPDATE GAME STATE////
+//			updateGameState();
+//			
+//			////GET NEW ITEM LIST////
+//			this.current_item_list = getItemList();
+//			
+//			////INFORM PLAYERS OF GS UPDATE////
+//			for(Player p : players) {
+//				p.setLastUnsentGameState(this.toDataString(p));
+//			}
+//			
+//			//////CLEAR LISTS/////
+//			this.new_sounds.clear();
+//			this.unhandledInputs.clear(); //empty the queue of unhandled inputs
+//		}
+//		else if(readyToStart && !gameFinished){
+//			if(Utils.DEBUG) System.out.println("Game: " + this.game_id + " - Type: " + this.getClass() +  " - Players size: " + players.size() + " - Incoming size: " + incomingPlayers.size() + " - ReadyTime: " + this.readyTime);
+//			if(players.size() == incomingPlayers.size() || (System.currentTimeMillis() - this.readyTime) >= 15000) {
+//				setUpGame();
+//			}
+//		}
+//	}
 
 }

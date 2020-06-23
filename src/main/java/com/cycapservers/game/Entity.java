@@ -8,7 +8,12 @@ public class Entity implements JSON_Stringable{
 	private String entity_id;
 	private Drawable model;
 	
+	//internal use
 	private long last_update_time;
+	/**
+	 * The time in ms since the last update call for this entity
+	 */
+	protected long delta_update_time;
 	
 	public Entity(String id, Drawable model){
 		entity_id = id;
@@ -21,7 +26,7 @@ public class Entity implements JSON_Stringable{
 	 * @return returns whether or not the entity should be kept(true) or deleted(false)
 	 */
 	public boolean update(){
-		
+		delta_update_time = System.currentTimeMillis() - last_update_time;
 		last_update_time = System.currentTimeMillis();
 		return true;
 	}
@@ -82,10 +87,6 @@ public class Entity implements JSON_Stringable{
 	
 	public void setHeight(double h) {
 		this.model.setDrawHeight(h);
-	}
-
-	public long getLast_update_time() {
-		return last_update_time;
 	}
 	
 }

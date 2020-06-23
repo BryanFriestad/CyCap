@@ -314,7 +314,7 @@ public class AI_player extends Character {
 	@Override
 	protected void respawn(GameState g) {
 		// re-spawn player
-		SpawnNode n = Utils.getRandomSpawn(g.spawns, getTeam());
+		Spawn n = Utils.getRandomSpawn(g.spawns, getTeam());
 		this.x = n.getX();
 		this.y = n.getY();
 		// set isDead to false

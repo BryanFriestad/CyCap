@@ -26,7 +26,7 @@ public class TeamDeathMatch extends Game {
 		this.team_scores.put(1, 0); //for TDM and CTF only
 		this.team_scores.put(2, 0);
 		
-		pu_handler = new PowerUpHandler((short) 20000, (short) 5000);
+		pu_handler = new PowerUpSpawner((short) 20000, (short) 5000);
 		
 		MapLoader.loadPredefinedMap(map_number, this); //load up the map
 		
@@ -232,7 +232,7 @@ public class TeamDeathMatch extends Game {
 			throw new IllegalStateException("Error in player join. Illegal team for TDM.");
 		}
 		String pass = Utils.getGoodRandomString(this.userPasswords, 6);
-		SpawnNode n = Utils.getRandomSpawn(this.spawns, team);
+		Spawn n = Utils.getRandomSpawn(this.spawns, team);
 		Player p = new Player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, client_id, pass, session);
 		this.players.add(p);
 		p.stats.setGameType(this.getClass());
@@ -267,7 +267,7 @@ public class TeamDeathMatch extends Game {
 		}
 
 		String bot_id = "bot" + Integer.toString(AI_players.size());
-		SpawnNode n = Utils.getRandomSpawn(this.spawns, team);
+		Spawn n = Utils.getRandomSpawn(this.spawns, team);
 		AI_players.add(new AI_player(n.getX(), n.getY(), Utils.GRID_LENGTH, Utils.GRID_LENGTH, 0, 1.0, team, role, bot_id));
 		this.usedEntityIds.add(bot_id);
 		AI_players.get(AI_players.size() - 1).get_path(this);

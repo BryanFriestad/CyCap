@@ -1,7 +1,6 @@
 package com.cycapservers.game;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class InputSnapshot {
@@ -9,6 +8,7 @@ public class InputSnapshot {
 	private Position mouse_position;
 	private List<Integer> keys_down;
 	private int snapshotNum;
+	private String password;
 	
 	//unused
 	private double frameTime;
@@ -28,6 +28,7 @@ public class InputSnapshot {
 	public InputSnapshot(String data) {
 		this.timeStamp = System.currentTimeMillis();
 		String[] arr = data.split(":");
+		this.password = arr[2];
 		
 		this.mapX = Double.parseDouble(arr[3]);
 		this.mapY = Double.parseDouble(arr[4]);
@@ -70,6 +71,10 @@ public class InputSnapshot {
 
 	public int getSnapshotNum() {
 		return snapshotNum;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 	
 }
