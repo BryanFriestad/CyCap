@@ -4,6 +4,7 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	
 	private double speed;
 	private int damage;
+	private double wall_damage_mult;
 	
 	private String owner_id;
 	private BulletWeapon shotFrom;
@@ -14,10 +15,11 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	
 	private boolean alive;
 	
-	public Bullet(String id, Drawable model, Collider c, int collision_priority, double speed, int damage, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan) {
+	public Bullet(String id, Drawable model, Collider c, int collision_priority, double speed, int damage, double wall_damage_mult, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan) {
 		super(id, model, c, collision_priority);
 		this.speed = speed;
 		this.damage = damage;
+		this.wall_damage_mult = wall_damage_mult;
 		this.owner_id = ownerId;
 		this.shotFrom = firingWeapon;
 		this.team = team;
@@ -40,6 +42,10 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 			Character other_character = (Character) other;
 			other_character.takeDamage(this);
 			alive = false;
+		}
+		else if(other instanceof Wall){
+			Wall w = (Wall) other;
+			w.takeDamage((int) (damage * wall_damage_mult));
 		}
 	}
 	

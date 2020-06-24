@@ -1,12 +1,18 @@
 package com.cycapservers.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
 public class PowerUpSpawner {
 	
 	protected List<PowerUpSpawn> spawns;
+	
+	/**
+	 * The percent chance of each type of powerup spawning. The sum of the values should be equal to 1.0
+	 */
+	private HashMap<PowerUp, Double> power_up_chances;
 	
 	/**
 	 * the average time in between power up spawns, if feasible
@@ -34,11 +40,20 @@ public class PowerUpSpawner {
 	 * @param s time in between each spawn
 	 * @param r randomness added to the spawn time 
 	 */
-	public PowerUpSpawner(ArrayList<PowerUpSpawn> spawns, short s, short r) {
+	public PowerUpSpawner(ArrayList<PowerUpSpawn> spawns, HashMap<PowerUp, Double> power_up_chances, short s, short r) {
 		if(r > s) {
 			throw new IllegalArgumentException("Error: randomness of PowerUpHandler is greater than it's rate");
 		}
+		Double[] arr = (Double[]) power_up_chances.values().toArray();
+		double sum = 0;
+		for(Double d : arr){
+			sum += d;
+		}
+		if(!(Math.abs(Double.compare(sum, 1.0)) <= 0.0001)){
+			throw new IllegalArgumentException("Error: the power_up_chances hashmap values do not sum to 1.0 (" + power_up_chances + ")");
+		}
 		this.spawns = spawns;
+		this.power_up_chances = power_up_chances;
 		this.rate = s;
 		this.randomness = r;
 		setNextSpawnTime();
@@ -46,7 +61,7 @@ public class PowerUpSpawner {
 	
 	/**
 	 * 
-	 * @return Returns the spawn power up or null if non was created
+	 * @return Returns the spawn power up or null if none was created
 	 */
 	public PowerUp update() {
 		if(System.currentTimeMillis() >= this.next_spawn_time) {
@@ -71,7 +86,17 @@ public class PowerUpSpawner {
 	}
 	
 	private PowerUp spawnPowerUp(PowerUpSpawn spawn){
-		//TODO
-		return null;
+		double val = Utils.RANDOM.nextDouble();
+		double sum = 0;
+		PowerUp[] arr = (PowerUp[]) this.power_up_chances.keySet().toArray();
+		for(int i = 0; i < arr.length; i++){
+			Double d = this.power_up_chances.get(arr[i]);
+			sum += d;
+			if(sum > val){
+				PowerUp selected = arr[i];
+				spawn.setSlot(new PowerUp(selected)); //TODO
+				return selected;
+			}
+		}
 	}
 }

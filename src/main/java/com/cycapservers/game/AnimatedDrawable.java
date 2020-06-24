@@ -13,7 +13,7 @@ public class AnimatedDrawable extends Drawable {
 	protected boolean completed;
 	protected boolean running;
 	private double time_per_sprite;
-	private long elapsed_animation_time; //the amount of time in ms that has been animated.
+	protected long elapsed_animation_time; //the amount of time in ms that has been animated.
 	protected long last_update_time; //the timestamp at the end of the last update
 	protected long time_elapsed; //the time elapsed since the update call
 
@@ -152,16 +152,20 @@ public class AnimatedDrawable extends Drawable {
 	
 	@Override
 	public boolean update(){
+		if(!super.update()) return false;
 		if(completed) return false;
 		if(!running) return show_while_not_running;
 		
 		time_elapsed = System.currentTimeMillis() - last_update_time; //time elapsed since last update call
 		elapsed_animation_time += time_elapsed;
 		
-		if(this.animation_length != 0){
+		if(this.getAnimation_length() != 0){
 			int next_sprite_index = (int) Math.floor(elapsed_animation_time / time_per_sprite) + this.start_sprite_index;
 			if(next_sprite_index >= this.getImage().getSpritesLength()){
-				if(looping) next_sprite_index = this.start_sprite_index;
+				if(looping) {
+					elapsed_animation_time -= animation_length;
+					next_sprite_index = this.start_sprite_index;
+				}
 				else{
 					completed = true;
 					return false;
@@ -178,6 +182,10 @@ public class AnimatedDrawable extends Drawable {
 		
 		last_update_time = System.currentTimeMillis();
 		return true;
+	}
+
+	public long getAnimation_length() {
+		return animation_length;
 	}
 
 }

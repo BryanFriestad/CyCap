@@ -4,7 +4,7 @@ public abstract class Item extends CollidingEntity {
 	
 	private Game game;
 	
-	private String name;
+	protected String name;
 	protected Character grabber;
 	protected boolean grabbed;
 	

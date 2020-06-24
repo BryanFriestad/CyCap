@@ -2,12 +2,14 @@ package com.cycapservers.game;
 
 public class HealthPack extends PowerUp {
 	
-	public HealthPack(int x, int y, int w, int h, int r, double a, String entity_id) {
-		super(6, 0, x, y, w, h, r, a, "Health Pack", 0, entity_id);
-	}
+	/**
+	 * The amount to heal the grabber upon use. If this value is -1, then it will heal the user to max health
+	 */
+	private int heal_amount;
 	
-	public HealthPack(HealthPack hp, int x, int y, String entity_id) {
-		super(hp, x, y, entity_id);
+	public HealthPack(String id, Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
+		super(id, model, c, collision_priority, g, name, max_uses, duration);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -30,6 +32,12 @@ public class HealthPack extends PowerUp {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toJSONString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

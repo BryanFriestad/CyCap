@@ -1,6 +1,6 @@
 package com.cycapservers.game;
 
-public abstract class PowerUp extends Item {
+public abstract class PowerUp extends Item{
 	
 	private int max_uses;
 	private int uses_remaining;

@@ -1,19 +1,11 @@
 package com.cycapservers.game;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.web.socket.TextMessage;
-
 import com.cycapservers.BeanUtil;
-import com.cycapservers.account.ProfileDataUpdate;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GameEventsRepository;
-import com.cycapservers.game.database.GamePlayersEntity;
-import com.cycapservers.game.database.GamePlayersRepository;
-import com.cycapservers.game.database.GamesEntity;
-import com.cycapservers.game.database.GamesRepository;
 
 /**
  * A game is held and managed by a Lobby
@@ -34,8 +26,15 @@ public abstract class Game {
 	//Game options
 	private boolean friendly_fire;
 	private int max_character_lives;
+	/**
+	 * in milliseconds
+	 */
 	private long respawn_time;
 	private boolean enable_power_ups;
+	/**
+	 * in milliseconds
+	 */
+	private long time_limit;
 	
 	private PowerUpSpawner power_up_spawner;
 
