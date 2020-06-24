@@ -252,4 +252,12 @@ public abstract class Character extends CollidingEntity {
 		this.lives_remaining = lives_remaining;
 	}
 	
+	public Equipment[] getInventory() {
+		return inventory;
+	}
+
+	public int getMax_health() {
+		return max_health;
+	}
+	
 }

@@ -1,45 +1,38 @@
 package com.cycapservers.game;
 
 public class AmmoPack extends PowerUp {
-	
-	public AmmoPack(int x, int y, int w, int h, int r, double a, String entity_id) {
-		super(5, 0, x, y, w, h, r, a, "Ammo Pack", 0, entity_id);
-	}
-	
-	public AmmoPack(AmmoPack ap, int x, int y, String entity_id) {
-		super(ap, x, y, entity_id);
+
+	public AmmoPack(String id, Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
+		super(id, model, c, collision_priority, g, name, max_uses, duration);
 	}
 
 	@Override
 	public boolean update() {
-		if(this.started && ((System.currentTimeMillis() - this.startTime) > this.duration)){
-			return true;
-		}
-		return false;
+		return uses_remaining >= 1;
 	}
 
 	@Override
 	public boolean use() {
-		if(this.grabber == null) {
-			throw new IllegalStateException("Error, this powerup has no grabber and cannot be used");
+		if(grabber == null) {
+			throw new IllegalStateException("Item cannot be used when the grabber is null");
 		}
-		if(!this.started){
-			if(this.grabber.equipment1 != null) {
-				this.grabber.equipment1.extra_ammo = this.grabber.equipment1.max_ammo_refill;
-			}
-			if(this.grabber.equipment2 != null) {
-				this.grabber.equipment2.extra_ammo = this.grabber.equipment2.max_ammo_refill;
-			}
-			if(this.grabber.equipment3 != null) {
-				this.grabber.equipment3.extra_ammo = this.grabber.equipment3.max_ammo_refill;
-			}
-			if(this.grabber.equipment4 != null) {
-				this.grabber.equipment4.extra_ammo = this.grabber.equipment4.max_ammo_refill;
-			}
-			this.startTime = System.currentTimeMillis();
-			this.started = true;
+		
+		if(uses_remaining < 1) {
 			return true;
 		}
+		else {
+			for(Equipment e : grabber.getInventory()) {
+				if(e instanceof Weapon) {
+					Weapon w = (Weapon) e;
+					w.refill();
+				}
+			}
+			uses_remaining--;
+			last_activate_time = System.currentTimeMillis();
+			if(uses_remaining == 0)
+				return true;
+		}
+		
 		return false;
 	}
 

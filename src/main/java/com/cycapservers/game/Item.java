@@ -42,11 +42,6 @@ public abstract class Item extends CollidingEntity {
 		this.grabber = null;
 		this.grabbed = false;
 	}
-	
-	@Override
-	public String toJSONString(){
-		return null; //TODO: must hold class, entity_id, drawable, grabbed
-	}
 
 	public Game getGame() {
 		return game;

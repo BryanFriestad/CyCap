@@ -1,10 +1,12 @@
 package com.cycapservers.game;
 
+import com.cycapservers.JSONObject;
+
 public abstract class PowerUp extends Item{
 	
 	private int max_uses;
-	private int uses_remaining;
-	private long duration;
+	protected int uses_remaining;
+	protected long duration;
 	
 	//internal
 	protected long last_activate_time;
@@ -17,28 +19,29 @@ public abstract class PowerUp extends Item{
 		this.last_activate_time = System.currentTimeMillis();
 	}
 
-	/**
-	 * Updates important information about the power up.
-	 * @return boolean: whether or not the powerup is finished
-	 */
+	@Override
 	public abstract boolean update();
 
 	@Override
 	public abstract boolean use();
-	
-	@Override
-	public abstract String toJSONString();
 
 	public int getMax_uses() {
 		return max_uses;
 	}
 
-	public int getUses_remaining() {
-		return uses_remaining;
-	}
-
 	public long getDuration() {
 		return duration;
+	}
+	
+	@Override
+	public String toJSONString() {
+		JSONObject obj = new JSONObject();
+		obj.put("class", this.getClass().getSimpleName());
+		obj.put("entity_id", getEntity_id());
+		obj.put("model", getModel());
+		obj.put("uses_remaining", uses_remaining);
+		obj.put("max_uses", max_uses);
+		return obj.toString();
 	}
 	
 }
