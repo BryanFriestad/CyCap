@@ -259,5 +259,10 @@ public abstract class Character extends CollidingEntity {
 	public int getMax_health() {
 		return max_health;
 	}
+
+	public void applyBuff(Buff buff) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

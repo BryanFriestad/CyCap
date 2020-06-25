@@ -2,8 +2,18 @@ package com.cycapservers.game;
 
 public class SpeedPotion extends PowerUp {
 	
+	/**
+	 * a percentage to increase the character's speed upon use
+	 */
 	private double boost_amount;
 	private boolean can_stack;
+
+	public SpeedPotion(String id, Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses,
+			long duration, double boost_amount, boolean can_stack) {
+		super(id, model, c, collision_priority, g, name, max_uses, duration);
+		this.boost_amount = boost_amount;
+		this.can_stack = can_stack;
+	}
 
 	@Override
 	public boolean update() {
@@ -22,7 +32,7 @@ public class SpeedPotion extends PowerUp {
 		if(!can_stack && (System.currentTimeMillis() - last_activate_time < duration))
 			return false;
 		
-		this.grabber.applyBuff(new SpeedBuff(boost_amount, duration));
+		this.grabber.applyBuff(new Buff(boost_amount, null, duration));
 		uses_remaining--;
 		last_activate_time = System.currentTimeMillis();
 		

@@ -1,28 +1,40 @@
 package com.cycapservers.game;
 
-public abstract class Buff {
+public class Buff {
 	
-	protected double value;
-	protected Character character;
+	private double mult_factor;
+	private BuffType type;
+	private long duration;
+	
+	private long start_time;
+	
 	/**
-	 * What type of buff this is
-	 * "multi" for multiplicative
-	 * "add" for additive
-	 * "set" for set
+	 * Creates a buff
+	 * @param percent Must be greater than or equal to -1.0
+	 * @param type
+	 * @param duration The amount of time in ms for the buff to last before being removed
 	 */
-	protected String type;
-	protected long start_time;
-	protected int time_length;
-	
-	public Buff(Character gc, double v, String type, int length) {
-		this.character = gc;
+	public Buff(double percent, BuffType type, long duration) {
+		super();
+		if(percent < -1.0) {
+			throw new IllegalArgumentException("percent(" + percent + ") is less than -1.0");
+		}
+		this.mult_factor = 1.0 + percent;
 		this.type = type;
-		this.value = v;
-		this.time_length = length;
+		this.duration = duration;
+		start_time = System.currentTimeMillis();
+	}
+
+	public boolean isCompleted() {
+		return (System.currentTimeMillis() - start_time > duration);
 	}
 	
-	public abstract boolean apply(double field);
-	
-	public abstract boolean apply(int field);
+	public BuffType getType() {
+		return type;
+	}
 
+	public double getMult_factor() {
+		return mult_factor;
+	}
+	
 }
