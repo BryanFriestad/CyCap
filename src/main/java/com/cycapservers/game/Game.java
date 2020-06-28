@@ -1,6 +1,7 @@
 package com.cycapservers.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.cycapservers.BeanUtil;
@@ -19,11 +20,18 @@ public abstract class Game {
 	private int id;
 	private String join_code;
 	
-	private GameState game_state;
+	/**
+	 * A mapping of character ids to team numbers of the team they are on
+	 */
+	private HashMap<String, Integer> character_teams;
+	private HashMap<Integer, Integer> characters_per_team;
+	private GameType type;
+	protected GameState game_state;
 	
 	private Map map;
 	
 	//Game options
+	private int max_players;
 	private boolean friendly_fire;
 	private int max_character_lives;
 	/**
@@ -42,12 +50,23 @@ public abstract class Game {
 	 * A list of events that have happened in the game to save to the database
 	 */
 	private List<GameEventsEntity> game_events;
+	private long start_time;
 	
-	public Game(int id, boolean friendly_fire){
-		this.setId(id);
-		game_state = new GameState(map);
+	public Game(int id, Map map, GameType type, boolean friendly_fire, int max_character_lives, long respawn_time,
+			boolean enable_power_ups, long time_limit, int max_players) {
+		super();
+		this.id = id;
+		this.map = map;
+		this.type = type;
+		this.friendly_fire = friendly_fire;
+		this.max_character_lives = max_character_lives;
+		this.respawn_time = respawn_time;
+		this.enable_power_ups = enable_power_ups;
+		this.time_limit = time_limit;
+		this.max_players = max_players;
+		game_state = new GameState(this.type, Utils.sumIntArray((Integer[]) characters_per_team.values().toArray()));
+		map.initializeGameState(type, game_state);
 		this.game_events = new ArrayList<GameEventsEntity>();
-		this.setFriendly_fire(friendly_fire);
 	}
 	
 	public void addGameEvent(GameEventsEntity event){
@@ -69,7 +88,7 @@ public abstract class Game {
 	
 	public abstract Spawn getValidSpawnNode(int team);
 	
-	public void endGame(int winner){
+	public void endGame(){
 		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
 		gameEventsRepo.save(game_events);
 	}
@@ -78,16 +97,8 @@ public abstract class Game {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public boolean isFriendly_fire() {
 		return friendly_fire;
-	}
-
-	public void setFriendly_fire(boolean friendly_fire) {
-		this.friendly_fire = friendly_fire;
 	}
 
 	public Position getGraveyardPosition() {
@@ -96,10 +107,6 @@ public abstract class Game {
 
 	public long getRespawn_time() {
 		return respawn_time;
-	}
-
-	public void setRespawn_time(long respawn_time) {
-		this.respawn_time = respawn_time;
 	}
 	
 //	public void endGame(int winner) {

@@ -1,5 +1,8 @@
 package com.cycapservers.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.cycapservers.game.database.GameEventType;
 import com.cycapservers.game.database.GameEventsEntity;
 
@@ -29,6 +32,7 @@ public abstract class Character extends CollidingEntity {
 	private double speed;
 	private int visibility;
 	
+	private List<Buff> active_buffs;
 	private boolean is_invincible;
 	private double speed_boost;
 	private double damage_boost;
@@ -48,6 +52,7 @@ public abstract class Character extends CollidingEntity {
 		this.setAlive(true);
 		this.setLast_time_of_death(System.currentTimeMillis());
 		
+		this.active_buffs = new ArrayList<Buff>();
 		this.is_invincible = false;
 		this.speed_boost = 1.0;
 		this.damage_boost = 1.0;
@@ -261,8 +266,26 @@ public abstract class Character extends CollidingEntity {
 	}
 
 	public void applyBuff(Buff buff) {
-		// TODO Auto-generated method stub
-		
+		switch(buff.getType()) {
+			case Speed:
+				speed_boost *= buff.getMult_factor();
+				active_buffs.add(buff);
+				break;
+				
+			case Damage:
+				damage_boost *= buff.getMult_factor();
+				active_buffs.add(buff);
+				break;
+				
+			case Invincibility:
+				is_invincible = true;
+				active_buffs.add(buff);
+				break;
+				
+			default:
+				throw new UnsupportedOperationException("The buff type you have passed is not supported(" + buff.getType() + ")");
+				
+		}
 	}
 	
 }

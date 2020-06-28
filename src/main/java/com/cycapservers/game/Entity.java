@@ -15,6 +15,7 @@ public class Entity implements JSON_Stringable{
 	 */
 	protected long delta_update_time;
 	
+	//TODO: remove id as a parameter to the entity, it should only ever be set by the game state after the fact
 	public Entity(String id, Drawable model){
 		entity_id = id;
 		this.model = model;

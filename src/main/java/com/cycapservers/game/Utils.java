@@ -39,6 +39,20 @@ public final class Utils{
 	
 	private Utils(){} //prevents the class from being constructed
 	
+	public static double sumDoubleArray(Double ... values) {
+		double sum = 0;
+		for(double d : values)
+			sum += d;
+		return sum;
+	}
+	
+	public static int sumIntArray(Integer ... integer) {
+		int sum = 0;
+		for(int i : integer)
+			sum += i;
+		return sum;
+	}
+	
 	/**
 	 * returns true if num is between the parameters lower and upper, inclusive
 	 * @param num
@@ -81,50 +95,11 @@ public final class Utils{
 		return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
 	}
 	
-	/**
-	 * Returns the distance between two nodes
-	 * @param n1
-	 * @param n2
-	 * @return
-	 */
-	public static double distanceBetween(Node n1, Node n2) {
-		return Math.sqrt(Math.pow(n2.getX() - n1.getX(), 2.0) + Math.pow(n2.getY() - n1.getY(), 2.0));
-	}
-	
-	/**
-	 * returns the distance between an entity and a node
-	 * @param ent
-	 * @param n
-	 * @return
-	 */
-	public static double distanceBetween(Entity ent, Node n) {
-		return Math.sqrt(Math.pow(n.getX() - ent.getX(), 2.0) + Math.pow(n.getY() - ent.getY(), 2.0));
-	}
-	
 	public static double distanceBetween(Position p1, Position p2){
 		return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2.0) + Math.pow(p2.getY() - p1.getY(), 2.0));
 	}
 	
-//	/**
-//	 * returns true if the given node is placed within the entity
-//	 * @param ent
-//	 * @param n
-//	 * @return
-//	 */
-//	public static boolean isColliding(Entity ent, Node n) {
-//		if(distanceBetween(ent, n) >= ent.collision_radius){
-//			return false;
-//		}
-//		else {
-//			if(n.getX() > (ent.x - ent.getDrawWidth()/2) && n.getX() < (ent.x + ent.getDrawWidth()/2)) {
-//				if(n.getY() > (ent.y - ent.getDrawHeight()/2) && n.getY() < (ent.y + ent.getDrawHeight()/2)) {
-//					return true;
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//	
+	
 //	/**
 //	 * returns true if the two entities are colliding
 //	 * @param ent_1
@@ -515,26 +490,26 @@ public final class Utils{
 	 */
 	public static String getGoodRandomString(List<String> currentList, int length) {
 		String output = createString(length);
-		while(!isStringGood(currentList, output)) {
+		while(currentList.contains(output)) {
 			output = createString(length);
 		}
 		return output;
 	}
 	
-	/**
-	 * returns false if the given string exists in currentListt
-	 * @param currentList
-	 * @param pw
-	 * @return
-	 */
-	private static boolean isStringGood(List<String> currentList, String pw) {
-		for(String s : currentList) {
-			if(pw.equals(s)) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	/**
+//	 * returns false if the given string exists in currentListt
+//	 * @param currentList
+//	 * @param pw
+//	 * @return
+//	 */
+//	private static boolean isStringGood(List<String> currentList, String pw) {
+//		for(String s : currentList) {
+//			if(pw.equals(s)) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 	
 	/**
 	 * Generates a random string of a given length
