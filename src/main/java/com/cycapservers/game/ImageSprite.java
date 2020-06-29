@@ -66,5 +66,10 @@ public class ImageSprite implements JSON_Stringable {
 		object.put("h", this.h);
 		return object.toString();
 	}
+	
+	@Override
+	public ImageSprite clone() {
+		return new ImageSprite(x, y, w, h);
+	}
 
 }

@@ -7,8 +7,8 @@ public class CollidingGridLockedEntity extends GridLockedEntity implements Colli
 	
 	private Position previousPosition; //used in collision handling
 
-	public CollidingGridLockedEntity(String id, GridLockedDrawable model, Collider collider, int collision_priority) {
-		super(id, model);
+	public CollidingGridLockedEntity(GridLockedDrawable model, Collider collider, int collision_priority) {
+		super(model);
 		this.collider = collider;
 		this.collision_priority = collision_priority;
 	}
@@ -38,4 +38,8 @@ public class CollidingGridLockedEntity extends GridLockedEntity implements Colli
 		return this.collider;
 	}
 
+	@Override
+	public CollidingGridLockedEntity clone() {
+		return new CollidingGridLockedEntity((GridLockedDrawable) getModel().clone(), getCollider().clone(), collision_priority);
+	}
 }

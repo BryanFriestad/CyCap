@@ -44,12 +44,7 @@ public class PowerUpSpawner {
 		if(r > s) {
 			throw new IllegalArgumentException("Error: randomness of PowerUpHandler is greater than it's rate");
 		}
-		Double[] arr = (Double[]) power_up_chances.values().toArray();
-		double sum = 0;
-		for(Double d : arr){
-			sum += d;
-		}
-		if(!(Math.abs(Double.compare(sum, 1.0)) <= 0.0001)){
+		if(!(Math.abs(Double.compare(Utils.sumDoubleArray((Double[]) power_up_chances.values().toArray()), 1.0)) <= 0.0001)){
 			throw new IllegalArgumentException("Error: the power_up_chances hashmap values do not sum to 1.0 (" + power_up_chances + ")");
 		}
 		this.spawns = spawns;
@@ -94,9 +89,10 @@ public class PowerUpSpawner {
 			sum += d;
 			if(sum > val){
 				PowerUp selected = arr[i];
-				spawn.setSlot(new PowerUp(selected)); //TODO
+				spawn.setSlot(selected.clone());
 				return selected;
 			}
 		}
+		throw new IllegalStateException("Error with spawning new power up. Sum of spawn chances are invalid.");
 	}
 }

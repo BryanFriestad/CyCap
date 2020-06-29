@@ -5,10 +5,13 @@ import com.cycapservers.JSON_Stringable;
 
 public class Image implements JSON_Stringable {
 	
+	//params
 	private String src;
-	private ImageSprite[] sprites;
 	private int imageCode;
 
+	//internal
+	private ImageSprite[] sprites;
+	
 	public Image(String source, int img_code, int image_width, int image_height) {
 		this.src = source;
 		this.imageCode = img_code;
@@ -28,6 +31,13 @@ public class Image implements JSON_Stringable {
 	public int getSpritesLength(){
 		return sprites.length;
 	}
+	
+	private void cloneSprites(ImageSprite[] arr) {
+		sprites = new ImageSprite[arr.length];
+		for(int i = 0; i < sprites.length; i++) {
+			sprites[i] = arr[i].clone();
+		}
+	}
 
 	@Override
 	public String toJSONString() {
@@ -39,6 +49,11 @@ public class Image implements JSON_Stringable {
 		return object.toString();
 	}
 	
-	
+	@Override
+	public Image clone() {
+		Image i = new Image(String.valueOf(src), imageCode, 0, 0);
+		i.cloneSprites(sprites); //clones this object's sprites into the new one
+		return i;
+	}
 
 }

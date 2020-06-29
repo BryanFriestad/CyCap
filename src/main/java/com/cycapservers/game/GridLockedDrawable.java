@@ -10,4 +10,7 @@ public class GridLockedDrawable extends Drawable{
 		super(image, spriteIndex, drawPosition, Utils.GRID_LENGTH, Utils.GRID_LENGTH, rot, a);
 	}
 
+	public GridLockedDrawable clone() {
+		return new GridLockedDrawable(getImage().clone(), getSpriteIndex(), (GridLockedPosition) getDrawPosition().clone(), getRotation(), getAlpha());
+	}
 }

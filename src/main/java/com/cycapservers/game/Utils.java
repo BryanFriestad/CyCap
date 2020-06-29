@@ -20,7 +20,7 @@ public final class Utils{
 	public final static int AI_NODE_PIXEL_DISTANCE = 16;
 	public final static Random RANDOM = new Random();
 	
-	//////THE WEAPONS//////
+	//////WEAPON TEMPLATES//////
 	public final static Shotgun REMINGTON_870 = new Shotgun("Remington870", 25, 500, 500, 5, 4, 6000, 0.35);
 	public final static Pistol M1911 = new Pistol("Pistol", 10, 175, 400, 8, 4, 200, 0.05);
 	public final static Shotgun SAWED_OFF_SHOTGUN = new Shotgun("Sawed-Off Shotgun", 37, 350, 550, 2, 10, 2500, 0.55);
@@ -31,11 +31,18 @@ public final class Utils{
 	public final static SmokeGrenade SMOKE_GRENADE = new SmokeGrenade("Smoke Grenade", 0, 2, 1200, 1, 5, 500, 2, 1500, 5, 5000, 1);
 	public final static HealthGun HEAL_GUN = new HealthGun("Heal Gun", 2, 180, 100, 0, 1000, (int) (GRID_LENGTH * 1.5));
 	
-	//////THE POWERUPS//////
+	//////POWER-UP TEMPLATES//////
 	public final static SpeedPotion SPEED_POTION = new SpeedPotion(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "speed_pot_template");
 	public final static HealthPack HEALTH_PACK = new HealthPack(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "health_pack_template");
 	public final static AmmoPack AMMO_PACK = new AmmoPack(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "ammo_pack_template");
 	//TODO: shield potion, rage serum, and chill pill
+	
+	//////BULLET TEMPLATES//////
+	
+	//////MAP TEMPLATES//////
+	
+	//////GAMEMODE/TYPE TEMPLATES//////
+	
 	
 	private Utils(){} //prevents the class from being constructed
 	

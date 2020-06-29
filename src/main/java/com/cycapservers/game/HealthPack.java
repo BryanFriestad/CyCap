@@ -13,8 +13,9 @@ public class HealthPack extends PowerUp {
 	//private double heals_per_ms;
 	//private long heal_time_elapsed;
 	
-	public HealthPack(String id, Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
-		super(id, model, c, collision_priority, g, name, max_uses, duration);
+	public HealthPack(Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration, int heal_amount) {
+		super(model, c, collision_priority, g, name, max_uses, duration);
+		this.heal_amount = heal_amount;
 	}
 
 	@Override
@@ -58,6 +59,11 @@ public class HealthPack extends PowerUp {
 //		obj.put("heal_time_total", heal_time_total);
 //		obj.put("heal_time_elapsed", heal_time_elapsed);
 		return obj.toString();
+	}
+
+	@Override
+	public HealthPack clone() {
+		return new HealthPack(getModel().clone(), getCollider().clone(), getCollisionPriority(), null, name, getMax_uses(), duration, heal_amount);
 	}
 
 }

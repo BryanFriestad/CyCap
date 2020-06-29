@@ -51,4 +51,9 @@ public class Position implements JSON_Stringable{
 		object.put("y", this.y);
 		return object.toString();
 	}
+	
+	@Override
+	public Position clone() {
+		return new Position(x, y);
+	}
 }

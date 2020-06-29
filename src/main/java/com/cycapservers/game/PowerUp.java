@@ -11,8 +11,8 @@ public abstract class PowerUp extends Item{
 	//internal
 	protected long last_activate_time;
 	
-	public PowerUp(String id, Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
-		super(id, model, c, collision_priority, g, name);
+	public PowerUp(Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
+		super(model, c, collision_priority, g, name);
 		this.max_uses = max_uses;
 		this.uses_remaining = max_uses;
 		this.duration = duration;
@@ -43,5 +43,8 @@ public abstract class PowerUp extends Item{
 		obj.put("max_uses", max_uses);
 		return obj.toString();
 	}
+	
+	@Override
+	public abstract PowerUp clone();
 	
 }

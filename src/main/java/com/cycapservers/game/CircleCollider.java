@@ -49,4 +49,9 @@ public class CircleCollider extends Collider {
 		radius = Math.max(radius, h/2.0);
 	}
 
+	@Override
+	public Collider clone() {
+		return new CircleCollider(getPos().clone(), radius);
+	}
+
 }

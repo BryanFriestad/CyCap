@@ -2,8 +2,8 @@ package com.cycapservers.game;
 
 public class AmmoPack extends PowerUp {
 
-	public AmmoPack(String id, Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
-		super(id, model, c, collision_priority, g, name, max_uses, duration);
+	public AmmoPack(Drawable model, Collider c, int collision_priority, Game g, String name, int max_uses, long duration) {
+		super(model, c, collision_priority, g, name, max_uses, duration);
 	}
 
 	@Override
@@ -34,6 +34,11 @@ public class AmmoPack extends PowerUp {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public AmmoPack clone() {
+		return new AmmoPack(getModel().clone(), getCollider().clone(), getCollisionPriority(), null, name, getMax_uses(), duration);
 	}
 
 }

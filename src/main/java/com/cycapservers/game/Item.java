@@ -8,8 +8,10 @@ public abstract class Item extends CollidingEntity {
 	protected Character grabber;
 	protected boolean grabbed;
 	
-	public Item(String id, Drawable model, Collider c, int collision_priority, Game g, String name) {
-		super(id, model, c, collision_priority);
+	//TODO: remove game as a parameter, and have it only be set by the game
+	//flag item should override the setGame() func to only allow CTF games)
+	public Item(Drawable model, Collider c, int collision_priority, Game g, String name) {
+		super(model, c, collision_priority);
 		this.game = g;
 		this.name = name;
 		this.grabber = null;
@@ -54,6 +56,5 @@ public abstract class Item extends CollidingEntity {
 	public boolean isGrabbed() {
 		return grabbed;
 	}
-	
 	
 }

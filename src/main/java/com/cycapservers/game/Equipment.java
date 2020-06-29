@@ -82,5 +82,8 @@ public abstract class Equipment implements JSON_Stringable {
 	public long getSwitchCooldown() {
 		return switchCooldown;
 	}
+	
+	@Override
+	public abstract Equipment clone();
 
 }

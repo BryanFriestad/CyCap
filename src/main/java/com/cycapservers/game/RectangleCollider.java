@@ -63,4 +63,9 @@ public class RectangleCollider extends Collider {
 		this.topRight.setY(this.getPos().getY() + h/2.0);
 	}
 
+	@Override
+	public Collider clone() {
+		return new RectangleCollider(getPos().clone(), topRight.getX() - bottomLeft.getX(), topRight.getY() - bottomLeft.getY());
+	}
+
 }

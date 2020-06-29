@@ -2,8 +2,12 @@ package com.cycapservers.game;
 
 public class GridLockedEntity extends Entity {
 
-	public GridLockedEntity(String id, GridLockedDrawable model) {
-		super(id, model);
+	public GridLockedEntity(GridLockedDrawable model) {
+		super(model);
+	}
+	
+	public GridLockedEntity clone() {
+		return new GridLockedEntity((GridLockedDrawable) getModel().clone());
 	}
 
 }

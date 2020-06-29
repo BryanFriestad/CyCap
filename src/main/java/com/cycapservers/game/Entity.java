@@ -5,10 +5,10 @@ import com.cycapservers.JSON_Stringable;
 
 public class Entity implements JSON_Stringable{
 	
-	private String entity_id;
 	private Drawable model;
 	
 	//internal use
+	private String entity_id;
 	private long last_update_time;
 	/**
 	 * The time in ms since the last update call for this entity
@@ -16,8 +16,7 @@ public class Entity implements JSON_Stringable{
 	protected long delta_update_time;
 	
 	//TODO: remove id as a parameter to the entity, it should only ever be set by the game state after the fact
-	public Entity(String id, Drawable model){
-		entity_id = id;
+	public Entity(Drawable model){
 		this.model = model;
 		this.last_update_time = System.currentTimeMillis();
 	}
@@ -34,6 +33,9 @@ public class Entity implements JSON_Stringable{
 
 	@Override
 	public String toJSONString() {
+		if(entity_id == null)
+			throw new IllegalStateException("Entity ID must be set before calling this function");
+		
 		JSONObject obj = new JSONObject();
 		obj.put("class", this.getClass().getSimpleName());
 		obj.put("entity_id", entity_id);
@@ -88,6 +90,14 @@ public class Entity implements JSON_Stringable{
 	
 	public void setHeight(double h) {
 		this.model.setDrawHeight(h);
+	}
+	
+	@Override
+	/**
+	 * Creates a clone of this Entity. The internal model is also clone()'d. The entity id is not set.
+	 */
+	public Entity clone() {
+		return new Entity(model.clone());
 	}
 	
 }

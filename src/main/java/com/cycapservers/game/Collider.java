@@ -35,5 +35,7 @@ public abstract class Collider {
 	public void setY(double y){
 		this.pos.setY(y);
 	}
+	
+	public abstract Collider clone();
 
 }

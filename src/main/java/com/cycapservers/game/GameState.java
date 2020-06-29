@@ -49,19 +49,24 @@ public class GameState
 	 * @param e
 	 */
 	public void addEntity(Entity e) {
-		String s = Utils.getGoodRandomString(used_entity_id, id_rand_len) + "(" + used_entity_id.size() + ")";
-		used_entity_id.add(s);
-		e.setEntity_id(s);
-		
 		if(e instanceof Wall) {
+			setUniqueEntityId(e);
 			current_walls.add((Wall) e);
 		}
 		else if(e instanceof Character) {
+			used_entity_id.add(e.getEntity_id());
 			characters.add((Character) e);
 		}
 		else {
+			setUniqueEntityId(e);
 			entities.add(e);
 		}
+	}
+	
+	private void setUniqueEntityId(Entity e) {
+		String s = Utils.getGoodRandomString(used_entity_id, id_rand_len) + "(" + used_entity_id.size() + ")";
+		used_entity_id.add(s);
+		e.setEntity_id(s);
 	}
 
 	/**

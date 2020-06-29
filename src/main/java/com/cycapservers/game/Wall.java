@@ -10,8 +10,8 @@ public class Wall extends CollidingGridLockedEntity {
 	//internal
 	private boolean destroyed;
 
-	public Wall(String id, GridLockedDrawable model, int strength) {
-		super(id, model, new RectangleCollider(model.getDrawPosition(), model.getDrawWidth(), model.getDrawHeight()), Integer.MAX_VALUE);
+	public Wall(GridLockedDrawable model, int strength) {
+		super(model, new RectangleCollider(model.getDrawPosition(), model.getDrawWidth(), model.getDrawHeight()), Integer.MAX_VALUE);
 		this.strength = strength;
 		this.destroyed = false;
 	}
@@ -22,13 +22,21 @@ public class Wall extends CollidingGridLockedEntity {
 	}
 	
 	public void takeDamage(int amount){
-		if(this.strength != -1)
+		if(this.strength != -1) {
 			this.strength -= amount;
+			if(strength <= 0)
+				destroyed = true;
+		}
 	}
 	
 	@Override
 	public void onCollision(Collidable other){
 		return; //wall should not move
+	}
+	
+	@Override
+	public Wall clone() {
+		return new Wall((GridLockedDrawable) getModel().clone(), strength);
 	}
 	
 }

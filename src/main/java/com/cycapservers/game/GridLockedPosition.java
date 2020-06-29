@@ -31,5 +31,10 @@ public class GridLockedPosition extends Position {
 		short gridY = getClosestGridY();
 		super.setY((gridY * Utils.GRID_LENGTH) + (Utils.GRID_LENGTH / 2));
 	}
+	
+	@Override
+	public GridLockedPosition clone() {
+		return new GridLockedPosition(getX(), getY());
+	}
 
 }

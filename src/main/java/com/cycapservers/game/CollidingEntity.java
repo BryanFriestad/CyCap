@@ -7,8 +7,8 @@ public class CollidingEntity extends Entity implements Collidable {
 	
 	private Position previousPosition; //used in collision handling
 
-	public CollidingEntity(String id, Drawable model, Collider c, int collision_priority) {
-		super(id, model);
+	public CollidingEntity(Drawable model, Collider c, int collision_priority) {
+		super(model);
 		this.collider = c;
 		this.collision_priority = collision_priority;
 	}
@@ -81,6 +81,11 @@ public class CollidingEntity extends Entity implements Collidable {
 
 	public void setPreviousPosition(Position previousPosition) {
 		this.previousPosition = previousPosition;
+	}
+	
+	@Override
+	public CollidingEntity clone() {
+		return new CollidingEntity(getModel().clone(), getCollider().clone(), collision_priority);
 	}
 
 }

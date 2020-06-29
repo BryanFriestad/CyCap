@@ -11,11 +11,9 @@ public class Flag extends Item {
 	//internal use
 	private boolean at_base;
 	
-	
-	
-	public Flag(String id, Drawable model, Collider c, int collision_priority, CaptureTheFlag g, String name, int team,
+	public Flag(Drawable model, Collider c, int collision_priority, CaptureTheFlag g, String name, int team,
 			GridLockedPosition base) {
-		super(id, model, c, collision_priority, g, name);
+		super(model, c, collision_priority, g, name);
 		this.team = team;
 		this.base = base;
 	}
