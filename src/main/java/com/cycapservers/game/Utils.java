@@ -10,7 +10,7 @@ import java.util.Random;
 
 public final class Utils{
 	public final static boolean DEBUG = true;
-	public final static float GRAVITY = (float) 9.81;
+	public final static float GRAVITY = (float) -9.81;
 	public final static int GRID_LENGTH = 32;
 	public final static int UP    = 0b1000;
 	public final static int DOWN  = 0b0100;
@@ -106,6 +106,29 @@ public final class Utils{
 		return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2.0) + Math.pow(p2.getY() - p1.getY(), 2.0));
 	}
 	
+	/**
+	 * Returns a unit length 2D vector representing the direction from one position to another
+	 * @param to A destination position
+	 * @param from A source position
+	 * @return A unit-length vector representing the direction to-from
+	 */
+	public static Position getDirection(Position to, Position from) {
+		Position diff = new Position(to.getX() - from.getX(), to.getY() - from.getY());
+		double len = distanceBetween(new Position(), diff);
+		return new Position(diff.getX() / len, diff.getY() / len);
+	}
+	
+	/**
+	 * Returns the difference between position a and position b
+	 * The resulting Position is equal to a new Position instantiated
+	 * with Position(a.x - b.x, a.y - b.y)
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static Position difference(Position a, Position b) {
+		return new Position(a.getX() - b.getX(), a.getY() - b.getY());
+	}
 	
 //	/**
 //	 * returns true if the two entities are colliding

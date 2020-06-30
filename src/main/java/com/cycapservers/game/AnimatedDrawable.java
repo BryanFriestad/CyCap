@@ -188,4 +188,20 @@ public class AnimatedDrawable extends Drawable {
 		return animation_length;
 	}
 
+	public int getNumber_of_sprites() {
+		return number_of_sprites;
+	}
+
+	public boolean isLooping() {
+		return looping;
+	}
+
+	public boolean isShow_while_not_running() {
+		return show_while_not_running;
+	}
+
+	public int getStart_sprite_index() {
+		return start_sprite_index;
+	}
+
 }

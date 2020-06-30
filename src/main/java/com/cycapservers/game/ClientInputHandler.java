@@ -7,7 +7,6 @@ import java.util.List;
 public class ClientInputHandler {
 	
 	//parameters
-	private String client_id;
 	private String input_passcode;
 	private HashMap<InputAction, Integer> input_mapping;
 	
@@ -20,9 +19,8 @@ public class ClientInputHandler {
 	private List<Integer> keys_down;
 	private List<Integer> keys_pnr;
 	
-	public ClientInputHandler(String client_id, String input_passcode, HashMap<InputAction, Integer> input_mapping) {
+	public ClientInputHandler(String input_passcode, HashMap<InputAction, Integer> input_mapping) {
 		super();
-		this.client_id = client_id;
 		this.input_passcode = input_passcode;
 		this.input_mapping = input_mapping;
 		previous_snapshot = null;
@@ -32,9 +30,8 @@ public class ClientInputHandler {
 		keys_pnr = new ArrayList<Integer>();
 	}
 
-	public ClientInputHandler(String client_id, String input_passcode) {
+	public ClientInputHandler(String input_passcode) {
 		super();
-		this.client_id = client_id;
 		this.input_passcode = input_passcode;
 		input_mapping = new HashMap<InputAction, Integer>();
 		input_mapping.put(InputAction.WEAPON_1_SELECT, 49);

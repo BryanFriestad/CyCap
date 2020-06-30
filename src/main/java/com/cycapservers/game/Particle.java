@@ -69,4 +69,11 @@ public class Particle extends AnimatedDrawable {
 		
 		return true;
 	}
+	
+	@Override
+	public Particle clone() {
+		return new Particle(getImage().clone(), getSpriteIndex(), getDrawPosition(), getDrawHeight(), getDrawWidth(), getRotation(), getAlpha(),
+	getNumber_of_sprites(), getAnimation_length(), isLooping(), isShow_while_not_running(), dx, dy, dw, dh, dr, da);
+	}
+	
 }

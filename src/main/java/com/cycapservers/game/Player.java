@@ -11,10 +11,10 @@ public class Player extends Character {
 	
 	private ClientInputHandler input_handler;
 	
-	public Player(String id, Drawable model, Game game, int team, String class_name, int max_health, double speed,
+	public Player(Drawable model, Game game, int team, String class_name, int max_health, double speed,
 			int visibility, int inventory_size, String password, WebSocketSession session) {
-		super(id, model, game, team, class_name, max_health, speed, visibility, inventory_size);
-		this.input_handler = new ClientInputHandler(id, password);
+		super(model, game, team, class_name, max_health, speed, visibility, inventory_size);
+		this.input_handler = new ClientInputHandler(password);
 		this.session = session;
 	}
 	

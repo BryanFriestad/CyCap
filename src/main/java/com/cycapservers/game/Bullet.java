@@ -4,6 +4,7 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	
 	//params
 	private double speed;
+	private Position direction;
 	private int damage;
 	private double wall_damage_mult;
 	
@@ -17,9 +18,10 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	private long time_of_creation;
 	private boolean alive;
 	
-	public Bullet(Drawable model, Collider c, int collision_priority, double speed, int damage, double wall_damage_mult, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan) {
+	public Bullet(Drawable model, Collider c, int collision_priority, double speed, Position direction, int damage, double wall_damage_mult, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan) {
 		super(model, c, collision_priority);
 		this.speed = speed;
+		this.direction = direction;
 		this.damage = damage;
 		this.wall_damage_mult = wall_damage_mult;
 		this.owner_id = ownerId;
@@ -31,10 +33,22 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	}
 
 	@Override
+	/**
+	 * Calls Entity.update() and then checks to see if this
+	 * bullet is past its life span. If it is alive still,
+	 * it will update its position according to its direction
+	 * and speed
+	 */
 	public boolean update() {
+		if(!super.update()) return false;
 		if(System.currentTimeMillis() - time_of_creation >= life_span){
 			alive = false;
+			return alive;
 		}
+		
+		Position delta = new Position(direction.getX() * speed * delta_update_time, direction.getY() * speed * delta_update_time);
+		setX(getX() + delta.getX());
+		setY(getY() + delta.getY());
 		
 		return alive;
 	}
@@ -49,6 +63,7 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 		else if(other instanceof Wall){
 			Wall w = (Wall) other;
 			w.takeDamage((int) (damage * wall_damage_mult));
+			alive = false;
 		}
 	}
 	
@@ -75,6 +90,15 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	@Override
 	public int getOwnerTeam() {
 		return team;
+	}
+	
+	public long getTime_of_creation() {
+		return time_of_creation;
+	}
+
+	@Override
+	public Bullet clone() {
+		return new Bullet(getModel().clone(), getCollider().clone(), getCollisionPriority(), speed, null, damage, wall_damage_mult, null, -1, null, life_span);
 	}
 
 }

@@ -15,7 +15,6 @@ public class Entity implements JSON_Stringable{
 	 */
 	protected long delta_update_time;
 	
-	//TODO: remove id as a parameter to the entity, it should only ever be set by the game state after the fact
 	public Entity(Drawable model){
 		this.model = model;
 		this.last_update_time = System.currentTimeMillis();
@@ -28,6 +27,7 @@ public class Entity implements JSON_Stringable{
 	public boolean update(){
 		delta_update_time = System.currentTimeMillis() - last_update_time;
 		last_update_time = System.currentTimeMillis();
+		model.update();
 		return true;
 	}
 
