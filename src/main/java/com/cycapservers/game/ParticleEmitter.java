@@ -5,6 +5,7 @@ public class ParticleEmitter {
 	private Particle template;
 	private double particles_per_ms;
 	private Position spawn_point;
+	
 	private long life_span;
 	
 	private long start_time;
