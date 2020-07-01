@@ -42,6 +42,26 @@ public class GameState
 			team_scores.put(i, 0);
 		}
 	}
+	
+	public void update(){
+		
+	}
+	
+	public void handleSnapshot(InputSnapshot s){
+		for(Character c : characters){
+			if(c instanceof Player && c.getEntity_id().equals(s.getClient_id())){
+				Player p = (Player) c;
+				if(p.addNewInputSnapshot(s)){
+					return;
+				}
+				else{
+					//TODO: record that a false password was submitted for this user
+					return;
+				}
+			}
+		}
+		throw new IllegalArgumentException("No client exists in this game state with the following id(" + s.getClient_id() + ")");
+	}
 
 	/**
 	 * Ensures that any entity managed by this game state has a unique entity id

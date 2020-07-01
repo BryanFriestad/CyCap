@@ -1,39 +1,52 @@
 package com.cycapservers.game;
 
-import java.awt.Point;
-
-public class SmokeGrenade extends ThrownWeapon {
+public class SmokeGrenade extends FallingBullet {
+	//lifespan = 1sec
+	//range = 1.5 grid spaces
 	
 	/**
 	 * the amount of time after the grenade hits the ground to emit smoke particles
 	 */
-	protected int smoke_time;
+	private int smoke_time;
 	/**
 	 * the amount of new smoke particles to make every update
 	 */
-	protected int smoke_intensity;
-
-	public SmokeGrenade(String name, int damage, int bt, int rate, int mag_size, int extra_mags, int reload_time, double max_height, int lifeTime, int range, int smoke_time, int intensity) {
-		super(name, damage, bt, rate, mag_size, extra_mags, reload_time, max_height, lifeTime, range * Utils.GRID_LENGTH);
-		this.smoke_time = smoke_time;
-		this.smoke_intensity = intensity;
-	}
+	private int smoke_intensity;
+	private Particle smoke_part;
 	
-	public SmokeGrenade(SmokeGrenade g) {
-		super(g);
-		this.smoke_time = g.smoke_time;
-		this.smoke_intensity = g.smoke_intensity;
+	private boolean smoke_started;
+	private ParticleEmitter emitter;
+	private Position particle_src;
+	
+	public SmokeGrenade(Drawable model, Collider c, int collision_priority, Position source, Position destination,
+			int damage, double wall_damage_mult, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan,
+			double max_height_scale, int smoke_time, int smoke_intensity, Particle smoke_part) {
+		super(model, c, collision_priority, source, destination, damage, wall_damage_mult, ownerId, team, firingWeapon,
+				lifeSpan, max_height_scale);
+		this.smoke_time = smoke_time;
+		this.smoke_intensity = smoke_intensity;
+		this.smoke_started = false;
+		this.emitter = null;
+		this.particle_src = destination;
+		this.smoke_part = smoke_part;
 	}
 
 	@Override
-	public void fire(Character p, InputSnapshot s, GameState g) {
-		this.ammo_in_clip--; //lose one bullet from the clip
-		String id = Utils.getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-		Point point = Utils.mapCoordinatesToGridCoordinates(s.mapX, s.mapY);
-		int x = (int) (point.x * Utils.GRID_LENGTH) + Utils.GRID_LENGTH/2;
-		int y = (int) (point.y * Utils.GRID_LENGTH) + Utils.GRID_LENGTH/2;
-		g.bullets.add(new SmokeGrenadeBullet(this.bullet_type, p.x, p.y, x, y, Utils.GRID_LENGTH * 0.25, Utils.GRID_LENGTH * 0.25, p, id, 9, this.max_height, smoke_time, smoke_intensity));
-		g.usedEntityIds.add(id);
-		//TODO: make bullet sound
+	public boolean update() {
+		if(!super.update()) {
+			smoke_started = true;
+		}
+		
+		if(smoke_started){
+			if(emitter == null){
+				emitter = new ParticleEmitter(shotFrom.getOwner().getGame(), smoke_part, smoke_intensity, particle_src, 1.5 * Utils.GRID_LENGTH, smoke_time);
+			}
+			else{
+				return emitter.update();
+			}
+		}
+		
+		return true;
 	}
+	
 }

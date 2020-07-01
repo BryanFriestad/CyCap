@@ -9,7 +9,7 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	private double wall_damage_mult;
 	
 	private String owner_id;
-	private BulletWeapon shotFrom;
+	protected BulletWeapon shotFrom;
 	private int team;
 	
 	private long life_span;
@@ -94,6 +94,10 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	
 	public long getTime_of_creation() {
 		return time_of_creation;
+	}
+
+	public long getLife_span() {
+		return life_span;
 	}
 
 	@Override

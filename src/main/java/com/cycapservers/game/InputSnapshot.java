@@ -8,6 +8,8 @@ public class InputSnapshot {
 	private Position mouse_position;
 	private List<Integer> keys_down;
 	private int snapshotNum;
+	private int game_id;
+	private String client_id;
 	private String password;
 	
 	//unused
@@ -28,6 +30,7 @@ public class InputSnapshot {
 	public InputSnapshot(String data) {
 		this.timeStamp = System.currentTimeMillis();
 		String[] arr = data.split(":");
+		this.game_id = Integer.parseInt(arr[1]);
 		this.password = arr[2];
 		
 		this.mapX = Double.parseDouble(arr[3]);
@@ -75,6 +78,14 @@ public class InputSnapshot {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public int getGame_id() {
+		return game_id;
+	}
+
+	public String getClient_id() {
+		return client_id;
 	}
 	
 }

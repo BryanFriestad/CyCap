@@ -9,7 +9,8 @@ public class CollisionEngine {
 	private ArrayList<Collision> collisions;
 
 	public CollisionEngine() {
-		
+		collidables = new ArrayList<Collidable>();
+		collisions = new ArrayList<Collision>();
 	}
 	
 	public void update(){

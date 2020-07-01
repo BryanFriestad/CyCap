@@ -30,6 +30,8 @@ public abstract class Game {
 	
 	private Map map;
 	
+	private CollisionEngine collision_engine;
+	
 	//Game options
 	private int max_players;
 	private boolean friendly_fire;
@@ -67,11 +69,7 @@ public abstract class Game {
 		game_state = new GameState(this.type, Utils.sumIntArray((Integer[]) characters_per_team.values().toArray()));
 		map.initializeGameState(type, game_state);
 		this.game_events = new ArrayList<GameEventsEntity>();
-	}
-	
-	public void addGameEvent(GameEventsEntity event){
-		event.setSequence_order(game_events.size());
-		game_events.add(event);
+		this.collision_engine = new CollisionEngine();
 	}
 	
 	public abstract boolean addCharacter(Character c);
@@ -80,17 +78,46 @@ public abstract class Game {
 	
 	public abstract boolean startGame();
 	
-	public abstract void receiveInputSnapshot(InputSnapshot s);
-	
-	public abstract void update();
-	
 	public abstract void sendGameState();
 	
 	public abstract Spawn getValidSpawnNode(int team);
 	
+	public void update(){
+		//update AI 
+		//update game state
+		//update collision engine
+		//check if game is completed
+	}
+	
+	/**
+	 * Checks if this input snapshot is valid for this game.
+	 * If so, it passes it on to the game_state to find the appropriate
+	 * player to attribute it to.
+	 * After updating the inputs of the appropriate player, the game state
+	 * is globally updated
+	 * @param s
+	 */
+	public void receiveInputSnapshot(InputSnapshot s){
+		if(s.getGame_id() != id)
+			throw new IllegalArgumentException("This input snapshot does not belong to this game(" + id + ")");
+		game_state.handleSnapshot(s);
+		update();
+	}
+	
 	public void endGame(){
 		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
 		gameEventsRepo.save(game_events);
+	}
+	
+	public void addEntity(Entity e, boolean needsCollision){
+		if(needsCollision)
+			collision_engine.registerCollidable((Collidable) e);
+		game_state.addEntity(e);
+	}
+	
+	public void addGameEvent(GameEventsEntity event){
+		event.setSequence_order(game_events.size());
+		game_events.add(event);
 	}
 
 	public int getId() {
