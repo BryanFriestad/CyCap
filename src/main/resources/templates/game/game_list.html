@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Game Select</title>
+		<link rel="stylesheet" href="/css/cycap_style.css"/>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css"/>
+		<link rel="stylesheet" href="/css/game_list.css"/>
+	</head>
+	
+	<body>
+		<div th:replace="fragments::topnav"></div>
+		
+		<h2>Select a game type.</h2>
+		<div id="table1" align="center">
+			<table style="width:80%">
+				<caption>Game List</caption>
+				<tr>
+					<th>Gamemode</th>
+					<th>Number of Players</th> 
+					<th>Select Button</th>
+				</tr>
+				<tr th:each="game_type : ${games.keySet().toArray()}">
+					<td th:text="${game_type}">Capture the Flag</td>
+					<td th:text="${games.get(game_type)}">234</td>
+					<td>
+						<form th:action="@{/find_lobby}" method="get">
+							<button type="submit" name="type" th:value="game_type">Select!</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

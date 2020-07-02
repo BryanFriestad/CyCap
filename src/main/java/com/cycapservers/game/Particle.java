@@ -3,12 +3,12 @@ package com.cycapservers.game;
 public class Particle extends AnimatedDrawable {
 
 	//units are in pixels/millisecond
-	protected double dx;
-	protected double dy;
-	protected double dw;
-	protected double dh;
-	protected double dr;
-	protected double da;
+	private double dx;
+	private double dy;
+	private double dw;
+	private double dh;
+	private double dr;
+	private double da;
 	
 	/**
 	 * Creates a drawable which animates through its sprites and has dynamic position, draw dimensions, rotation and alpha
@@ -74,6 +74,54 @@ public class Particle extends AnimatedDrawable {
 	public Particle clone() {
 		return new Particle(getImage().clone(), getSpriteIndex(), getDrawPosition(), getDrawHeight(), getDrawWidth(), getRotation(), getAlpha(),
 	getNumber_of_sprites(), getAnimation_length(), isLooping(), isShow_while_not_running(), dx, dy, dw, dh, dr, da);
+	}
+
+	public double getDx() {
+		return dx;
+	}
+
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+
+	public double getDy() {
+		return dy;
+	}
+
+	public void setDy(double dy) {
+		this.dy = dy;
+	}
+
+	public double getDw() {
+		return dw;
+	}
+
+	public void setDw(double dw) {
+		this.dw = dw;
+	}
+
+	public double getDh() {
+		return dh;
+	}
+
+	public void setDh(double dh) {
+		this.dh = dh;
+	}
+
+	public double getDr() {
+		return dr;
+	}
+
+	public void setDr(double dr) {
+		this.dr = dr;
+	}
+
+	public double getDa() {
+		return da;
+	}
+
+	public void setDa(double da) {
+		this.da = da;
 	}
 	
 }

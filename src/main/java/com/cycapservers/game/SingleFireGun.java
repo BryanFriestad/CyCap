@@ -1,12 +1,12 @@
 package com.cycapservers.game;
 
-public class BulletWeapon extends Weapon {
+public class SingleFireGun extends ProjectileWeapon {
 
-	public BulletWeapon(String name, long switchCooldown, Drawable icon, long fire_rate, long reload_time,
+	public SingleFireGun(String name, long switchCooldown, Drawable icon, long fire_rate, long reload_time,
 			int max_reloads, int reloads_remaining, Sound fire_sound, Sound cannot_fire_sound, Sound reload_sound,
-			Sound cannot_reload_sound) {
-		super(name, switchCooldown, icon, fire_rate, reload_time, max_reloads, reloads_remaining, fire_sound, cannot_fire_sound,
-				reload_sound, cannot_reload_sound);
+			Sound cannot_reload_sound, Projectile template) {
+		super(name, switchCooldown, icon, fire_rate, reload_time, max_reloads, reloads_remaining, fire_sound,
+				cannot_fire_sound, reload_sound, cannot_reload_sound, template);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -41,7 +41,7 @@ public class BulletWeapon extends Weapon {
 	}
 
 	@Override
-	public void update(Object inputs) {
+	public void update(ClientInputHandler input_handler) {
 		// TODO Auto-generated method stub
 
 	}
@@ -62,6 +62,12 @@ public class BulletWeapon extends Weapon {
 	public boolean removeFromInventory() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Equipment clone() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

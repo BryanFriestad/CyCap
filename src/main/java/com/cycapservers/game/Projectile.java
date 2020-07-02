@@ -1,6 +1,6 @@
 package com.cycapservers.game;
 
-public class Bullet extends CollidingEntity implements DamageDealer{
+public class Projectile extends CollidingEntity implements DamageDealer{
 	
 	//params
 	private double speed;
@@ -9,7 +9,7 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	private double wall_damage_mult;
 	
 	private String owner_id;
-	protected BulletWeapon shotFrom;
+	protected ProjectileWeapon shotFrom;
 	private int team;
 	
 	private long life_span;
@@ -18,7 +18,7 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	private long time_of_creation;
 	private boolean alive;
 	
-	public Bullet(Drawable model, Collider c, int collision_priority, double speed, Position direction, int damage, double wall_damage_mult, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan) {
+	public Projectile(Drawable model, Collider c, int collision_priority, double speed, Position direction, int damage, double wall_damage_mult, String ownerId, int team, ProjectileWeapon firingWeapon, long lifeSpan) {
 		super(model, c, collision_priority);
 		this.speed = speed;
 		this.direction = direction;
@@ -101,8 +101,8 @@ public class Bullet extends CollidingEntity implements DamageDealer{
 	}
 
 	@Override
-	public Bullet clone() {
-		return new Bullet(getModel().clone(), getCollider().clone(), getCollisionPriority(), speed, null, damage, wall_damage_mult, null, -1, null, life_span);
+	public Projectile clone() {
+		return new Projectile(getModel().clone(), getCollider().clone(), getCollisionPriority(), speed, null, damage, wall_damage_mult, null, -1, null, life_span);
 	}
 
 }

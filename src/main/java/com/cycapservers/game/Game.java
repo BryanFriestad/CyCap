@@ -135,6 +135,12 @@ public abstract class Game {
 	public long getRespawn_time() {
 		return respawn_time;
 	}
+
+	public GameType getType() {
+		return type;
+	}
+	
+	
 	
 //	public void endGame(int winner) {
 //		

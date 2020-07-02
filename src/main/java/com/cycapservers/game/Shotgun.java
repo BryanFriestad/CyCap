@@ -40,7 +40,7 @@ public class Shotgun extends Weapon {
 		int num_of_pellets = 5;
 		for(int i = 0; i < num_of_pellets; i++){
 			String id = Utils.getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-			g.bullets.add(new Bullet(this.bullet_type, p.x, p.y, s.mapX, s.mapY, Utils.GRID_LENGTH * 0.125, Utils.GRID_LENGTH * 0.125, 0, 1.0, this.bullet_speed, this.damage/num_of_pellets, this.shot_variation, p, id));
+			g.bullets.add(new Projectile(this.bullet_type, p.x, p.y, s.mapX, s.mapY, Utils.GRID_LENGTH * 0.125, Utils.GRID_LENGTH * 0.125, 0, 1.0, this.bullet_speed, this.damage/num_of_pellets, this.shot_variation, p, id));
 			g.usedEntityIds.add(id);
 		}
 	}

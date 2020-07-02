@@ -14,7 +14,7 @@ public abstract class Character extends CollidingEntity {
 	private Game game;
 
 	private int team;
-	private String class_name;
+	private CharacterClass class_name;
 	
 	private Equipment[] inventory;
 	private Equipment currentEquipment;
@@ -37,7 +37,7 @@ public abstract class Character extends CollidingEntity {
 	private double speed_boost;
 	private double damage_boost;
 
-	public Character(Drawable model, Game game, int team, String class_name, int max_health, double speed, int visibility, int inventory_size) {
+	public Character(Drawable model, Game game, int team, CharacterClass class_name, int max_health, double speed, int visibility, int inventory_size) {
 		super(model, new CircleCollider(model.getDrawPosition(), Math.max(model.getDrawWidth(), model.getDrawHeight()/2.0)), 10); //TODO pick an appropriate priority for characters
 		this.setGame(game);
 		this.team = team;
@@ -181,11 +181,11 @@ public abstract class Character extends CollidingEntity {
 	}
 	
 	////GETTERS AND SETTERS////
-	public String getClass_name() {
+	public CharacterClass getClass_name() {
 		return class_name;
 	}
 
-	public void setClass_name(String class_name) {
+	public void setClass_name(CharacterClass class_name) {
 		this.class_name = class_name;
 	}
 

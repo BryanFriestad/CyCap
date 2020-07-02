@@ -169,6 +169,14 @@ public final class Utils{
 //		*/
 //	}
 	
+	public static Position getRandomPositionInCircle(Position center, double radius){
+		double angle = RANDOM.nextDouble() *  2 * Math.PI;
+		double dist = (RANDOM.nextDouble() + RANDOM.nextDouble()) * radius;
+		double r = (dist > radius) ? (2 * radius) - dist : dist;
+		
+		return new Position(Math.cos(angle) * r, Math.sin(angle) * r);
+	}
+	
 	/**
 	 * returns a random int between 0 and max, not including max
 	 * @param max

@@ -3,15 +3,15 @@ package com.cycapservers.game;
 public abstract class Weapon extends Equipment{
 	
 	//parameters
-	private long fire_rate;
-	private long reload_time;
-	private int max_reloads;
-	private int reloads_remaining;
+	protected long fire_rate;
+	protected long reload_time;
+	protected int max_reloads;
+	protected int reloads_remaining;
 	
-	private Sound fire_sound;
-	private Sound cannot_fire_sound;
-	private Sound reload_sound;
-	private Sound cannot_reload_sound;
+	protected Sound fire_sound;
+	protected Sound cannot_fire_sound;
+	protected Sound reload_sound;
+	protected Sound cannot_reload_sound;
 	
 	public Weapon(String name, long switchCooldown, Drawable icon, 
 			long fire_rate, long reload_time, int max_reloads, int reloads_remaining, 

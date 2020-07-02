@@ -163,7 +163,7 @@ public class Drawable implements JSON_Stringable {
 	}
 
 	public void setAlpha(double alpha) {
-		this.alpha = alpha;
+		this.alpha = Utils.clamp(0.0, alpha, 1.0);
 	}
 	
 	public Drawable clone() {

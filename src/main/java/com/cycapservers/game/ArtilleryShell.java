@@ -7,13 +7,13 @@ package com.cycapservers.game;
  * @author Bryan Friestad
  *
  */
-public class ArtilleryShell extends FallingBullet{
+public class ArtilleryShell extends FallingProjectile{
 	
 	private Explosion explosion_template;
 	private GroundMask cracked_ground_template;
 	
 	public ArtilleryShell(Drawable model, Collider c, int collision_priority, Position source, Position destination,
-			int damage, double wall_damage_mult, String ownerId, int team, BulletWeapon firingWeapon, long lifeSpan,
+			int damage, double wall_damage_mult, String ownerId, int team, ProjectileWeapon firingWeapon, long lifeSpan,
 			double max_height_scale, Explosion explosion, GroundMask cracked_ground) {
 		super(model, c, collision_priority, source, destination, damage, wall_damage_mult, ownerId, team, firingWeapon,
 				lifeSpan, max_height_scale);
@@ -26,8 +26,8 @@ public class ArtilleryShell extends FallingBullet{
 	@Override
 	public boolean update() {
 		if(!super.update()) {
-			//create explosion
-			//create ground_mask
+			shotFrom.getOwner().getGame().addEntity(explosion_template.clone(), true); //create explosion
+			shotFrom.getOwner().getGame().addEntity(new Entity(cracked_ground_template.clone()), false); //create ground_mask
 			return false;
 		}
 		

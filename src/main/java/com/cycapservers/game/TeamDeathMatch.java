@@ -101,9 +101,9 @@ public class TeamDeathMatch extends Game {
 		
 		/////////UPDATE GAME OBJECTS///////////
 		//move all of the bullets first
-		ListIterator<Bullet> bullet_iter = this.bullets.listIterator();
+		ListIterator<Projectile> bullet_iter = this.bullets.listIterator();
 		while(bullet_iter.hasNext()){
-			Bullet temp = bullet_iter.next();
+			Projectile temp = bullet_iter.next();
 		    if(temp.update(this)) {
 		    	this.usedEntityIds.remove(temp.get_entity_id());
 		    	bullet_iter.remove(); //remove the bullet from the list if it is done (animation done/hit a wall/etc)
