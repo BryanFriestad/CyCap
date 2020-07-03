@@ -1,6 +1,7 @@
 package com.cycapservers.game;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.cycapservers.JSON_Stringable;
 
@@ -34,6 +35,10 @@ public class Map implements JSON_Stringable {
 	 */
 	public void initializeGameState(GameType type, GameState state) {
 		
+	}
+	
+	public List<PathfindingNode> getPathfindingNodes(){
+		throw new UnsupportedOperationException();
 	}
 
 }

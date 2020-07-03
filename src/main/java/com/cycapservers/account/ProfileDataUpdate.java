@@ -82,7 +82,7 @@ public class ProfileDataUpdate {
 	 */
 	// instead of taking in players just take in a single player
 	public static void dbSaveData(PlayerStats player) {
-		Profiles oldProfile = profilesRepo.findByUserID(player.getUserID(), player.getChampion());
+		Profiles oldProfile = profilesRepo.findByUserID(player.getUserID(), player.getChampion().toString());
 
 		int kills = oldProfile.getKills() + player.getKills();
 		int deaths = oldProfile.getDeaths() + player.getDeaths();
@@ -134,16 +134,16 @@ public class ProfileDataUpdate {
 			profilesRepo.save(pa);
 			profilesRepo.save(pi);
 
-			profile = new Profiles(player.getUserID(), player.getChampion(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 1, 1, 1);
+			profile = new Profiles(player.getUserID(), player.getChampion().toString(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 1, 1, 1);
 		}
 		else if (recruit.getLevel() < 5) {
-			profile = new Profiles(player.getUserID(), player.getChampion(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 0, 0, 0);
+			profile = new Profiles(player.getUserID(), player.getChampion().toString(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 0, 0, 0);
 		}
 		else if (recruit.getLevel() > 5) {
-			profile = new Profiles(player.getUserID(), player.getChampion(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 1, 1, 1);
+			profile = new Profiles(player.getUserID(), player.getChampion().toString(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 1, 1, 1);
 		}
 		else {
-			profile = new Profiles(player.getUserID(), player.getChampion(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 1, 1, 1);
+			profile = new Profiles(player.getUserID(), player.getChampion().toString(), kills, deaths, gamewins, gamelosses, gamesplayed, flaggrabs, flagreturns, flagcaptures, experience, level, 1, 1, 1);
 		}
 
 		// delete old profile from database

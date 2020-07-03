@@ -8,43 +8,33 @@ package com.cycapservers.game;
  */
 public class AutomaticGun extends ProjectileWeapon {
 	
-	public AutomaticGun(String name, int damage, int rate, int bullet_speed, int mag_size, int extra_mags, int reload_time, double shot_variation) {
-		super(name, damage, 0, rate, bullet_speed, mag_size, extra_mags, reload_time, shot_variation);
-	}
-	
-	public AutomaticGun(AutomaticGun gun) {
-		super(gun);
-	}
-
-	@Override
-	public void update(Character p, InputSnapshot s, GameState g) {
-		if(!this.is_reloading){
-			this.checkFire(p, s, g);
-		}
-		else{
-			//TODO: play reloading sound or something
-		}
+	public AutomaticGun(String name, long switchCooldown, Drawable icon, long fire_rate, long reload_time,
+			int max_reloads, int reloads_remaining, Sound fire_sound, Sound cannot_fire_sound, Sound reload_sound,
+			Sound cannot_reload_sound, Projectile template, int mag_size) {
+		super(name, switchCooldown, icon, fire_rate, reload_time, max_reloads, reloads_remaining, fire_sound, cannot_fire_sound,
+				reload_sound, cannot_reload_sound, template, mag_size);
 	}
 
 	@Override
-	public void checkFire(Character p, InputSnapshot s, GameState g) {
-		if(s.lmb_down && ((System.currentTimeMillis() - this.last_shot) >= this.fire_rate)){
-			if(this.ammo_in_clip - 1 != -1){
-				this.fire(p, s, g);
-				this.last_shot = System.currentTimeMillis();
+	public void update(ClientInputHandler input_handler) {
+		super.update(input_handler);
+		
+		//if reloading and current_time - last reload time >= reload time
+		
+		if(isEquipped()){
+			if(input_handler.isDown(InputAction.SHOOT)){
+				//check if there is ammo
+				//check if fire_time has passed since last shot
+				//check if you are reloading
 			}
-			else{
-				//TODO: play click sound
+			if(input_handler.isPressedAndReleased(InputAction.RELOAD)){
+				
 			}
 		}
 	}
 
 	@Override
-	public void fire(Character p, InputSnapshot s, GameState g) {
-		this.ammo_in_clip--; //lose one bullet from the clip
-		String id = Utils.getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-		g.bullets.add(new Projectile(this.bullet_type, p.x, p.y, s.mapX, s.mapY, Utils.GRID_LENGTH * 0.125, Utils.GRID_LENGTH * 0.125, 0, 1.0, this.bullet_speed, this.damage, this.shot_variation, p, id));
-		g.usedEntityIds.add(id);
-		g.new_sounds.add(p.x + "," + p.y + "," + this.shot_sound); //make bullet sound
+	public Equipment clone() {
+		throw new UnsupportedOperationException();
 	}
 }

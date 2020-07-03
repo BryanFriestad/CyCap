@@ -8,22 +8,14 @@ package com.cycapservers.game;
  */
 public abstract class PlacedWeapon extends Weapon {
 
-	@Override
-	public void update(Character p, InputSnapshot s, GameState g) {
-		// TODO Auto-generated method stub
+	private Entity object;
 
-	}
-
-	@Override
-	public void checkFire(Character p, InputSnapshot s, GameState g) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void fire(Character p, InputSnapshot s, GameState g) {
-		// TODO Auto-generated method stub
-
+	public PlacedWeapon(String name, long switchCooldown, Drawable icon, long fire_rate, long reload_time,
+			int max_reloads, int reloads_remaining, Sound fire_sound, Sound cannot_fire_sound, Sound reload_sound,
+			Sound cannot_reload_sound, Entity object) {
+		super(name, switchCooldown, icon, fire_rate, reload_time, max_reloads, reloads_remaining, fire_sound,
+				cannot_fire_sound, reload_sound, cannot_reload_sound);
+		this.object = object;
 	}
 
 }

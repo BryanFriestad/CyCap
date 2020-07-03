@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+
 public class LobbyManager {
 	
 	private List<Lobby> lobbies;
@@ -18,6 +21,14 @@ public class LobbyManager {
 	
 	public void addNewLobby(Lobby l){
 		lobbies.add(l);
+	}
+	
+	public void closeConnection(WebSocketSession s){
+		throw new UnsupportedOperationException();
+	}
+	
+	public void handleTextMessage(WebSocketSession session, TextMessage textMessage){
+		throw new UnsupportedOperationException();
 	}
 	
 	public HashMap<LobbyType, Integer> getAvailableLobbyTypes(){

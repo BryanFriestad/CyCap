@@ -21,27 +21,29 @@ public final class Utils{
 	public final static Random RANDOM = new Random();
 	
 	//////WEAPON TEMPLATES//////
-	public final static Shotgun REMINGTON_870 = new Shotgun("Remington870", 25, 500, 500, 5, 4, 6000, 0.35);
-	public final static Pistol M1911 = new Pistol("Pistol", 10, 175, 400, 8, 4, 200, 0.05);
-	public final static Shotgun SAWED_OFF_SHOTGUN = new Shotgun("Sawed-Off Shotgun", 37, 350, 550, 2, 10, 2500, 0.55);
-	public final static AutomaticGun SMG = new AutomaticGun("SMG", 5, 100, 600, 40, 4, 500, 0.1);
-	public final static AutomaticGun ASSAULT_RIFLE = new AutomaticGun("Assault Rifle", 7, 120, 550, 30, 3, 1200, 0.08);
-	public final static AutomaticGun MACHINE_GUN = new AutomaticGun("Machine Gun", 8, 134, 450, 100, 2, 1750, 0.15);
-	public final static MortarWeapon MORTAR = new MortarWeapon("Mortar Rounds", 40, 0, 1000, 1, 9, 3000, 3.0, 3000, 7);
-	public final static SmokeGrenadeLauncher SMOKE_GRENADE = new SmokeGrenadeLauncher("Smoke Grenade", 0, 2, 1200, 1, 5, 500, 2, 1500, 5, 5000, 1);
-	public final static HealthGun HEAL_GUN = new HealthGun("Heal Gun", 2, 180, 100, 0, 1000, (int) (GRID_LENGTH * 1.5));
-	
-	//////POWER-UP TEMPLATES//////
-	public final static SpeedPotion SPEED_POTION = new SpeedPotion(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "speed_pot_template");
-	public final static HealthPack HEALTH_PACK = new HealthPack(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "health_pack_template");
-	public final static AmmoPack AMMO_PACK = new AmmoPack(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "ammo_pack_template");
+//	public final static Shotgun REMINGTON_870 = new Shotgun("Remington870", 25, 500, 500, 5, 4, 6000, 0.35);
+//	public final static Pistol M1911 = new Pistol("Pistol", 10, 175, 400, 8, 4, 200, 0.05);
+//	public final static Shotgun SAWED_OFF_SHOTGUN = new Shotgun("Sawed-Off Shotgun", 37, 350, 550, 2, 10, 2500, 0.55);
+//	public final static AutomaticGun SMG = new AutomaticGun("SMG", 5, 100, 600, 40, 4, 500, 0.1);
+//	public final static AutomaticGun ASSAULT_RIFLE = new AutomaticGun("Assault Rifle", 7, 120, 550, 30, 3, 1200, 0.08);
+//	public final static AutomaticGun MACHINE_GUN = new AutomaticGun("Machine Gun", 8, 134, 450, 100, 2, 1750, 0.15);
+//	public final static MortarWeapon MORTAR = new MortarWeapon("Mortar Rounds", 40, 0, 1000, 1, 9, 3000, 3.0, 3000, 7);
+//	public final static SmokeGrenadeLauncher SMOKE_GRENADE = new SmokeGrenadeLauncher("Smoke Grenade", 0, 2, 1200, 1, 5, 500, 2, 1500, 5, 5000, 1);
+//	public final static HealthGun HEAL_GUN = new HealthGun("Heal Gun", 2, 180, 100, 0, 1000, (int) (GRID_LENGTH * 1.5));
+//	
+//	//////POWER-UP TEMPLATES//////
+//	public final static SpeedPotion SPEED_POTION = new SpeedPotion(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "speed_pot_template");
+//	public final static HealthPack HEALTH_PACK = new HealthPack(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "health_pack_template");
+//	public final static AmmoPack AMMO_PACK = new AmmoPack(0, 0, GRID_LENGTH, GRID_LENGTH, 0, 1.0, "ammo_pack_template");
 	//TODO: shield potion, rage serum, and chill pill
 	
 	//////BULLET TEMPLATES//////
 	
 	//////MAP TEMPLATES//////
+	public final static Map BaseMap = new Map();
 	
 	//////GAMEMODE/TYPE TEMPLATES//////
+	public final static CaptureTheFlag guestCTF = new CaptureTheFlag(-1, BaseMap, false, -1, 5000, true, 2*60*1000, 16);
 	
 	
 	private Utils(){} //prevents the class from being constructed
@@ -130,45 +132,6 @@ public final class Utils{
 		return new Position(a.getX() - b.getX(), a.getY() - b.getY());
 	}
 	
-//	/**
-//	 * returns true if the two entities are colliding
-//	 * @param ent_1
-//	 * @param ent_2
-//	 * @return
-//	 */
-//	public static boolean isColliding(Entity ent_1, Entity ent_2){
-//		//QUICK COLLISION DETECTION
-//		if(distanceBetween(ent_1, ent_2) >= (ent_1.collision_radius + ent_2.collision_radius)){
-//			return false;
-//		}
-//		
-//		//ADVANCED COLLISION DETECTION
-//		boolean y_collision = isBetween(ent_1.y - (ent_1.getDrawHeight()/2), ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2)) || isBetween(ent_1.y + (ent_1.getDrawHeight()/2), ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2)) || isBetween(ent_1.y, ent_2.y - (ent_2.getDrawHeight()/2), ent_2.y + (ent_2.getDrawHeight()/2));
-//
-//		if(isBetween(ent_1.x - (ent_1.getDrawWidth()/2), ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
-//			return true;
-//		}
-//		else if(isBetween(ent_1.x + (ent_1.getDrawWidth()/2), ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
-//			return true;
-//		}
-//		else if(isBetween(ent_1.x, ent_2.x - (ent_2.getDrawWidth()/2), ent_2.x + (ent_2.getDrawWidth()/2)) && y_collision){
-//			return true;
-//		}
-//		else{
-//			return false;
-//		}
-//		
-//		/* This was the older method of collision detection. it is simpler and could still be used for more basic detection
-//		if (isBetween(ent_1.x, (ent_2.x -  (ent_2.dWidth/2)), (ent_2.x +  (ent_2.dWidth/2)))
-//		 && isBetween(ent_1.y, (ent_2.y -  (ent_2.dHeight/2)), (ent_2.y +  (ent_2.dHeight/2)))){
-//			return true;
-//		}
-//		else{
-//			return false;
-//		}
-//		*/
-//	}
-	
 	public static Position getRandomPositionInCircle(Position center, double radius){
 		double angle = RANDOM.nextDouble() *  2 * Math.PI;
 		double dist = (RANDOM.nextDouble() + RANDOM.nextDouble()) * radius;
@@ -195,94 +158,6 @@ public final class Utils{
 	public static int getRandomInRange(int lower, int upper){
 		return getRandomInt(upper - lower + 1) + lower;
 	}
-	
-//	/**
-//	 * generates and adds a breakable wall line to the passed gameState
-//	 * @param g
-//	 * @param startX
-//	 * @param startY
-//	 * @param length
-//	 * @param axis
-//	 */
-//	public static void generateWallLine(GameState g, int startX, int startY, int length, char axis) {
-//		if(axis == 'x'){
-//			for(int i = 0; i < length; i++){
-//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-//				g.walls.add(new Wall(0, startX + i, startY, false, s));
-//				g.usedEntityIds.add(s);
-//			}
-//		}
-//		else if(axis == 'y'){
-//			for(int i = 0; i < length; i++){
-//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-//				g.walls.add(new Wall(0, startX, startY + i, false, s));
-//				g.usedEntityIds.add(s);
-//			}
-//		}
-//		else{
-//			throw new IllegalArgumentException("Error in the function generateWallLine");
-//		}
-//	}
-//	
-//	/**
-//	 * generates and adds a wall line to the passed gameState. you decide if the walls are breakable or not
-//	 * @param g
-//	 * @param startX
-//	 * @param startY
-//	 * @param length
-//	 * @param axis
-//	 * @param invincible
-//	 */
-//	public static void generateWallLine(GameState g, int startX, int startY, int length, char axis, boolean invincible) {
-//		if(axis == 'x'){
-//			for(int i = 0; i < length; i++){
-//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-//				g.walls.add(new Wall(0, startX + i, startY, invincible, s));
-//				g.usedEntityIds.add(s);
-//			}
-//		}
-//		else if(axis == 'y'){
-//			for(int i = 0; i < length; i++){
-//				String s = getGoodRandomString(g.usedEntityIds, g.entity_id_len);
-//				g.walls.add(new Wall(0, startX, startY + i, invincible, s));
-//				g.usedEntityIds.add(s);
-//			}
-//		}
-//		else{
-//			throw new IllegalArgumentException("Error in the function generateWallLine");
-//		}
-//	}
-//	
-//	/**
-//	 * places a breakable wall border into the specified gameState, with the given height and width
-//	 * @param g
-//	 * @param width
-//	 * @param height
-//	 * @param startX
-//	 * @param startY
-//	 */
-//	public static void placeBorder(GameState g, int width, int height, int startX, int startY){
-//		generateWallLine(g, startX, startY, width, 'x');
-//		generateWallLine(g, startX, height + startY - 1, width, 'x');
-//		generateWallLine(g, startX, startY + 1, height - 2, 'y');
-//		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y');
-//	}
-//	
-//	/**
-//	 * places a wall border into the specified gameState, with the given height and width. You decide if it is breakable
-//	 * @param g
-//	 * @param width
-//	 * @param height
-//	 * @param startX
-//	 * @param startY
-//	 * @param invincible
-//	 */
-//	public static void placeBorder(GameState g, int width, int height, int startX, int startY, boolean invincible){
-//		generateWallLine(g, startX, startY, width, 'x', invincible);
-//		generateWallLine(g, startX, height + startY - 1, width, 'x', invincible);
-//		generateWallLine(g, startX, startY + 1, height - 2, 'y', invincible);
-//		generateWallLine(g, width + startX - 1, startY + 1, height - 2, 'y', invincible);
-//	}
 	
 //	/**
 //	 * Sets the role data of the player based off of their "role" field
@@ -343,182 +218,160 @@ public final class Utils{
 //		}
 //	}
 	
-	public static boolean checkLineOfSight(Entity ent1, Entity ent2, GameState g){
-		double delta_x = ent1.x - ent2.x;
-		double delta_y = ent1.y - ent2.y;
-		
-		for(int i = 0;i < 8;i++){
-			double x_coord = (ent1.x + (delta_x/8.0) * i);
-			double y_coord = (ent1.y + (delta_y/8.0) * i);
-			
-			Entity e = new Entity(0, 0, x_coord, y_coord, 0.0, 0.0, 0.0, 0.0, "");
-			try{
-				Point temp = get_nearest_map_node(e, g);
-				if(temp == null){
-					return false;
-				}
-			}catch(Exception ex){
-				return false;
-			}
-		}
-		return true;
-	}
+//	public static boolean checkLineOfSight(Entity ent1, Entity ent2, GameState g){
+//		double delta_x = ent1.getX() - ent2.getX();
+//		double delta_y = ent1.getY() - ent2.getY();
+//		
+//		double x_coord = ent1.getX(), y_coord = ent1.getY();
+//		double divisions = 8.0;
+//		for(int i = 0; i < divisions; i++){
+//			
+//			CollidingEntity e = new CollidingEntity(null, null, i);
+//			try{
+//				Point temp = get_nearest_map_node(e, g);
+//				if(temp == null){
+//					return false;
+//				}
+//			}catch(Exception ex){
+//				return false;
+//			}
+//			
+//			x_coord += delta_x / divisions;
+//			y_coord += delta_y / divisions;
+//		}
+//		return true;
+//	}
 	
-	public static Point get_nearest_map_node(Entity e, GameState g) {
-		int x = (int) (Math.ceil(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-		int y = (int) (Math.ceil(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-		short i = 0, j = 0;
-		while (g.ai_map.get(i).get(j).y != y) {
-			j++;
-		}
-		while (g.ai_map.get(i).get(j).x != x) {
-			i++;
-		}
-		if (g.ai_map.get(i).get(j).node_trav != false) {
-			return new Point(i, j);
-		} else {
-			x = (int) (Math.floor(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-			y = (int) (Math.floor(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-			i = 0;
-			j = 0;
-			while (g.ai_map.get(i).get(j).y != y) {
-				j++;
-			}
-			while (g.ai_map.get(i).get(j).x != x) {
-				i++;
-			}
-			if (g.ai_map.get(i).get(j).node_trav != false) {
-				return new Point(i, j);
-			} else {
-				x = (int) (Math.floor(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-				y = (int) (Math.ceil(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-				i = 0;
-				j = 0;
-				while (g.ai_map.get(i).get(j).y != y) {
-					j++;
-				}
-				while (g.ai_map.get(i).get(j).x != x) {
-					i++;
-				}
-				if (g.ai_map.get(i).get(j).node_trav != false) {
-					return new Point(i, j);
-				} else {
-					x = (int) (Math.ceil(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-					y = (int) (Math.floor(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
-					i = 0;
-					j = 0;
-					while (g.ai_map.get(i).get(j).y != y) {
-						j++;
-					}
-					while (g.ai_map.get(i).get(j).x != x) {
-						i++;
-					}
-					if (g.ai_map.get(i).get(j).node_trav != false) {
-						return new Point(i, j);
-					}
-					else {
-						
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	public static ArrayList<ArrayList<mapNode>> generate_node_array(GameState g){ //passing GameState so it doesn't have to be static
-		short index_i = 0;
-		short index_j = 0;
-		ArrayList<ArrayList<mapNode>> map = new ArrayList<ArrayList<mapNode>>(); //2d map of nodes
-		for(int i = 0; i < (GRID_LENGTH * g.mapGridWidth); i += Utils.AI_NODE_PIXEL_DISTANCE){
-			ArrayList<mapNode> node_col = new ArrayList<mapNode>();
-			for(int j = 0;j < (GRID_LENGTH * g.mapGridHeight );j += Utils.AI_NODE_PIXEL_DISTANCE){
-				Entity test_player_ent = new Entity(0, 0, i, j, 31, 31, 0, 1, "temp");//used for traversing
-				boolean traversable = true;
-				for(int t = 0; t < g.walls.size(); t++){
-					if(isColliding(test_player_ent, g.walls.get(t))){
-						traversable = false;
-						break; //colliding with one wall is enough to know this isn't a possible space
-					}
-				}
-				node_col.add(new mapNode(i, j, traversable, index_i, index_j));
-				index_j++;
-			}
-			map.add(node_col);
-			index_i++;
-			index_j = 0;
-		}
-		return map;
-	}
-	
-	public static ArrayList<mapNode> get_neighbors(GameState g, mapNode node, ArrayList<mapNode> closed_list, ArrayList<mapNode> open_list) {
-		ArrayList<mapNode> neighbors = new ArrayList<mapNode>();
-		if (g.ai_map.get(node.gridX - 1).get(node.gridY - 1).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX - 1).get(node.gridY - 1));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-						&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = true;
-		}
-		if (g.ai_map.get(node.gridX - 1).get(node.gridY).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX - 1).get(node.gridY));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = false;
-		}
-		if (g.ai_map.get(node.gridX - 1).get(node.gridY + 1).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX - 1).get(node.gridY + 1));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = true;
-		}
-		if (g.ai_map.get(node.gridX).get(node.gridY + 1).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX).get(node.gridY + 1));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = false;
-		}
-		// neighbor number 5
-		if (g.ai_map.get(node.gridX + 1).get(node.gridY + 1).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX + 1).get(node.gridY + 1));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = true;
-		}
-		if (g.ai_map.get(node.gridX + 1).get(node.gridY).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX + 1).get(node.gridY));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = false;
-		}
-		if (g.ai_map.get(node.gridX + 1).get(node.gridY - 1).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX + 1).get(node.gridY - 1));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = true;
-		}
-		if (g.ai_map.get(node.gridX).get(node.gridY - 1).node_trav == true) {
-			neighbors.add(g.ai_map.get(node.gridX).get(node.gridY - 1));
-			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
-					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
-				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
-			}
-			neighbors.get(neighbors.size() - 1).corner = false;
-		}
-		return neighbors;
-	}
+//	public static Point get_nearest_map_node(Entity e, GameState g) {
+//		int x = (int) (Math.ceil(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//		int y = (int) (Math.ceil(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//		short i = 0, j = 0;
+//		while (g.ai_map.get(i).get(j).y != y) {
+//			j++;
+//		}
+//		while (g.ai_map.get(i).get(j).x != x) {
+//			i++;
+//		}
+//		if (g.ai_map.get(i).get(j).node_trav != false) {
+//			return new Point(i, j);
+//		} else {
+//			x = (int) (Math.floor(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//			y = (int) (Math.floor(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//			i = 0;
+//			j = 0;
+//			while (g.ai_map.get(i).get(j).y != y) {
+//				j++;
+//			}
+//			while (g.ai_map.get(i).get(j).x != x) {
+//				i++;
+//			}
+//			if (g.ai_map.get(i).get(j).node_trav != false) {
+//				return new Point(i, j);
+//			} else {
+//				x = (int) (Math.floor(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//				y = (int) (Math.ceil(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//				i = 0;
+//				j = 0;
+//				while (g.ai_map.get(i).get(j).y != y) {
+//					j++;
+//				}
+//				while (g.ai_map.get(i).get(j).x != x) {
+//					i++;
+//				}
+//				if (g.ai_map.get(i).get(j).node_trav != false) {
+//					return new Point(i, j);
+//				} else {
+//					x = (int) (Math.ceil(e.x / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//					y = (int) (Math.floor(e.y / AI_NODE_PIXEL_DISTANCE) * AI_NODE_PIXEL_DISTANCE);
+//					i = 0;
+//					j = 0;
+//					while (g.ai_map.get(i).get(j).y != y) {
+//						j++;
+//					}
+//					while (g.ai_map.get(i).get(j).x != x) {
+//						i++;
+//					}
+//					if (g.ai_map.get(i).get(j).node_trav != false) {
+//						return new Point(i, j);
+//					}
+//					else {
+//						
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//	}
+//	
+//	public static ArrayList<PathfindingNode> get_neighbors(GameState g, PathfindingNode node, ArrayList<PathfindingNode> closed_list, ArrayList<PathfindingNode> open_list) {
+//		ArrayList<PathfindingNode> neighbors = new ArrayList<PathfindingNode>();
+//		if (g.ai_map.get(node.gridX - 1).get(node.gridY - 1).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX - 1).get(node.gridY - 1));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//						&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = true;
+//		}
+//		if (g.ai_map.get(node.gridX - 1).get(node.gridY).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX - 1).get(node.gridY));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = false;
+//		}
+//		if (g.ai_map.get(node.gridX - 1).get(node.gridY + 1).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX - 1).get(node.gridY + 1));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = true;
+//		}
+//		if (g.ai_map.get(node.gridX).get(node.gridY + 1).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX).get(node.gridY + 1));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = false;
+//		}
+//		// neighbor number 5
+//		if (g.ai_map.get(node.gridX + 1).get(node.gridY + 1).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX + 1).get(node.gridY + 1));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = true;
+//		}
+//		if (g.ai_map.get(node.gridX + 1).get(node.gridY).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX + 1).get(node.gridY));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = false;
+//		}
+//		if (g.ai_map.get(node.gridX + 1).get(node.gridY - 1).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX + 1).get(node.gridY - 1));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.414 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = true;
+//		}
+//		if (g.ai_map.get(node.gridX).get(node.gridY - 1).node_trav == true) {
+//			neighbors.add(g.ai_map.get(node.gridX).get(node.gridY - 1));
+//			if (closed_list.contains(neighbors.get(neighbors.size() - 1)) == false
+//					&& open_list.contains(neighbors.get(neighbors.size() - 1)) == false) {
+//				neighbors.get(neighbors.size() - 1).g = node.g + (1.0 * AI_NODE_PIXEL_DISTANCE);
+//			}
+//			neighbors.get(neighbors.size() - 1).corner = false;
+//		}
+//		return neighbors;
+//	}
 	
 	/**
 	 * returns a randomized string with the specified length that does not exist in currentList
@@ -533,21 +386,6 @@ public final class Utils{
 		}
 		return output;
 	}
-	
-//	/**
-//	 * returns false if the given string exists in currentListt
-//	 * @param currentList
-//	 * @param pw
-//	 * @return
-//	 */
-//	private static boolean isStringGood(List<String> currentList, String pw) {
-//		for(String s : currentList) {
-//			if(pw.equals(s)) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
 	
 	/**
 	 * Generates a random string of a given length

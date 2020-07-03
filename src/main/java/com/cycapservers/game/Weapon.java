@@ -3,7 +3,7 @@ package com.cycapservers.game;
 public abstract class Weapon extends Equipment{
 	
 	//parameters
-	protected long fire_rate;
+	protected long fire_time;
 	protected long reload_time;
 	protected int max_reloads;
 	protected int reloads_remaining;
@@ -13,11 +13,16 @@ public abstract class Weapon extends Equipment{
 	protected Sound reload_sound;
 	protected Sound cannot_reload_sound;
 	
+	//internal
+	protected long last_fire_time;
+	protected boolean is_reloading;
+	protected long last_reload_start_time;
+	
 	public Weapon(String name, long switchCooldown, Drawable icon, 
 			long fire_rate, long reload_time, int max_reloads, int reloads_remaining, 
 			Sound fire_sound, Sound cannot_fire_sound, Sound reload_sound, Sound cannot_reload_sound) {
 		super(name, switchCooldown, icon);
-		this.fire_rate = fire_rate;
+		this.fire_time = fire_rate;
 		this.reload_time = reload_time;
 		this.max_reloads = max_reloads;
 		this.reloads_remaining = reloads_remaining;
@@ -25,6 +30,9 @@ public abstract class Weapon extends Equipment{
 		this.cannot_fire_sound = cannot_fire_sound;
 		this.reload_sound = reload_sound;
 		this.cannot_reload_sound = cannot_reload_sound;
+		this.last_fire_time = System.currentTimeMillis();
+		this.is_reloading = false;
+		this.last_reload_start_time = System.currentTimeMillis();
 	}
 	
 	public abstract boolean fire();
@@ -32,6 +40,8 @@ public abstract class Weapon extends Equipment{
 	/**
 	 * Called when the weapon is to have its ammo refilled
 	 */
-	public abstract void refill();
+	public void refill(){
+		reloads_remaining = max_reloads;
+	}
 	
 }

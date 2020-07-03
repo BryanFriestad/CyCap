@@ -5,13 +5,17 @@ import com.cycapservers.JSON_Stringable;
 
 public abstract class Equipment implements JSON_Stringable {
 	
+	//params
 	private String name;
+	private long switchCooldown;
+	private Drawable icon;
 	
+	//internal
 	private Character owner;
 	private boolean equipped;
-	private long switchCooldown;
-	
-	private Drawable icon;
+	private long last_equip_time;
+	private long last_update_time;
+	protected long delta_update_time;
 	
 	public Equipment(String name, long switchCooldown, Drawable icon) {
 		super();
@@ -20,17 +24,40 @@ public abstract class Equipment implements JSON_Stringable {
 		this.equipped = false;
 		this.switchCooldown = switchCooldown;
 		this.icon = icon;
+		this.last_equip_time = System.currentTimeMillis(); 
 	}
 
 	/**
 	 * Equips this item
 	 * @return True if the equipping was a success
 	 */
-	public abstract boolean equip();
+	public boolean equip(){
+		if(owner == null) throw new IllegalStateException("This equipment must first have an owner before equipping");
+		
+		equipped = true;
+		last_equip_time = System.currentTimeMillis();
+		return equipped;
+	}
 	
-	public abstract boolean unequip();
+	/**
+	 * Attempts to unequip an equipment from its owner
+	 * @return Returns True if the unequipping was successful
+	 */
+	public boolean unequip(){
+		if(owner == null) throw new IllegalStateException("This equipment must first have an owner before unequipping");
+		if(!equipped) throw new IllegalStateException("Cannot unequip, this equipment is not equipped");
+		
+		if(System.currentTimeMillis() - last_equip_time >= switchCooldown){
+			equipped = false;
+		}
+		
+		return !equipped;
+	}
 	
-	public abstract void update(ClientInputHandler input_handler);
+	public void update(ClientInputHandler input_handler){
+		delta_update_time = System.currentTimeMillis() - last_update_time;
+		last_update_time = System.currentTimeMillis();
+	}
 	
 	/**
 	 * 

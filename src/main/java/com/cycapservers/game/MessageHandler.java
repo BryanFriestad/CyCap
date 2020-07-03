@@ -15,10 +15,13 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.cycapservers.BeanUtil;
+
 @Component
 public class MessageHandler extends TextWebSocketHandler {
 	
-	private static volatile GameManager gameManager = new GameManager();
+//	private static volatile GameManager gameManager = new GameManager();
+	private LobbyManager lobby_manager = BeanUtil.getBean(LobbyManager.class);
 	
 	private ThreadLocal<String> UserId = new ThreadLocal<String>();
 	
@@ -38,7 +41,7 @@ public class MessageHandler extends TextWebSocketHandler {
 	@Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("Socket Closed");
-		gameManager.removePlayer(session);
+		lobby_manager.closeConnection(session);
     }
 	
     @Override
@@ -53,6 +56,6 @@ public class MessageHandler extends TextWebSocketHandler {
         		Connect.set(0);
         	}
     	}
-    	gameManager.getMessage(session, textMessage.getPayload());
+    	lobby_manager.handleTextMessage(session, textMessage);
     }
 }

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.springframework.web.socket.WebSocketSession;
 import com.cycapservers.account.*;
 import com.cycapservers.game.CaptureTheFlag;
-import com.cycapservers.game.FreeForAll;
 import com.cycapservers.game.Character;
+import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.GameState;
 import com.cycapservers.game.TeamDeathMatch;
 import com.cycapservers.game.Utils;
@@ -16,7 +16,7 @@ public class PlayerStats {
 	
 	//////PLAYER DATA//////
 	protected String userID; 
-	protected String champion; 
+	protected CharacterClass champion; 
 	protected int experience;
 	protected int level;
 	protected int team;
@@ -45,8 +45,8 @@ public class PlayerStats {
 
 
 	public PlayerStats(Character player){
-		this.userID = player.get_entity_id(); //need to add this in later
-		this.champion = player.getRole(); //need to ensure role was already assigned
+		this.userID = player.getEntity_id(); //need to add this in later
+		this.champion = player.getClass_name(); //need to ensure role was already assigned
 		this.team = player.getTeam();
 		this.kills = 0;
 		this.deaths = 0; 
@@ -91,7 +91,7 @@ public class PlayerStats {
 		return userID;
 	}
 
-	public String getChampion() {
+	public CharacterClass getChampion() {
 		return champion;
 	}
 
@@ -153,10 +153,11 @@ public class PlayerStats {
 	}
 
 	public void setLevelAndXP() {
-		Point p = ProfileDataUpdate.dbGetLevel(userID, champion);
-		this.level = p.x;
-		this.experience = p.y;
-		if(Utils.DEBUG) System.out.println("Start - ID: " + userID + "     Role: " + champion + "     Level: " + level + "     XP: " + experience);
+		throw new UnsupportedOperationException();
+//		Point p = ProfileDataUpdate.dbGetLevel(userID, champion);
+//		this.level = p.x;
+//		this.experience = p.y;
+//		if(Utils.DEBUG) System.out.println("Start - ID: " + userID + "     Role: " + champion + "     Level: " + level + "     XP: " + experience);
 	}
 	
 	public void updateScore(int winner){ //could have this take in winning team to double scores potentially
@@ -222,9 +223,6 @@ public class PlayerStats {
 			set_endgame_message(get_endgame_message() + kills + ":");
 			set_endgame_message(get_endgame_message() + deaths + ":");
 			set_endgame_message(get_endgame_message() + level);
-		}
-		else if(this.game_type.equals(FreeForAll.class)){
-			
 		}
 	}
 
