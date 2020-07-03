@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 import java.awt.Point;
 
-public class SmokeGrenadeLauncher extends ThrownWeapon {
+public class SmokeGrenadeLauncher extends LaunchingWeapon {
 	
 	/**
 	 * the amount of time after the grenade hits the ground to emit smoke particles

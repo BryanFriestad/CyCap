@@ -1,5 +1,11 @@
 package com.cycapservers.game;
 
+/**
+ * A type of projectile weapon that fires as long as you
+ * are holding down the fire (mouse) button.
+ * @author Bryan Friestad
+ *
+ */
 public class AutomaticGun extends ProjectileWeapon {
 	
 	public AutomaticGun(String name, int damage, int rate, int bullet_speed, int mag_size, int extra_mags, int reload_time, double shot_variation) {

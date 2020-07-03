@@ -1,6 +1,12 @@
 package com.cycapservers.game;
 
-public class Shotgun extends Weapon {
+/**
+ * A shotgun is a type of semi-automatic gun which
+ * fires a select (but non-singular) amount of projectile
+ * @author btrf_
+ *
+ */
+public class Shotgun extends SemiAutomaticGun {
 	
 	public Shotgun(String name, int damage, int rate, int bullet_speed, int mag_size, int extra_mags, int reload_time, double shot_variation) {
 		super(name, damage, 3, rate, bullet_speed, mag_size, extra_mags, reload_time, shot_variation);

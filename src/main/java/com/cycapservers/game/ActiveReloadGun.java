@@ -1,8 +1,14 @@
 package com.cycapservers.game;
 
-public class SingleFireGun extends ProjectileWeapon {
+/**
+ * Describes a type of gun which only reloads while you 
+ * are holding down the reload button 
+ * @author btrf_
+ *
+ */
+public class ActiveReloadGun extends ProjectileWeapon {
 
-	public SingleFireGun(String name, long switchCooldown, Drawable icon, long fire_rate, long reload_time,
+	public ActiveReloadGun(String name, long switchCooldown, Drawable icon, long fire_rate, long reload_time,
 			int max_reloads, int reloads_remaining, Sound fire_sound, Sound cannot_fire_sound, Sound reload_sound,
 			Sound cannot_reload_sound, Projectile template) {
 		super(name, switchCooldown, icon, fire_rate, reload_time, max_reloads, reloads_remaining, fire_sound,

@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 import java.awt.Point;
 
-public class MortarWeapon extends ThrownWeapon {
+public class MortarWeapon extends LaunchingWeapon {
 	
 	/**
 	 * Creates a new MortarWeapon from scratch (be certain you mean to do this!)

@@ -1,5 +1,11 @@
 package com.cycapservers.game;
 
+/**
+ * A type of projectile weapon that fires upon press
+ * and release of the fire (mouse) button.
+ * @author Bryan Friestad
+ *
+ */
 public class SemiAutomaticGun extends ProjectileWeapon{
 
 	@Override

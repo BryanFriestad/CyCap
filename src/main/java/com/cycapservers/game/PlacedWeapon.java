@@ -1,10 +1,12 @@
 package com.cycapservers.game;
 
+/**
+ * A weapon that places an entity that can be triggered at
+ * a later point in time. A trip mine or a 
+ * @author Bryan Friestad
+ *
+ */
 public abstract class PlacedWeapon extends Weapon {
-	
-	public PlacedWeapon() {
-		super(null);
-	}
 
 	@Override
 	public void update(Character p, InputSnapshot s, GameState g) {
