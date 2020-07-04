@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta http-equiv="refresh" content="2; http://localhost/new_lobby">
+		<title>Lobby</title>
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css" />
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../static/css/cycap_style.css" />
+	</head>
+	<body>
+		<div th:replace="fragments::topnav"></div>
+	
+		<h2 th:text="${lobby.getType()}" >Lobby Type</h2>
+		<h3 th:text="${lobby.getPlayerCount()}" >Number of Players</h3>
+		<h3 th:text="${lobby.getTimeRemaining()}" >Time Until Start</h3>
+		<p th:text="${my_class}" >Currently Selected Class: N/A</p>
+		
+		<p>Unlocked Classes</p>
+		<form th:each="class : ${available_classes}" th:action="@{/new_lobby}" method="get">
+			<button type="submit" name="change_class" th:value="${class}" th:text="Switch to ${class}" >TEST CLASS</button>
+		</form>
+	
+	</body>
+</html>

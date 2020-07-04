@@ -40,10 +40,10 @@ public final class Utils{
 	//////BULLET TEMPLATES//////
 	
 	//////MAP TEMPLATES//////
-	public final static Map BaseMap = new Map();
+//	public final static Map BaseMap = new Map();
 	
 	//////GAMEMODE/TYPE TEMPLATES//////
-	public final static CaptureTheFlag guestCTF = new CaptureTheFlag(-1, BaseMap, false, -1, 5000, true, 2*60*1000, 16);
+//	public final static CaptureTheFlag guestCTF = new CaptureTheFlag(-1, BaseMap, false, -1, 5000, true, 2*60*1000, 16);
 	
 	
 	private Utils(){} //prevents the class from being constructed
@@ -713,7 +713,6 @@ public final class Utils{
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
 				output[j + i*cols] = new ImageSprite(s_width*j, s_height*i, s_width, s_height);
-				//output.add(new GameImageSprite(s_width*j, s_height*i, s_width, s_height));
 			}
 		}
 		return output;

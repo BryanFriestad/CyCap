@@ -11,21 +11,21 @@
 	<body>
 		<div th:replace="fragments::topnav"></div>
 		
-		<h2>Select a game type.</h2>
+		<h2>Select a lobby type to join.</h2>
 		<div id="table1" align="center">
 			<table style="width:80%">
-				<caption>Game List</caption>
+				<caption>Lobby List</caption>
 				<tr>
-					<th>Gamemode</th>
+					<th>Lobby Type</th>
 					<th>Number of Players</th> 
 					<th>Select Button</th>
 				</tr>
-				<tr th:each="game_type : ${games.keySet().toArray()}">
+				<tr th:each="game_type : ${types}">
 					<td th:text="${game_type}">Capture the Flag</td>
-					<td th:text="${games.get(game_type)}">234</td>
+					<td th:text="${counts.get(game_type)}">234</td>
 					<td>
 						<form th:action="@{/find_lobby}" method="get">
-							<button type="submit" name="type" th:value="game_type">Select!</button>
+							<button type="submit" name="type" th:value="${game_type}">Select!</button>
 						</form>
 					</td>
 				</tr>

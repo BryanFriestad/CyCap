@@ -20,6 +20,9 @@ public abstract class Game {
 	private int id;
 	private String join_code;
 	
+	private boolean started;
+	private boolean game_ended;
+	
 	/**
 	 * A mapping of character ids to team numbers of the team they are on
 	 */
@@ -70,6 +73,8 @@ public abstract class Game {
 		map.initializeGameState(type, game_state);
 		this.game_events = new ArrayList<GameEventsEntity>();
 		this.collision_engine = new CollisionEngine();
+		this.game_ended = false;
+		this.started = false;
 	}
 	
 	public abstract boolean addCharacter(Character c);
@@ -138,6 +143,18 @@ public abstract class Game {
 
 	public GameType getType() {
 		return type;
+	}
+
+	public int getMax_players() {
+		return max_players;
+	}
+
+	public boolean isStarted() {
+		return started;
+	}
+
+	public boolean isGame_ended() {
+		return game_ended;
 	}
 	
 	

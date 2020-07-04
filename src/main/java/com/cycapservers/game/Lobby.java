@@ -34,8 +34,16 @@ public class Lobby {
 	//vote for map
 	//get last game stats
 	
+	public boolean canPlayerJoin(String client_id){
+		return !currentGame.isStarted() && player_ids.size() < currentGame.getMax_players();
+	}
+	
 	public int getPlayerCount(){
 		return player_ids.size();
+	}
+	
+	public String getTimeRemaining(){
+		return null; //TODO
 	}
 	
 }

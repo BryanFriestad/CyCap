@@ -17,6 +17,7 @@ import com.cycapservers.account.Account;
 import com.cycapservers.account.AccountRepository;
 import com.cycapservers.game.LobbyManager;
 import com.cycapservers.game.LobbyType;
+import com.cycapservers.game.Lobby;
 import com.cycapservers.game.Utils;
 
 
@@ -35,7 +36,9 @@ public class GameController {
     @GetMapping("new_game_list")
     public String gameListPage(Model model, @ModelAttribute("account") Account account) {
     	if(account.getUserID() != null) {
-    		model.addAttribute("games", BeanUtil.getBean(LobbyManager.class).getAvailableLobbyTypes());
+    		LobbyManager m = BeanUtil.getBean(LobbyManager.class);
+    		model.addAttribute("types", m.getAvailableLobbyTypes());
+    		model.addAttribute("counts", m.getPlayerCountsByLobbyType());
     		return "game/game_list";
     	}
     	else {
@@ -48,27 +51,42 @@ public class GameController {
     public String getLobby(@ModelAttribute("account") Account account,
     					   @RequestParam(name="type", required=true) LobbyType lobby_type
     ){
-    	System.out.println("Lobby type: " + lobby_type);
-    	return "info/coming_soon";
+    	if(account.getUserID() != null) {
+	    	LobbyManager m = BeanUtil.getBean(LobbyManager.class);
+	    	Lobby l = m.findValidLobby(account.getUserID(), lobby_type);
+	    	return "info/coming_soon";
+    	}
+    	else{
+    		return "accounts/login";
+    	}
     }
     
-    @GetMapping("play")
-    public String playNow(Model model, @ModelAttribute("account") Account account) {
-    	if(account.getUserID() != null) {
-	    	model.addAttribute("user", account.getUserID());
-	    	return "play";
-    	}
-    	else {
-	    	Random rand = new Random();
-	    	model.addAttribute("user", "guest" + rand.nextInt(1000000));
-	    	return "play";
-    	}
-    }
+//    @GetMapping("play")
+//    public String playNow(Model model, @ModelAttribute("account") Account account) {
+//    	if(account.getUserID() != null) {
+//	    	model.addAttribute("user", account.getUserID());
+//	    	return "play";
+//    	}
+//    	else {
+//	    	Random rand = new Random();
+//	    	model.addAttribute("user", "guest" + rand.nextInt(1000000));
+//	    	return "play";
+//    	}
+//    }
     
     @GetMapping("new_lobby")
     public String Lobby(@ModelAttribute("account") Account account){
     	if(account.getUserID() != null) {
-    		return "game_list2";
+    		//info to add to lobby page model
+    		//String - timer.tostring
+    		//Char_class my_class
+    		//int my team
+    		//List<char_class> available_classes (to switch to)
+    		//List<string> player ids
+    		//hashmap<string, int> team nums
+    		//hashmap<string, char_class> character classes
+    		
+    		return "game/lobby";
     	}
     	else {
     		logger.info("Entered into get accounts login controller Layer");
@@ -76,14 +94,14 @@ public class GameController {
     	}
     }
     
-    @GetMapping("/LobbyScreen")
-    public String LobbyScreen(@ModelAttribute("account") Account account){
-    	if(account.getUserID() != null) {
-    		return "LobbyScreen";
-    	}
-    	else {
-    		logger.info("Entered into get accounts login controller Layer");
-        	return "accounts/login";
-    	}
-    }
+//    @GetMapping("/LobbyScreen")
+//    public String LobbyScreen(@ModelAttribute("account") Account account){
+//    	if(account.getUserID() != null) {
+//    		return "LobbyScreen";
+//    	}
+//    	else {
+//    		logger.info("Entered into get accounts login controller Layer");
+//        	return "accounts/login";
+//    	}
+//    }
 }
