@@ -10,7 +10,7 @@ public class Projectile extends CollidingEntity implements DamageDealer{
 	
 	private String owner_id;
 	protected ProjectileWeapon shotFrom;
-	private int team;
+	private Team team;
 	
 	private long life_span;
 	
@@ -18,7 +18,7 @@ public class Projectile extends CollidingEntity implements DamageDealer{
 	private long time_of_creation;
 	private boolean alive;
 	
-	public Projectile(Drawable model, Collider c, int collision_priority, double speed, Position direction, int damage, double wall_damage_mult, String ownerId, int team, ProjectileWeapon firingWeapon, long lifeSpan) {
+	public Projectile(Drawable model, Collider c, int collision_priority, double speed, Position direction, int damage, double wall_damage_mult, String ownerId, Team team, ProjectileWeapon firingWeapon, long lifeSpan) {
 		super(model, c, collision_priority);
 		this.speed = speed;
 		this.direction = direction;
@@ -88,7 +88,7 @@ public class Projectile extends CollidingEntity implements DamageDealer{
 	}
 
 	@Override
-	public int getOwnerTeam() {
+	public Team getOwnerTeam() {
 		return team;
 	}
 	
@@ -102,7 +102,7 @@ public class Projectile extends CollidingEntity implements DamageDealer{
 
 	@Override
 	public Projectile clone() {
-		return new Projectile(getModel().clone(), getCollider().clone(), getCollisionPriority(), speed, null, damage, wall_damage_mult, null, -1, null, life_span);
+		return new Projectile(getModel().clone(), getCollider().clone(), getCollisionPriority(), speed, null, damage, wall_damage_mult, null, Team.None, null, life_span);
 	}
 
 }

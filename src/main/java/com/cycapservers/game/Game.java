@@ -27,7 +27,6 @@ public abstract class Game {
 	 * A mapping of character ids to team numbers of the team they are on
 	 */
 	private HashMap<String, Integer> character_teams;
-	private HashMap<Integer, Integer> characters_per_team;
 	private GameType type;
 	protected GameState game_state;
 	
@@ -36,7 +35,8 @@ public abstract class Game {
 	private CollisionEngine collision_engine;
 	
 	//Game options
-	private int max_players;
+	private int max_characters;
+	private HashMap<Team, Integer> max_characters_per_team;
 	private boolean friendly_fire;
 	private int max_character_lives;
 	/**
@@ -58,7 +58,7 @@ public abstract class Game {
 	private long start_time;
 	
 	public Game(int id, Map map, GameType type, boolean friendly_fire, int max_character_lives, long respawn_time,
-			boolean enable_power_ups, long time_limit, int max_players) {
+			boolean enable_power_ups, long time_limit, int max_players, int num_teams, HashMap<Team, Integer> max_characters_per_team) {
 		super();
 		this.id = id;
 		this.map = map;
@@ -68,8 +68,9 @@ public abstract class Game {
 		this.respawn_time = respawn_time;
 		this.enable_power_ups = enable_power_ups;
 		this.time_limit = time_limit;
-		this.max_players = max_players;
-		game_state = new GameState(this.type, Utils.sumIntArray((Integer[]) characters_per_team.values().toArray()));
+		this.max_characters = max_players;
+		this.max_characters_per_team = max_characters_per_team;
+		game_state = new GameState(this.type, this.max_characters_per_team.keySet().size());
 		map.initializeGameState(type, game_state);
 		this.game_events = new ArrayList<GameEventsEntity>();
 		this.collision_engine = new CollisionEngine();
@@ -85,7 +86,7 @@ public abstract class Game {
 	
 	public abstract void sendGameState();
 	
-	public abstract Spawn getValidSpawnNode(int team);
+	public abstract Spawn getValidSpawnNode(Team team);
 	
 	public void update(){
 		//update AI 
@@ -146,7 +147,7 @@ public abstract class Game {
 	}
 
 	public int getMax_players() {
-		return max_players;
+		return max_characters;
 	}
 
 	public boolean isStarted() {
@@ -155,6 +156,10 @@ public abstract class Game {
 
 	public boolean isGame_ended() {
 		return game_ended;
+	}
+
+	public HashMap<Team, Integer> getMax_characters_per_team() {
+		return max_characters_per_team;
 	}
 	
 	

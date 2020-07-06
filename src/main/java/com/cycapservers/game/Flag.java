@@ -5,13 +5,13 @@ import com.cycapservers.game.database.GameEventsEntity;
 
 public class Flag extends Item {
 	
-	protected int team;
+	protected Team team;
 	protected GridLockedPosition base;
 	
 	//internal use
 	private boolean at_base;
 	
-	public Flag(Drawable model, Collider c, int collision_priority, CaptureTheFlag g, String name, int team,
+	public Flag(Drawable model, Collider c, int collision_priority, CaptureTheFlag g, String name, Team team,
 			GridLockedPosition base) {
 		super(model, c, collision_priority, g, name);
 		this.team = team;

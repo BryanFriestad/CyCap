@@ -14,6 +14,10 @@ public class Map implements JSON_Stringable {
 	//CTF specific components
 	private HashMap<Integer, GridLockedPosition> team_flag_locations;
 
+	public Map() {
+		super();
+	}
+
 	@Override
 	public String toJSONString() {
 		// TODO Auto-generated method stub

@@ -13,7 +13,7 @@ public class ArtilleryShell extends FallingProjectile{
 	private GroundMask cracked_ground_template;
 	
 	public ArtilleryShell(Drawable model, Collider c, int collision_priority, Position source, Position destination,
-			int damage, double wall_damage_mult, String ownerId, int team, ProjectileWeapon firingWeapon, long lifeSpan,
+			int damage, double wall_damage_mult, String ownerId, Team team, ProjectileWeapon firingWeapon, long lifeSpan,
 			double max_height_scale, Explosion explosion, GroundMask cracked_ground) {
 		super(model, c, collision_priority, source, destination, damage, wall_damage_mult, ownerId, team, firingWeapon,
 				lifeSpan, max_height_scale);

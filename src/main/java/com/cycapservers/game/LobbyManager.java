@@ -9,10 +9,14 @@ import org.springframework.web.socket.WebSocketSession;
 
 public class LobbyManager {
 	
+	private static final int join_code_length = 8;
+	
 	private List<Lobby> lobbies;
+	private List<String> used_lobby_join_codes;
 
 	public LobbyManager() {
 		lobbies = new ArrayList<Lobby>();
+		used_lobby_join_codes = new ArrayList<String>();
 	}
 	
 	public List<Lobby> getLobbies(){
@@ -34,12 +38,30 @@ public class LobbyManager {
 		}
 		
 		if(valid_lobbies.size() == 0){
-			// create new lobby of the requested type
-			return null; //TODO
+			String s = Utils.getGoodRandomString(used_lobby_join_codes, join_code_length);
+			used_lobby_join_codes.add(s);
+			Lobby new_lobby = new Lobby(s, type); // create new lobby of the requested type
+			lobbies.add(new_lobby);
+			return new_lobby;
 		}
 		else{
 			return valid_lobbies.get(Utils.RANDOM.nextInt(valid_lobbies.size()));
 		}
+	}
+	
+	/**
+	 * Retrieves the Lobby that the given user belongs to,
+	 * or null if there is no such lobby
+	 * @param client_id
+	 * @return
+	 */
+	public Lobby findLobbyOfUser(String client_id){
+		for(Lobby l : lobbies){
+			if(l.containsUser(client_id))
+				return l;
+		}
+		
+		return null;
 	}
 	
 	public void closeConnection(WebSocketSession s){

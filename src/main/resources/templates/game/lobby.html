@@ -2,23 +2,52 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<meta http-equiv="refresh" content="2; http://localhost/new_lobby">
+		<meta http-equiv="refresh" content="2; http://localhost/new_lobby" />
 		<title>Lobby</title>
-		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../static/css/topnav_style.css" />
-		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../static/css/cycap_style.css" />
+		<link rel="stylesheet" th:href="@{/css/topnav_style.css}" href="../../static/css/topnav_style.css" />
+		<link rel="stylesheet" th:href="@{/css/cycap_style.css}" href="../../static/css/cycap_style.css" />
+		<link rel="stylesheet" th:href="@{/css/lobby.css}" href="../../static/css/lobby.css" />
 	</head>
 	<body>
-		<div th:replace="fragments::topnav"></div>
 	
-		<h2 th:text="${lobby.getType()}" >Lobby Type</h2>
-		<h3 th:text="${lobby.getPlayerCount()}" >Number of Players</h3>
-		<h3 th:text="${lobby.getTimeRemaining()}" >Time Until Start</h3>
-		<p th:text="${my_class}" >Currently Selected Class: N/A</p>
+		<div style="width: 85%; margin-left: 7.5%;">
+			<div th:replace="fragments::topnav"></div>
 		
-		<p>Unlocked Classes</p>
-		<form th:each="class : ${available_classes}" th:action="@{/new_lobby}" method="get">
-			<button type="submit" name="change_class" th:value="${class}" th:text="Switch to ${class}" >TEST CLASS</button>
-		</form>
+			<h2 th:text="|Lobby Type: ${lobby.getLobbyType()}|" >Lobby Type</h2>
+			<h3 th:text="|Number of Players in Lobby: ${lobby.getPlayerCount()}|" >Number of Players</h3>
+			<h3 th:text="|Time until next game: ${lobby.getTimeRemaining()}|" >Time Until Start</h3>
+			<p th:text="${my_class}" >Currently Selected Class: N/A</p>
+			
+			<div class="class_select">
+				<p style="display: inline">Unlocked Classes: </p>
+				<form style="display: inline" th:each="char_class : ${available_classes}" th:action="@{/new_lobby}" method="get">
+					<button type="submit" name="change_class" th:value="${char_class}" th:text="|Switch to ${char_class}|" >TEST CLASS</button>
+				</form>
+			</div>
+			<br />
+			
+			<div class="player_list">
+				<table style="width: 100%">
+				<caption>Player List</caption>
+				<tr>
+					<th style="width: 1%">Lvl</th>
+					<th>Username</th>
+					<th>Number of Players</th> 
+					<th>Add User</th>
+				</tr>
+				<tr th:id="${player_teams.get(client_id)}" th:each="client_id : ${player_names}">
+					<td th:id="${player_teams.get(client_id)}">?</td>
+					<td th:text="${client_id}" th:id="${player_teams.get(client_id)}">Johnny Test</td>
+					<td th:text="${classes.get(client_id)}" th:id="${player_teams.get(client_id)}">No Class.. ha ha</td>
+					<td>
+						<form>
+							<button type="submit" name="add" th:value="${client_id}">Add Friend</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+			</div>
+		</div>
 	
 	</body>
 </html>

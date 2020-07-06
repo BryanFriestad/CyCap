@@ -31,7 +31,7 @@ public class FallingProjectile extends Projectile {
 	 * @param max_height_scale The scale of the entity at the maximum point in this bullet's lifespan
 	 */
 	public FallingProjectile(Drawable model, Collider c, int collision_priority, Position source, Position destination,
-			int damage, double wall_damage_mult, String ownerId, int team, ProjectileWeapon firingWeapon, long lifeSpan,
+			int damage, double wall_damage_mult, String ownerId, Team team, ProjectileWeapon firingWeapon, long lifeSpan,
 			double max_height_scale) {
 		super(model, c, collision_priority, Utils.distanceBetween(source, destination) / lifeSpan, Utils.getDirection(source, destination), damage, wall_damage_mult, ownerId, team, firingWeapon,
 				lifeSpan);

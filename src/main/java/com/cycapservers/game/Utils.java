@@ -403,34 +403,6 @@ public final class Utils{
 	}
 	
 	/**
-	 * returns the sprite index of the player image based on what team number is passed
-	 * @param team
-	 * @return
-	 */
-	public static int getSpriteIndexFromTeam(int team) {
-		switch(team) {
-			case 1:
-				return 5;
-			case 2:
-				return 0;
-			case 3:
-				return 1;
-			case 4:
-				return 6;
-			case 5:
-				return 2;
-			case 6:
-				return 3;
-			case 7:
-				return 4;
-			case 8:
-				return 7;
-			default:
-				throw new IllegalArgumentException("illegal team number, no sprite index associated!");
-		}
-	}
-	
-	/**
 	 * Takes in the current level and experience in an object, updates them to the new values and then returns them
 	 * @param data
 	 * @return

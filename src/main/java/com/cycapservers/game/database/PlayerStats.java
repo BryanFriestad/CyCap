@@ -9,6 +9,7 @@ import com.cycapservers.game.CaptureTheFlag;
 import com.cycapservers.game.Character;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.GameState;
+import com.cycapservers.game.Team;
 import com.cycapservers.game.TeamDeathMatch;
 import com.cycapservers.game.Utils;
 
@@ -19,7 +20,7 @@ public class PlayerStats {
 	protected CharacterClass champion; 
 	protected int experience;
 	protected int level;
-	protected int team;
+	protected Team team;
 	
 	//////BASIC GAME STATS//////
 	protected int kills;
@@ -160,7 +161,7 @@ public class PlayerStats {
 //		if(Utils.DEBUG) System.out.println("Start - ID: " + userID + "     Role: " + champion + "     Level: " + level + "     XP: " + experience);
 	}
 	
-	public void updateScore(int winner){ //could have this take in winning team to double scores potentially
+	public void updateScore(Team winner){ //could have this take in winning team to double scores potentially
 		if(this.game_type==null){
 			throw new IllegalStateException("Cannot update xp when game type has not been set!");
 		}

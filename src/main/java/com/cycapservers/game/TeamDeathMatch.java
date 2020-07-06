@@ -3,6 +3,7 @@ package com.cycapservers.game;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -13,6 +14,13 @@ import com.cycapservers.game.database.GamePlayersEntity;
 
 public class TeamDeathMatch extends Game {
 	
+	private final static HashMap<Team, Integer> defaultMaxPerTeam() {
+		HashMap<Team, Integer> myMap = new HashMap<Team, Integer>();
+	    myMap.put(Team.Red, 4);
+	    myMap.put(Team.Blue, 4);
+	    return myMap;
+	}
+	
 	
 	//////PLAYERS//////
 	protected volatile int playersOnTeam1;
@@ -21,7 +29,7 @@ public class TeamDeathMatch extends Game {
 	
 	public TeamDeathMatch(int id, Map map, GameType type, boolean friendly_fire, int max_character_lives,
 			long respawn_time, boolean enable_power_ups, long time_limit, int max_players) {
-		super(id, map, type, friendly_fire, max_character_lives, respawn_time, enable_power_ups, time_limit, max_players);
+		super(id, map, type, friendly_fire, max_character_lives, respawn_time, enable_power_ups, time_limit, max_players, 2, defaultMaxPerTeam());
 		// TODO Auto-generated constructor stub
 	}
 
@@ -50,7 +58,7 @@ public class TeamDeathMatch extends Game {
 	}
 
 	@Override
-	public Spawn getValidSpawnNode(int team) {
+	public Spawn getValidSpawnNode(Team team) {
 		// TODO Auto-generated method stub
 		return null;
 	}

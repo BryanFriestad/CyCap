@@ -17,6 +17,8 @@ import com.cycapservers.account.Account;
 import com.cycapservers.account.AccountRepository;
 import com.cycapservers.game.LobbyManager;
 import com.cycapservers.game.LobbyType;
+import com.cycapservers.game.Team;
+import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Lobby;
 import com.cycapservers.game.Utils;
 
@@ -25,6 +27,9 @@ import com.cycapservers.game.Utils;
 @SessionAttributes("account")
 public class GameController {
 
+	@Autowired
+	private LobbyManager lobby_manager;
+	
     private final Logger logger = LoggerFactory.getLogger(GameController.class);
     
     @ModelAttribute("account")
@@ -36,9 +41,9 @@ public class GameController {
     @GetMapping("new_game_list")
     public String gameListPage(Model model, @ModelAttribute("account") Account account) {
     	if(account.getUserID() != null) {
-    		LobbyManager m = BeanUtil.getBean(LobbyManager.class);
-    		model.addAttribute("types", m.getAvailableLobbyTypes());
-    		model.addAttribute("counts", m.getPlayerCountsByLobbyType());
+//    		LobbyManager m = BeanUtil.getBean(LobbyManager.class);
+    		model.addAttribute("types", lobby_manager.getAvailableLobbyTypes());
+    		model.addAttribute("counts", lobby_manager.getPlayerCountsByLobbyType());
     		return "game/game_list";
     	}
     	else {
@@ -52,9 +57,10 @@ public class GameController {
     					   @RequestParam(name="type", required=true) LobbyType lobby_type
     ){
     	if(account.getUserID() != null) {
-	    	LobbyManager m = BeanUtil.getBean(LobbyManager.class);
-	    	Lobby l = m.findValidLobby(account.getUserID(), lobby_type);
-	    	return "info/coming_soon";
+//    		LobbyManager m = BeanUtil.getBean(LobbyManager.class);
+	    	Lobby l = lobby_manager.findValidLobby(account.getUserID(), lobby_type);
+	    	l.joinLobby(account.getUserID());
+	    	return "redirect:/new_lobby";
     	}
     	else{
     		return "accounts/login";
@@ -75,7 +81,7 @@ public class GameController {
 //    }
     
     @GetMapping("new_lobby")
-    public String Lobby(@ModelAttribute("account") Account account){
+    public String Lobby(Model model, @ModelAttribute("account") Account account){
     	if(account.getUserID() != null) {
     		//info to add to lobby page model
     		//String - timer.tostring
@@ -85,6 +91,17 @@ public class GameController {
     		//List<string> player ids
     		//hashmap<string, int> team nums
     		//hashmap<string, char_class> character classes
+    		
+    		Lobby l = lobby_manager.findLobbyOfUser(account.getUserID()); //find lobby for given player
+    		if(l == null)
+    			return "redirect:/new_game_list"; //if it doesnt exist, kick them back to the find_game page
+    		
+    		model.addAttribute("lobby", l);
+    		model.addAttribute("my_class", l.getSelected_classes().get(account.getUserID()));
+    		model.addAttribute("available_classes", CharacterClass.values()); //TODO: replace this with a lookup to the DB
+    		model.addAttribute("player_names", l.getPlayer_ids());
+    		model.addAttribute("player_teams", l.getPlayer_teams());
+    		model.addAttribute("classes", l.getSelected_classes());
     		
     		return "game/lobby";
     	}

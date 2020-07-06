@@ -10,7 +10,7 @@ public class Explosion extends CollidingEntity implements DamageDealer{
 	private int damage_amount;
 	private double wall_damage_mult;
 	private String kill_type;
-	private int owner_team;
+	private Team owner_team;
 	
 	//internal
 	/**
@@ -19,7 +19,7 @@ public class Explosion extends CollidingEntity implements DamageDealer{
 	private List<String> hurt_entities;
 
 	public Explosion(Drawable model, Collider c, int collision_priority, String owner_id, int damage_amount,
-			double wall_damage_mult, String kill_type, int owner_team) {
+			double wall_damage_mult, String kill_type, Team owner_team) {
 		super(model, c, collision_priority);
 		this.owner_id = owner_id;
 		this.damage_amount = damage_amount;
@@ -63,7 +63,7 @@ public class Explosion extends CollidingEntity implements DamageDealer{
 	}
 
 	@Override
-	public int getOwnerTeam() {
+	public Team getOwnerTeam() {
 		return owner_team;
 	}
 	

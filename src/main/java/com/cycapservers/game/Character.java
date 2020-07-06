@@ -13,7 +13,7 @@ public abstract class Character extends CollidingEntity {
 	 */
 	private Game game;
 
-	private int team;
+	private Team team;
 	private CharacterClass class_name;
 	
 	private Equipment[] inventory;
@@ -37,7 +37,7 @@ public abstract class Character extends CollidingEntity {
 	private double speed_boost;
 	private double damage_boost;
 
-	public Character(Drawable model, Game game, int team, CharacterClass class_name, int max_health, double speed, int visibility, int inventory_size) {
+	public Character(Drawable model, Game game, Team team, CharacterClass class_name, int max_health, double speed, int visibility, int inventory_size) {
 		super(model, new CircleCollider(model.getDrawPosition(), Math.max(model.getDrawWidth(), model.getDrawHeight()/2.0)), 10); //TODO pick an appropriate priority for characters
 		this.setGame(game);
 		this.team = team;
@@ -241,11 +241,11 @@ public abstract class Character extends CollidingEntity {
 		this.game = game;
 	}
 	
-	public int getTeam() {
+	public Team getTeam() {
 		return team;
 	}
 
-	public void setTeam(int team) {
+	public void setTeam(Team team) {
 		this.team = team;
 	}
 

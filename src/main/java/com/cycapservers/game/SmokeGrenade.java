@@ -19,7 +19,7 @@ public class SmokeGrenade extends FallingProjectile {
 	private Position particle_src;
 	
 	public SmokeGrenade(Drawable model, Collider c, int collision_priority, Position source, Position destination,
-			int damage, double wall_damage_mult, String ownerId, int team, ProjectileWeapon firingWeapon, long lifeSpan,
+			int damage, double wall_damage_mult, String ownerId, Team team, ProjectileWeapon firingWeapon, long lifeSpan,
 			double max_height_scale, int smoke_time, int smoke_intensity, Particle smoke_part) {
 		super(model, c, collision_priority, source, destination, damage, wall_damage_mult, ownerId, team, firingWeapon,
 				lifeSpan, max_height_scale);

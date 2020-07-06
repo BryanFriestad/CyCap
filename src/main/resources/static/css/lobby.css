@@ -1,31 +1,45 @@
-[id="1"] {
+[id="Red"] {
 	background-color: red;
 }
 
-[id="2"] {
+[id="Blue"] {
 	background-color: blue;
 }
 
-[id="3"] {
+[id="Green"] {
 	background-color: green;
 }
 
-[id="4"] {
+[id="Yellow"] {
 	background-color: yellow;
+	color: black;
 }
 
-[id="5"] {
+[id="Purple"] {
 	background-color: purple;
 }
 
-[id="6"] {
+[id="Pink"] {
 	background-color: pink;
+	color: black;
 }
 
-[id="7"] {
+[id="Orange"] {
 	background-color: orange;
 }
 
-[id="8"] {
+[id="LightSkyBlue"] {
 	background-color: LightSkyBlue;
+}
+
+[id="None"] {
+	background-color: white;
+}
+
+button {
+	font-size: 100%;
+}
+
+table{
+	text-align: center;
 }

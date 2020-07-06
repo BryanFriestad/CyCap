@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class AI_player extends Character {
 
-	public AI_player(Drawable model, Game game, int team, CharacterClass class_name, int max_health, double speed,
+	public AI_player(Drawable model, Game game, Team team, CharacterClass class_name, int max_health, double speed,
 			int visibility, int inventory_size) {
 		super(model, game, team, class_name, max_health, speed, visibility, inventory_size);
 		// TODO Auto-generated constructor stub

@@ -20,8 +20,8 @@ public interface DamageDealer {
 	
 	/**
 	 * 
-	 * @return an integer representing the team of the owner
+	 * @return an enum representing the team of the owner
 	 */
-	public int getOwnerTeam();
+	public Team getOwnerTeam();
 
 }

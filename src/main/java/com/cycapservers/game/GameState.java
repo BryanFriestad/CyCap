@@ -38,6 +38,7 @@ public class GameState
 	public GameState(GameType type, int team_count) {
 		super();
 		used_entity_id = new ArrayList<String>();
+		team_scores = new HashMap<Integer, Integer>();
 		for(int i = 0; i < team_count; i++) {
 			team_scores.put(i, 0);
 		}
