@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -62,6 +63,21 @@ public class LobbyManager {
 		}
 		
 		return null;
+	}
+	
+	@Scheduled(fixedRate = 500)
+	public void updateLobbies(){
+		for(Lobby l : lobbies){
+			//check if game is completed in lobby and if no players
+			// are left in the lobby. if so, add to a list for 
+			// deletion
+			l.update();
+		}
+	}
+	
+	//schedule every 100 ms
+	public void sendGameStates(){
+		
 	}
 	
 	public void closeConnection(WebSocketSession s){

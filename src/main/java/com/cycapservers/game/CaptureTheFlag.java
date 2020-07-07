@@ -24,8 +24,8 @@ public class CaptureTheFlag extends Game {
 	}
 	
 	//////CTF STUFF//////
-	protected Flag team1_flag;
-	protected Flag team2_flag;
+	protected Flag team1_flag = new Flag(null, null, 0, this, Team.Red, null);
+	protected Flag team2_flag = new Flag(null, null, 0, this, Team.Blue, null);
 	/////////////////////
 	
 	public CaptureTheFlag(int id, Map map, boolean friendly_fire, int max_character_lives, long respawn_time,

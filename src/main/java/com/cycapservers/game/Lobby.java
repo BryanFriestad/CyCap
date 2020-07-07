@@ -1,10 +1,15 @@
 package com.cycapservers.game;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class Lobby {
+	
+	private static int default_game_start_timer_ms = 45000;
 	
 	//params
 	private String join_code;
@@ -20,6 +25,7 @@ public class Lobby {
 	 * The game that is currently playing or waiting to start. Should never be null.
 	 */
 	private Game current_game;
+	private long next_game_start;
 	private List<String> player_ids;
 	private HashMap<String, Team> player_teams;
 	private HashMap<String, CharacterClass> selected_classes;
@@ -33,7 +39,7 @@ public class Lobby {
 		//set the starting game
 		switch(type){
 			case ctf:
-				current_game = new CaptureTheFlag(0, new Map(), false, 0, 0, false, 0, 0);
+				current_game = new CaptureTheFlag(0, new Map(), false, -1, 10000, true, 3*60*1000, 8);
 				break;
 				
 			case ffa:
@@ -45,7 +51,7 @@ public class Lobby {
 	//			return GameType.values()[RANDOM.nextInt(GameType.values().length)];
 				
 			case tdm:
-				current_game = new TeamDeathMatch(0, new Map(), null, false, 0, 0, false, 0, 0);
+				current_game = new TeamDeathMatch(0, new Map(), false, -1, 5000, true, 2*60*1000, 8);
 				break;
 				
 			default:
@@ -55,6 +61,13 @@ public class Lobby {
 		player_ids = new ArrayList<String>();
 		player_teams = new HashMap<String, Team>();
 		selected_classes = new HashMap<String, CharacterClass>();
+		next_game_start = System.currentTimeMillis() + default_game_start_timer_ms;
+	}
+	
+	public void update(){
+		//update lobby stuff
+		//if less than 10 seconds until start time, lock in the map
+		//if less than 0 seconds until start time, start game
 	}
 
 	public void joinLobby(String client_id){
@@ -119,7 +132,10 @@ public class Lobby {
 	}
 	
 	public String getTimeRemaining(){
-		return "0:00"; //TODO
+		long time_diff = this.next_game_start - System.currentTimeMillis();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+		Date date = new Date(time_diff);
+		return sdf.format(date);
 	}
 
 	public List<String> getPlayer_ids() {

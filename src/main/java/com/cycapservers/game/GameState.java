@@ -42,6 +42,11 @@ public class GameState
 		for(int i = 0; i < team_count; i++) {
 			team_scores.put(i, 0);
 		}
+		
+		entities = new ArrayList<Entity>();
+		background_tiles = new ArrayList<Entity>();
+		current_walls = new ArrayList<Wall>();
+		characters = new ArrayList<Character>();
 	}
 	
 	public void update(){

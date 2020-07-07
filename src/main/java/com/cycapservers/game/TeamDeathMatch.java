@@ -27,9 +27,9 @@ public class TeamDeathMatch extends Game {
 	protected volatile int playersOnTeam2;
 	///////////////////
 	
-	public TeamDeathMatch(int id, Map map, GameType type, boolean friendly_fire, int max_character_lives,
+	public TeamDeathMatch(int id, Map map, boolean friendly_fire, int max_character_lives,
 			long respawn_time, boolean enable_power_ups, long time_limit, int max_players) {
-		super(id, map, type, friendly_fire, max_character_lives, respawn_time, enable_power_ups, time_limit, max_players, 2, defaultMaxPerTeam());
+		super(id, map, GameType.tdm, friendly_fire, max_character_lives, respawn_time, enable_power_ups, time_limit, max_players, 2, defaultMaxPerTeam());
 		// TODO Auto-generated constructor stub
 	}
 

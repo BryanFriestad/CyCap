@@ -132,7 +132,6 @@ public class Account {
 	}
 
 	public int getAdministrator() {
-		System.out.println(this.userID);
 		return administrator;
 	}
 
@@ -141,7 +140,6 @@ public class Account {
 	}
 
 	public int getDeveloper() {
-		System.out.println(this.userID);
 		return developer;
 	}
 
