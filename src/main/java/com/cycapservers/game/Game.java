@@ -7,6 +7,8 @@ import java.util.List;
 import com.cycapservers.BeanUtil;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GameEventsRepository;
+import com.cycapservers.game.database.GameType;
+import com.cycapservers.game.database.GamesEntity;
 
 /**
  * A game is held and managed by a Lobby
@@ -17,72 +19,66 @@ import com.cycapservers.game.database.GameEventsRepository;
  */
 public abstract class Game {
 	
-	private int id;
+	//parameters
 	private String join_code;
-	
-	private boolean started;
-	private boolean game_ended;
-	
-	/**
-	 * A mapping of character ids to team numbers of the team they are on
-	 */
-	private HashMap<String, Integer> character_teams;
 	private GameType type;
-	protected GameState game_state;
-	
-	private Map map;
-	
-	private CollisionEngine collision_engine;
-	
 	//Game options
-	private int max_characters;
-	private HashMap<Team, Integer> max_characters_per_team;
+	private int max_characters; //calculated internally
+	private HashMap<Team, Integer> max_characters_per_team; //a mapping between the available teams in this game and the max # of players on each
 	private boolean friendly_fire;
 	private int max_character_lives;
-	/**
-	 * in milliseconds
-	 */
-	private long respawn_time;
+	private long respawn_time; //in ms
 	private boolean enable_power_ups;
-	/**
-	 * in milliseconds
-	 */
-	private long time_limit;
+	private long time_limit; //in ms
 	
+	//set after init
+	private Map map; //the map that will be used to init the GameState for this game
+	protected GameState game_state;
+	private GamesEntity db_entry;
+	private boolean started; //whether or not the game has started
+	private boolean game_ended; //whether or not the game has finished
+	private long start_time; //the unix time in ms since the start of the game
+	private CollisionEngine collision_engine;
 	private PowerUpSpawner power_up_spawner;
-
-	/**
-	 * A list of events that have happened in the game to save to the database
-	 */
-	private List<GameEventsEntity> game_events;
-	private long start_time;
+	private List<GameEventsEntity> game_events; //A list of events that have happened in the game to save to the database
 	
-	public Game(int id, Map map, GameType type, boolean friendly_fire, int max_character_lives, long respawn_time,
-			boolean enable_power_ups, long time_limit, int max_players, int num_teams, HashMap<Team, Integer> max_characters_per_team) {
-		super();
-		this.id = id;
-		this.map = map;
+	
+	public Game(String join_code, GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) {
+		this.join_code = join_code;
 		this.type = type;
 		this.friendly_fire = friendly_fire;
 		this.max_character_lives = max_character_lives;
 		this.respawn_time = respawn_time;
 		this.enable_power_ups = enable_power_ups;
 		this.time_limit = time_limit;
-		this.max_characters = max_players;
+		this.max_characters = Utils.sumIntArray((Integer[]) max_characters_per_team.values().toArray());
 		this.max_characters_per_team = max_characters_per_team;
-		game_state = new GameState(this.type, this.max_characters_per_team.keySet().size());
-		map.initializeGameState(type, game_state);
+		
 		this.game_events = new ArrayList<GameEventsEntity>();
 		this.collision_engine = new CollisionEngine();
 		this.game_ended = false;
 		this.started = false;
 	}
 	
-	public abstract boolean addCharacter(Character c);
+	protected abstract boolean addCharacter(Character c);
 	
-	public abstract boolean removeCharacter(Character c);
+	protected abstract boolean removeCharacter(Character c);
 	
-	public abstract boolean startGame();
+	public void startGame(List<String> inc_player_ids, HashMap<String, Team> inc_player_teams, HashMap<String, CharacterClass> inc_player_classes){
+		if(map == null)
+			throw new IllegalStateException("The map has not yet been set for this game");
+		
+		game_state = new GameState(this.type, this.max_characters_per_team.keySet().size()); //init the game state
+		map.initializeGameState(type, game_state);
+		
+		for(String username : inc_player_ids){
+			addCharacter(new Player(null, this, inc_player_teams.get(username), inc_player_classes.get(username), 4, max_character_lives, null, null)); //TODO: get model, password and websocket session figured out
+		}
+		
+		this.start_time = System.currentTimeMillis();
+		this.db_entry = new GamesEntity(this.type);
+		this.started = true;
+	}
 	
 	public abstract void sendGameState();
 	
@@ -104,8 +100,8 @@ public abstract class Game {
 	 * @param s
 	 */
 	public void receiveInputSnapshot(InputSnapshot s){
-		if(s.getGame_id() != id)
-			throw new IllegalArgumentException("This input snapshot does not belong to this game(" + id + ")");
+		if(s.getGame_id() != getId())
+			throw new IllegalArgumentException("This input snapshot does not belong to this game(" + getId() + ")");
 		game_state.handleSnapshot(s);
 		update();
 	}
@@ -127,7 +123,7 @@ public abstract class Game {
 	}
 
 	public int getId() {
-		return id;
+		return db_entry.getGame_id();
 	}
 
 	public boolean isFriendly_fire() {
@@ -158,8 +154,8 @@ public abstract class Game {
 		return game_ended;
 	}
 
-	public HashMap<Team, Integer> getMax_characters_per_team() {
-		return max_characters_per_team;
+	public String getJoin_code() {
+		return join_code;
 	}
 	
 	

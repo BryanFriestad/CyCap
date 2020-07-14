@@ -11,9 +11,8 @@ public class Player extends Character {
 	
 	private ClientInputHandler input_handler;
 	
-	public Player(Drawable model, Game game, Team team, CharacterClass class_name, int max_health, double speed,
-			int visibility, int inventory_size, String password, WebSocketSession session) {
-		super(model, game, team, class_name, max_health, speed, visibility, inventory_size);
+	public Player(Drawable model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives, String password, WebSocketSession session) {
+		super(model, game, team, class_name, inventory_size, starting_lives);
 		this.input_handler = new ClientInputHandler(password);
 		this.session = session;
 	}

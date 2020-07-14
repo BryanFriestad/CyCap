@@ -11,26 +11,19 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.game.database.GamePlayersEntity;
+import com.cycapservers.game.database.GameType;
 
 public class TeamDeathMatch extends Game {
 	
-	private final static HashMap<Team, Integer> defaultMaxPerTeam() {
-		HashMap<Team, Integer> myMap = new HashMap<Team, Integer>();
-	    myMap.put(Team.Red, 4);
-	    myMap.put(Team.Blue, 4);
-	    return myMap;
+	private static final HashMap<Team, Integer> getTeamLayout(){
+		HashMap<Team, Integer> map = new HashMap<Team, Integer>();
+		map.put(Team.Red, 4);
+		map.put(Team.Blue, 4);
+		return map;
 	}
-	
-	
-	//////PLAYERS//////
-	protected volatile int playersOnTeam1;
-	protected volatile int playersOnTeam2;
-	///////////////////
-	
-	public TeamDeathMatch(int id, Map map, boolean friendly_fire, int max_character_lives,
-			long respawn_time, boolean enable_power_ups, long time_limit, int max_players) {
-		super(id, map, GameType.tdm, friendly_fire, max_character_lives, respawn_time, enable_power_ups, time_limit, max_players, 2, defaultMaxPerTeam());
-		// TODO Auto-generated constructor stub
+
+	public TeamDeathMatch(String join_code) {
+		super(join_code, GameType.tdm, false, -1, 5000, true, 2*60*1000, getTeamLayout());
 	}
 
 	@Override
@@ -46,9 +39,8 @@ public class TeamDeathMatch extends Game {
 	}
 
 	@Override
-	public boolean startGame() {
-		// TODO Auto-generated method stub
-		return false;
+	public void startGame(List<String> inc_player_ids, HashMap<String, Team> inc_player_teams, HashMap<String, CharacterClass> inc_player_classes) {
+		super.startGame(inc_player_ids, inc_player_teams, inc_player_classes);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GameEventsRepository;
 import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GamePlayersRepository;
+import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
 import com.cycapservers.game.database.GamesRepository;
 

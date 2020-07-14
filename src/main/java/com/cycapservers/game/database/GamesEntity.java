@@ -52,8 +52,9 @@ public class GamesEntity {
 		dtf.format(localDate);
 		start_date = java.sql.Date.valueOf(localDate);
 		
-		java.sql.Time sql_time = java.sql.Time.valueOf("05:21:00"); //TODO: figure out how to actually do this
-		start_time = sql_time;
+		java.util.Date date = new java.util.Date(System.currentTimeMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		start_time = Time.valueOf(sdf.format(date));
 	}
 
 	public int getGame_id() {
@@ -78,6 +79,12 @@ public class GamesEntity {
 
 	public void setStart_date(Date start_date) {
 		this.start_date = start_date;
+	}
+	
+	public void setStart_date(long timestamp){
+		java.util.Date date = new java.util.Date(timestamp);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		this.start_date = Date.valueOf(sdf.format(date));
 	}
 
 	public Time getStart_time() {

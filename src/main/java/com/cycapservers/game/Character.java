@@ -37,19 +37,16 @@ public abstract class Character extends CollidingEntity {
 	private double speed_boost;
 	private double damage_boost;
 
-	public Character(Drawable model, Game game, Team team, CharacterClass class_name, int max_health, double speed, int visibility, int inventory_size) {
+	public Character(Drawable model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives) {
 		super(model, new CircleCollider(model.getDrawPosition(), Math.max(model.getDrawWidth(), model.getDrawHeight()/2.0)), 10); //TODO pick an appropriate priority for characters
 		this.setGame(game);
 		this.team = team;
 		this.class_name = class_name;
-		this.max_health = max_health;
-		this.health = max_health;
-		this.speed = speed;
-		this.visibility = visibility;
 		
 		inventory = new Equipment[inventory_size];
 		
 		this.setAlive(true);
+		this.lives_remaining = starting_lives;
 		this.setLast_time_of_death(System.currentTimeMillis());
 		
 		this.active_buffs = new ArrayList<Buff>();
@@ -65,7 +62,7 @@ public abstract class Character extends CollidingEntity {
 	public abstract void respawn();
 	
 	/**
-	 * resets equipment, health, etc. to match the class spawn state
+	 * resets equipment, health, visibility, speed to match the class spawn state
 	 */
 	public abstract void resetClass();
 

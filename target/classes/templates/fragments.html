@@ -18,7 +18,7 @@
 					<li class="outer_list" th:if="${account.getUserID()} == null">Account
 						<ul class="inner_list">
 							<li class="inner_list"><a href="/accounts/log">Log in</a></li>
-							<li class="inner_list"><a href="/accounts/regiser">Create an Account</a></li>
+							<li class="inner_list"><a href="/accounts/register">Create an Account</a></li>
 						</ul>
 					</li>
 					<li class="outer_list" th:unless="${account.getUserID()} == null">Account

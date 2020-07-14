@@ -1,40 +1,30 @@
 package com.cycapservers.game;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import com.cycapservers.game.database.GameEventType;
-import com.cycapservers.game.database.GameEventsEntity;
-import com.cycapservers.game.database.GamePlayersEntity;
+import com.cycapservers.game.database.GameType;
 
 public class CaptureTheFlag extends Game {
 	
-	private final static HashMap<Team, Integer> defaultMaxPerTeam() {
-		HashMap<Team, Integer> myMap = new HashMap<Team, Integer>();
-	    myMap.put(Team.Red, 4);
-	    myMap.put(Team.Blue, 4);
-	    return myMap;
+	private static final HashMap<Team, Integer> getTeamLayout(){
+		HashMap<Team, Integer> map = new HashMap<Team, Integer>();
+		map.put(Team.Red, 4);
+		map.put(Team.Blue, 4);
+		return map;
 	}
 	
 	//////CTF STUFF//////
-	protected Flag team1_flag = new Flag(null, null, 0, this, Team.Red, null);
+	protected Flag team1_flag = new Flag(null, null, 0, this, Team.Red, null); //get base from map
 	protected Flag team2_flag = new Flag(null, null, 0, this, Team.Blue, null);
 	/////////////////////
 	
-	public CaptureTheFlag(int id, Map map, boolean friendly_fire, int max_character_lives, long respawn_time,
-			boolean enable_power_ups, long time_limit, int max_players) {
-		super(id, map, GameType.ctf, friendly_fire, max_character_lives, respawn_time, enable_power_ups, time_limit, max_players, 2, defaultMaxPerTeam());
+	public CaptureTheFlag(String join_code) {
+		super(join_code, GameType.ctf, false, -1, 10000, true, 3*60*1000, getTeamLayout());
 		game_state.addEntity(team1_flag);
 		game_state.addEntity(team2_flag);
 	}
-	
+
 	@Override
 	public boolean addCharacter(Character c) {
 		// TODO Auto-generated method stub
@@ -46,11 +36,12 @@ public class CaptureTheFlag extends Game {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 	@Override
-	public boolean startGame() {
-		// TODO Auto-generated method stub
-		return false;
+	public void startGame(List<String> inc_player_ids, HashMap<String, Team> inc_player_teams, HashMap<String, CharacterClass> inc_player_classes) {
+		super.startGame(inc_player_ids, inc_player_teams, inc_player_classes);
 	}
+	
 	@Override
 	public void receiveInputSnapshot(InputSnapshot s) {
 		// TODO Auto-generated method stub

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cycapservers.JSON_Stringable;
+import com.cycapservers.game.database.GameType;
 
 public class Map implements JSON_Stringable {
 	
