@@ -22,8 +22,8 @@ public class TeamDeathMatch extends Game {
 		return map;
 	}
 
-	public TeamDeathMatch(String join_code) {
-		super(join_code, GameType.tdm, false, -1, 5000, true, 2*60*1000, getTeamLayout());
+	public TeamDeathMatch() {
+		super(GameType.tdm, false, -1, 5000, true, 2*60*1000, getTeamLayout());
 	}
 
 	@Override

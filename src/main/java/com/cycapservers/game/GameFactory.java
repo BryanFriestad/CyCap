@@ -12,16 +12,16 @@ public class GameFactory{
 		return instance;
 	}
 
-	public Game getGame(GameType type, String join_code){
+	public Game getGame(GameType type){
 		switch(type){
 			case ctf:
-				return new CaptureTheFlag(join_code);
+				return new CaptureTheFlag();
 				
 			case ffa:
 				throw new UnsupportedOperationException("FFA not yet available");
 				
 			case tdm:
-				return new TeamDeathMatch(join_code);
+				return new TeamDeathMatch();
 				
 			default:
 				return null;

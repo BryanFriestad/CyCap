@@ -7,6 +7,7 @@ import java.util.List;
 import com.cycapservers.BeanUtil;
 import com.cycapservers.game.database.GameEventsEntity;
 import com.cycapservers.game.database.GameEventsRepository;
+import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
 
@@ -20,8 +21,7 @@ import com.cycapservers.game.database.GamesEntity;
 public abstract class Game {
 	
 	//parameters
-	private String join_code;
-	private GameType type;
+	private GameType type; //used to store in DB
 	//Game options
 	private int max_characters; //calculated internally
 	private HashMap<Team, Integer> max_characters_per_team; //a mapping between the available teams in this game and the max # of players on each
@@ -41,10 +41,10 @@ public abstract class Game {
 	private CollisionEngine collision_engine;
 	private PowerUpSpawner power_up_spawner;
 	private List<GameEventsEntity> game_events; //A list of events that have happened in the game to save to the database
+	private List<GamePlayersEntity> game_players;
 	
 	
-	public Game(String join_code, GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) {
-		this.join_code = join_code;
+	public Game(GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) {
 		this.type = type;
 		this.friendly_fire = friendly_fire;
 		this.max_character_lives = max_character_lives;
@@ -55,6 +55,7 @@ public abstract class Game {
 		this.max_characters_per_team = max_characters_per_team;
 		
 		this.game_events = new ArrayList<GameEventsEntity>();
+		this.game_players = new ArrayList<GamePlayersEntity>();
 		this.collision_engine = new CollisionEngine();
 		this.game_ended = false;
 		this.started = false;
@@ -77,6 +78,7 @@ public abstract class Game {
 		
 		this.start_time = System.currentTimeMillis();
 		this.db_entry = new GamesEntity(this.type);
+		db_entry.setGame_type(type);
 		this.started = true;
 	}
 	
@@ -154,8 +156,12 @@ public abstract class Game {
 		return game_ended;
 	}
 
-	public String getJoin_code() {
-		return join_code;
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	public HashMap<Team, Integer> getMax_characters_per_team() {
+		return max_characters_per_team;
 	}
 	
 	

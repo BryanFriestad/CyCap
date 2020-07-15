@@ -19,8 +19,8 @@ public class CaptureTheFlag extends Game {
 	protected Flag team2_flag = new Flag(null, null, 0, this, Team.Blue, null);
 	/////////////////////
 	
-	public CaptureTheFlag(String join_code) {
-		super(join_code, GameType.ctf, false, -1, 10000, true, 3*60*1000, getTeamLayout());
+	public CaptureTheFlag() {
+		super(GameType.ctf, false, -1, 10000, true, 3*60*1000, getTeamLayout());
 		game_state.addEntity(team1_flag);
 		game_state.addEntity(team2_flag);
 	}
