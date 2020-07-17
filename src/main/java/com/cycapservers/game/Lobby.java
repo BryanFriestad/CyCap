@@ -50,6 +50,14 @@ public class Lobby {
 	
 	public Lobby(String join_code, LobbyType type, ArrayList<GameType> available_game_types, int max_players, boolean mode_voting_enabled, boolean map_voting_enabled, boolean team_selection_enabled, ArrayList<Map> available_maps) {
 		super();
+		if(available_game_types.size() == 0)
+			throw new IllegalArgumentException("available_game_types list must not be empty");
+		if(available_maps.size() == 0)
+			throw new IllegalArgumentException("available_maps list must not be empty");
+		if(max_players < 1){
+			throw new IllegalArgumentException("max_players (" + max_players + ") must be at least 1");
+		}
+		
 		this.join_code = join_code;
 		this.type = type;
 		this.available_game_types = available_game_types;
