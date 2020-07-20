@@ -4,7 +4,7 @@ public class Spawn extends GridLockedPosition {
 	
 	private Team team;
 	
-	public Spawn(double x, double y, Team team) {
+	public Spawn(short x, short y, Team team) {
 		super(x, y);
 		this.team = team;
 	}
