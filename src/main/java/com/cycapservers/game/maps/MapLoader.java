@@ -1,3 +1,178 @@
+package com.cycapservers.game.maps;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.IllegalFormatException;
+
+import org.springframework.core.io.ResourceLoader;
+
+import com.cycapservers.BeanUtil;
+import com.cycapservers.game.BackgroundTile;
+import com.cycapservers.game.Entity;
+import com.cycapservers.game.Flag;
+import com.cycapservers.game.GridLockedDrawable;
+import com.cycapservers.game.GridLockedEntity;
+import com.cycapservers.game.GridLockedPosition;
+import com.cycapservers.game.Image;
+import com.cycapservers.game.PowerUpSpawn;
+import com.cycapservers.game.Spawn;
+import com.cycapservers.game.Wall;
+import com.cycapservers.game.database.GameType;
+
+public class MapLoader{
+	
+	public static Map loadMap(String filename){
+		
+		ResourceLoader loader = BeanUtil.getBean(ResourceLoader.class);
+		try {
+			InputStream i_stream = loader.getResource("classpath:" + filename).getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(i_stream));
+			
+			ArrayList<GameType> valid_game_types = new ArrayList<GameType>();
+			ArrayList<HashMap<String, String>> walls = new ArrayList<HashMap<String, String>>();
+			ArrayList<HashMap<String, String>> bg_tiles = new ArrayList<HashMap<String, String>>();
+			ArrayList<HashMap<String, String>> ents = new ArrayList<HashMap<String, String>>();
+			boolean seen_section1 = false, seen_section2 = false, seen_section3 = false;
+			boolean ended_section1 = false, ended_section2 = false, ended_section3 = false;
+			while(reader.ready()){
+				String line = reader.readLine();
+				line = line.trim();
+				
+				if(line.isEmpty()){
+					continue; //ignore whitespace lines
+				}
+				else if(line.startsWith("-- ")){
+					continue; //ignore comment lines
+				}
+				else if(line.startsWith("!")){
+					if(!seen_section1 && !seen_section2 && !seen_section3){
+						line = line.substring(1); //remove first char
+						String[] type_strings = line.split(",");
+						for(String s : type_strings){
+							GameType v = GameType.valueOf(s); //throws exception if illegal
+							valid_game_types.add(v); //add valid game type to list
+						}
+					}
+					else{
+						throw new Exception("game type tag appears after start of section tags");
+					}
+				}
+				else if(line.startsWith("<walls>")){
+					if(seen_section1)
+						throw new Exception("section 1 already started and saw a new starting tag");
+					else
+						seen_section1 = true;
+				}
+				else if(line.startsWith("<bg>")){
+					if(seen_section2)
+						throw new Exception("section 2 already started and saw a new starting tag");
+					else
+						seen_section2 = true;	
+				}
+				else if(line.startsWith("<dynamic>")){
+					if(seen_section3)
+						throw new Exception("section 3 already started and saw a new starting tag");
+					else
+						seen_section3 = true;
+				}
+				else if(line.startsWith("@")){
+					if(!ended_section1){
+						if(!seen_section1)
+							throw new Exception("Seeing entity tags but section 1 is not open");
+						else{
+							HashMap<String, String> map = buildEntityParamMap(line);
+							Class<?> c = Class.forName(map.get("class"));
+							if(!c.equals(Wall.class)){
+								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 1");
+							}
+							walls.add(map);
+						}
+					}
+					else if(!ended_section2){
+						if(!seen_section2)
+							throw new Exception("Seeing entity tags but section 2 is not open");
+						else{
+							HashMap<String, String> map = buildEntityParamMap(line);
+							Class<?> c = Class.forName(map.get("class"));
+							if(!c.equals(BackgroundTile.class)){
+								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 2");
+							}
+							bg_tiles.add(map);
+						}
+					}
+					else if(!ended_section3){
+						if(!seen_section3)
+							throw new Exception("Seeing entity tags but section 3 is not open");
+						else{
+							HashMap<String, String> map = buildEntityParamMap(line);
+							Class<?> c = Class.forName(map.get("class"));
+							if(!c.equals(Flag.class) && !c.equals(Spawn.class) && !c.equals(PowerUpSpawn.class) && !c.equals(GridLockedPosition.class)){
+								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 3");
+							}
+							ents.add(map);
+						}
+					}
+				}
+				else if(line.startsWith("<end>")){
+					if(!ended_section1){
+						if(!seen_section1)
+							throw new Exception("Seeing end tag 1 but section 1 is not open");
+						else
+							ended_section1 = true;
+					}
+					else if(!ended_section2){
+						if(!seen_section2)
+							throw new Exception("Seeing end tag 2 but section 2 is not open");
+						else
+							ended_section2 = true;
+					}
+					else if(!ended_section3){
+						if(!seen_section3)
+							throw new Exception("Seeing end tag 3 but section 3 is not open");
+						else
+							ended_section3 = true;
+					}
+				}
+				else{
+					throw new Exception("Illegal starting character in map with filename = " + filename);
+				}
+			}
+			
+			if(!ended_section1 || !ended_section2 || !ended_section3){
+				throw new Exception("not all sections were ended by the end of the file");
+			}
+			
+			return new Map(valid_game_types, walls, bg_tiles, ents);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		throw new UnsupportedOperationException("map loader unfinished");
+	}
+	
+	private static HashMap<String, String> buildEntityParamMap(String line){
+		line = line.substring(1); //trim off @ symbol
+		HashMap<String, String> map = new HashMap<String, String>(); //build map
+		String[] key_value_pairs = line.split(",");
+		for(String kvp : key_value_pairs){
+			String[] temp = kvp.split(":");
+			String key = temp[0];
+			String value = temp[1];
+			map.put(key, value);
+		}
+		
+		return map;
+	}
+	
+}
 //package com.cycapservers.game;
 //
 //import java.util.ArrayList;

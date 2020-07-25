@@ -3,6 +3,7 @@ package com.cycapservers.game;
 import java.util.ArrayList;
 
 import com.cycapservers.game.database.GameType;
+import com.cycapservers.game.maps.Map;
 
 public class LobbyFactory {
 	

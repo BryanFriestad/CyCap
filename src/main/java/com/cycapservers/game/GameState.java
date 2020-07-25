@@ -31,7 +31,7 @@ public class GameState
 	
 	private List<Character> characters;
 	private List<Wall> current_walls;
-	private List<Entity> background_tiles;
+	private List<BackgroundTile> background_tiles;
 	private List<Entity> entities;
 	
 	private List<String> used_entity_id;
@@ -45,7 +45,7 @@ public class GameState
 		}
 		
 		entities = new ArrayList<Entity>();
-		background_tiles = new ArrayList<Entity>();
+		background_tiles = new ArrayList<BackgroundTile>();
 		current_walls = new ArrayList<Wall>();
 		characters = new ArrayList<Character>();
 	}
@@ -79,6 +79,10 @@ public class GameState
 		if(e instanceof Wall) {
 			setUniqueEntityId(e);
 			current_walls.add((Wall) e);
+		}
+		else if(e instanceof BackgroundTile){
+			setUniqueEntityId(e);
+			background_tiles.add((BackgroundTile) e);
 		}
 		else if(e instanceof Character) {
 			used_entity_id.add(e.getEntity_id());
@@ -115,6 +119,14 @@ public class GameState
 		//add new sounds
 		//add scores
 		return null;
+	}
+
+	public Position getGraveyardPosition() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public List<PathfindingNode> getPathfindingNodes(){
+		throw new UnsupportedOperationException();
 	}
 	
 }

@@ -10,6 +10,7 @@ import com.cycapservers.game.database.GameEventsRepository;
 import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
+import com.cycapservers.game.maps.Map;
 
 /**
  * A game is held and managed by a Lobby
@@ -70,7 +71,7 @@ public abstract class Game {
 			throw new IllegalStateException("The map has not yet been set for this game");
 		
 		game_state = new GameState(this.type, this.max_characters_per_team.keySet().size()); //init the game state
-		map.initializeGameState(type, game_state);
+		map.initializeGameState(type, game_state, enable_power_ups);
 		
 		for(String username : inc_player_ids){
 			addCharacter(new Player(null, this, inc_player_teams.get(username), inc_player_classes.get(username), 4, max_character_lives, null, null)); //TODO: get model, password and websocket session figured out
@@ -133,7 +134,7 @@ public abstract class Game {
 	}
 
 	public Position getGraveyardPosition() {
-		return this.map.getGraveyardPosition();
+		return this.game_state.getGraveyardPosition();
 	}
 
 	public long getRespawn_time() {

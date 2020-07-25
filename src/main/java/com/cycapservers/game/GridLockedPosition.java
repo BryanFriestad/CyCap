@@ -8,13 +8,13 @@ public class GridLockedPosition extends Position {
 		setY(0);
 	}
 
-	public GridLockedPosition(double x, double y) {
+	public GridLockedPosition(Double x, Double y) {
 		super();
 		setX(x);
 		setY(y);
 	}
 	
-	public GridLockedPosition(short x, short y) {
+	public GridLockedPosition(Short x, Short y) {
 		super((x * Utils.GRID_LENGTH) + (Utils.GRID_LENGTH / 2), (y * Utils.GRID_LENGTH) + (Utils.GRID_LENGTH / 2));
 	}
 	

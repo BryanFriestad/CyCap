@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cycapservers.game.database.GameType;
+import com.cycapservers.game.maps.Map;
 
 public class Lobby {
 	

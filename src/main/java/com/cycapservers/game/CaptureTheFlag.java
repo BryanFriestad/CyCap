@@ -21,8 +21,6 @@ public class CaptureTheFlag extends Game {
 	
 	public CaptureTheFlag() {
 		super(GameType.ctf, false, -1, 10000, true, 3*60*1000, getTeamLayout());
-		game_state.addEntity(team1_flag);
-		game_state.addEntity(team2_flag);
 	}
 
 	@Override
