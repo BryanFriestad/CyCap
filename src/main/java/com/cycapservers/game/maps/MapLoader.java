@@ -6,22 +6,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IllegalFormatException;
-
 import org.springframework.core.io.ResourceLoader;
 
 import com.cycapservers.BeanUtil;
-import com.cycapservers.game.BackgroundTile;
-import com.cycapservers.game.Entity;
-import com.cycapservers.game.Flag;
-import com.cycapservers.game.GridLockedDrawable;
-import com.cycapservers.game.GridLockedEntity;
-import com.cycapservers.game.GridLockedPosition;
-import com.cycapservers.game.Image;
 import com.cycapservers.game.PowerUpSpawn;
-import com.cycapservers.game.Spawn;
-import com.cycapservers.game.Wall;
+import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
 import com.cycapservers.game.database.GameType;
+import com.cycapservers.game.entities.Flag;
+import com.cycapservers.game.entities.Spawn;
+import com.cycapservers.game.entities.Wall;
 
 public class MapLoader{
 	
@@ -96,11 +89,12 @@ public class MapLoader{
 						if(!seen_section2)
 							throw new Exception("Seeing entity tags but section 2 is not open");
 						else{
-							HashMap<String, String> map = buildEntityParamMap(line);
-							Class<?> c = Class.forName(map.get("class"));
-							if(!c.equals(BackgroundTile.class)){
-								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 2");
-							}
+							HashMap<String, String> map = new HashMap<String, String>();
+//							HashMap<String, String> map = buildEntityParamMap(line);
+//							Class<?> c = Class.forName(map.get("class"));
+//							if(!c.equals(BackgroundTile.class)){
+//								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 2");
+//							}
 							bg_tiles.add(map);
 						}
 					}
@@ -110,7 +104,7 @@ public class MapLoader{
 						else{
 							HashMap<String, String> map = buildEntityParamMap(line);
 							Class<?> c = Class.forName(map.get("class"));
-							if(!c.equals(Flag.class) && !c.equals(Spawn.class) && !c.equals(PowerUpSpawn.class) && !c.equals(GridLockedPosition.class)){
+							if(!c.equals(Flag.class) && !c.equals(Spawn.class) && !c.equals(PowerUpSpawn.class) && !c.equals(GridLockedPositionComponent.class)){
 								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 3");
 							}
 							ents.add(map);

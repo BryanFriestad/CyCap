@@ -1,5 +1,5 @@
-function InputHandler(game_id){
-	
+function InputHandler(game_id)
+{
 	this.game_id = game_id;
 	
 	this.canvasX = 0;
@@ -14,12 +14,14 @@ function InputHandler(game_id){
 	this.clientPredictiveState = []; //this is a list of all of the past input snapshots that have not been handled by the Server
 	this.snapshotNum = 1;
 	
-	this.update = function(){
+	this.update = function()
+	{
 		this.mapX = (this.canvasX - gt5) / gt1;
 		this.mapY = (this.canvasY - gt6) / gt4;
 	}
 	
-	this.getSnapshot = function(){
+	this.getSnapshot = function()
+	{
 		//compile input data
 		let snap = new InputSnapshot(this.mapX, this.mapY, this.canvasX, this.canvasY, this.mouse_clicked, this.lmb_down, this.keys_down, this.keys_pnr, this.snapshotNum);
 		
@@ -33,15 +35,19 @@ function InputHandler(game_id){
 		return snap.getData();
 	}
 	
-	this.getMostRecentInput = function(){
+	this.getMostRecentInput = function()
+	{
 		let pos = this.clientPredictiveState.length - 1;
 		return this.clientPredictiveState[pos];
 	}
 	
 	//this takes in the highest snapshot number handled by the server and removes everything before that from the prediction
-	this.removeHandledSnapshots = function(highestSnap){
-		for(let i = 0; i < this.clientPredictiveState.length; i++){
-			if(this.clientPredictiveState[i].snapshotNum == highestSnap){
+	this.removeHandledSnapshots = function(highestSnap)
+	{
+		for (let i = 0; i < this.clientPredictiveState.length; i++)
+		{
+			if (this.clientPredictiveState[i].snapshotNum == highestSnap)
+			{
 				this.clientPredictiveState.splice(0, i+1);
 				break;
 			}
@@ -49,8 +55,8 @@ function InputHandler(game_id){
 	}
 }
 
-function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, keys_down, keys_pnr, num){
-	
+function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, keys_down, keys_pnr, num)
+{
 	this.mapX = mapX;
 	this.mapY = mapY;
 	this.canvasX = canvasX;
@@ -64,7 +70,8 @@ function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, ke
 	this.snapshotNum = num;
 	this.frameTime = global_delta_t; //the amount of time associated with this frame in seconds
 	
-	this.getData = function(){
+	this.getData = function()
+	{
 		//compile the input information
 		
 		//signify that it is an input message
@@ -93,7 +100,6 @@ function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, ke
 		message += this.snapshotNum + ":";
 		message += this.frameTime.toFixed(5);
 		
-		//return string
 		return message;
 	}
 }

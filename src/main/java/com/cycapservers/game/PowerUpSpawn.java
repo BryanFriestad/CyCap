@@ -1,6 +1,9 @@
 package com.cycapservers.game;
 
-public class PowerUpSpawn extends GridLockedPosition {
+import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
+import com.cycapservers.game.entities.PowerUp;
+
+public class PowerUpSpawn extends GridLockedPositionComponent {
 	
 	private PowerUp slot;
 	private long last_spawn_time;

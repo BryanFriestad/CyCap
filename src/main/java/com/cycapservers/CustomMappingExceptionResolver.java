@@ -15,16 +15,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cycapservers.account.Account;
 import com.google.common.hash.Hashing;
 
-public class CustomMappingExceptionResolver implements HandlerExceptionResolver {
-	
+public class CustomMappingExceptionResolver implements HandlerExceptionResolver 
+{
 	private final Logger logger;
 	
-	public CustomMappingExceptionResolver() {
+	public CustomMappingExceptionResolver() 
+	{
 		logger = LoggerFactory.getLogger(CustomMappingExceptionResolver.class);
 	}
 
 	@Override
-	public ModelAndView resolveException(HttpServletRequest req, HttpServletResponse res, Object handler, Exception ex) {
+	public ModelAndView resolveException(HttpServletRequest req, HttpServletResponse res, Object handler, Exception ex) 
+	{
 		ModelAndView mav = new ModelAndView();
 		
 		Account account;

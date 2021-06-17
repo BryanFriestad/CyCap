@@ -2,23 +2,14 @@ package com.cycapservers.game.maps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import com.cycapservers.JSON_Stringable;
-import com.cycapservers.game.BackgroundTile;
-import com.cycapservers.game.Collider;
-import com.cycapservers.game.Drawable;
-import com.cycapservers.game.Flag;
-import com.cycapservers.game.GameState;
-import com.cycapservers.game.GridLockedDrawable;
-import com.cycapservers.game.GridLockedPosition;
-import com.cycapservers.game.Image;
-import com.cycapservers.game.PathfindingNode;
-import com.cycapservers.game.Position;
-import com.cycapservers.game.Spawn;
-import com.cycapservers.game.Team;
-import com.cycapservers.game.Wall;
+import com.cycapservers.game.components.drawing.DrawingComponent;
+import com.cycapservers.game.components.drawing.Image;
+import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
 import com.cycapservers.game.database.GameType;
+import com.cycapservers.game.entities.Flag;
+import com.cycapservers.game.entities.Wall;
+import com.cycapservers.game.matchmaking.GameState;
 
 public class Map{
 	
@@ -41,24 +32,31 @@ public class Map{
 	 * @param type
 	 * @param state
 	 */
-	public void initializeGameState(GameType type, GameState state, boolean use_power_ups) {
+	public void initializeGameState(GameType type, GameState state, boolean use_power_ups) 
+	{
 		//add all walls to game state
-		for(HashMap<String, String> wall_param_map : walls){
-			if(wall_param_map.get("class").equals(Wall.class.getName())){
-				state.addEntity(new Wall(new GridLockedDrawable(new Image(wall_param_map.get("source"), -1), Integer.parseInt(wall_param_map.get("spriteIndex")), new GridLockedPosition(Short.parseShort(wall_param_map.get("x")), Short.parseShort(wall_param_map.get("y")))), Integer.parseInt(wall_param_map.get("strength"))));
+		for (HashMap<String, String> wall_param_map : walls)
+		{
+			if (wall_param_map.get("class").equals(Wall.class.getName()))
+			{
+				state.addEntity(new Wall(new GridLockedPositionComponent(Short.parseShort(wall_param_map.get("x")), Short.parseShort(wall_param_map.get("y"))), 
+										 new DrawingComponent(new Image(wall_param_map.get("source"), -1), Integer.parseInt(wall_param_map.get("spriteIndex"))), Integer.parseInt(wall_param_map.get("strength"))
+										 ));
 			}
 		}
 		
 		//add background tiles to game state
-		if(!bg_tiles.isEmpty()){
-			for(HashMap<String, String> bg_param_map : bg_tiles){
-				if(bg_param_map.get("class").equals(BackgroundTile.class.getName())){
-					state.addEntity(new BackgroundTile(new GridLockedDrawable(new Image(bg_param_map.get("source"), -1), Integer.parseInt(bg_param_map.get("spriteIndex")), new GridLockedPosition(Short.parseShort(bg_param_map.get("x")), Short.parseShort(bg_param_map.get("y"))))));
-				}
-			}
+		if(!bg_tiles.isEmpty() && false)
+		{
+//			for(HashMap<String, String> bg_param_map : bg_tiles){
+//				if(bg_param_map.get("class").equals(BackgroundTile.class.getName())){
+//					state.addEntity(new DrawableEntity(new GridLockedPositionComponent(Short.parseShort(bg_param_map.get("x")), Short.parseShort(bg_param_map.get("y"))), new DrawingComponent(new Image(bg_param_map.get("source"), -1), Integer.parseInt(bg_param_map.get("spriteIndex")))));
+//				}
+//			}
 		}
-		else{
-			//randomly generate background tiles
+		else
+		{
+			// TODO randomly generate background tiles
 		}
 		
 		//loop through entities map list

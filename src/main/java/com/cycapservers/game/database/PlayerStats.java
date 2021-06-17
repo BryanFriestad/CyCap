@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 import org.springframework.web.socket.WebSocketSession;
 import com.cycapservers.account.*;
-import com.cycapservers.game.CaptureTheFlag;
-import com.cycapservers.game.Character;
 import com.cycapservers.game.CharacterClass;
-import com.cycapservers.game.GameState;
 import com.cycapservers.game.Team;
-import com.cycapservers.game.TeamDeathMatch;
 import com.cycapservers.game.Utils;
+import com.cycapservers.game.entities.Character;
+import com.cycapservers.game.matchmaking.CaptureTheFlag;
+import com.cycapservers.game.matchmaking.GameState;
+import com.cycapservers.game.matchmaking.TeamDeathMatch;
 
 public class PlayerStats {
 	

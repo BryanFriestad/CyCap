@@ -40,20 +40,27 @@
 	</body>
 	
 	<script>
-	function death(){
-		sessionStorage.setItem("type", "Death");
-		window.location.href = "LobbyScreen";
-	}
-	function capture(){
-		sessionStorage.setItem("type", "Capture");
-		window.location.href = "LobbyScreen";
-	}
-	function freeforall(){
-		alert("Sorry! This game mode is not yet ready!");
-	}
-	function givenId(){
-		sessionStorage.setItem("type", document.getElementById("game").value);
-		window.location.href = "LobbyScreen";
-	}
+		function death()
+		{
+			sessionStorage.setItem("type", "Death");
+			window.location.href = "LobbyScreen";
+		}
+		
+		function capture()
+		{
+			sessionStorage.setItem("type", "Capture");
+			window.location.href = "LobbyScreen";
+		}
+		
+		function freeforall()
+		{
+			alert("Sorry! This game mode is not yet ready!");
+		}
+		
+		function givenId()
+		{
+			sessionStorage.setItem("type", document.getElementById("game").value);
+			window.location.href = "LobbyScreen";
+		}
 	</script>
 </html>

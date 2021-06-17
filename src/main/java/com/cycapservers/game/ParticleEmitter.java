@@ -1,5 +1,10 @@
 package com.cycapservers.game;
 
+import com.cycapservers.game.components.drawing.ParticleComponent;
+import com.cycapservers.game.components.positioning.PositionComponent;
+import com.cycapservers.game.entities.DrawableEntity;
+import com.cycapservers.game.matchmaking.Game;
+
 public class ParticleEmitter {
 	
 	//params
@@ -8,9 +13,9 @@ public class ParticleEmitter {
 	 */
 	private Game game;
 	
-	private Particle template;
+	private ParticleComponent template;
 	private double particles_per_ms;
-	private Position spawn_point;
+	private PositionComponent spawn_point;
 	private double spawn_range;
 	private long life_span;
 	
@@ -20,7 +25,7 @@ public class ParticleEmitter {
 	private int have_spawned; //the number of particles that have been spawned
 	private ParticleEmitterRandomizer randomizer;
 	
-	public ParticleEmitter(Game game, Particle template, double particles_per_ms, Position spawn_point, double spawn_range, long life_span,
+	public ParticleEmitter(Game game, ParticleComponent template, double particles_per_ms, PositionComponent spawn_point, double spawn_range, long life_span,
 			double h0_min, double h0_max, double dh_min, double dh_max,
 			double w0_min, double w0_max, double dw_min, double dw_max,
 			double r0_min, double r0_max, double dr_min, double dr_max,
@@ -46,14 +51,15 @@ public class ParticleEmitter {
 	 * returns true if it is still going, otherwise it returns false
 	 * @return
 	 */
-	public boolean update() {
+	public boolean update() 
+	{
 		long elapsed_time = System.currentTimeMillis() - start_time;
-		if(elapsed_time >= life_span) return false;
+		if (elapsed_time >= life_span) return false;
 		
 		int should_be_spawned = (int) (particles_per_ms * elapsed_time);
-		for(int i = have_spawned; i <= should_be_spawned; i++) {
-			Particle p = template.clone();
-			p.setDrawPosition(Utils.getRandomPositionInCircle(spawn_point, spawn_range)); //give the particle a random position within the circle
+		for (int i = have_spawned; i <= should_be_spawned; i++) 
+		{
+			ParticleComponent p = template.clone();
 			p.setDrawHeight(randomizer.getStartingHeight()); //give the particle a random height
 			p.setDrawWidth(randomizer.getStartingWidth()); //give the particle a random width
 			p.setRotation(randomizer.getStartingRotation()); //give the particle a random rotation
@@ -64,14 +70,15 @@ public class ParticleEmitter {
 			p.setDw(randomizer.getDeltaWidth()); //give the particle a random dw
 			p.setDr(randomizer.getDeltaRotation()); //give the particle a random dr
 			p.setDa(randomizer.getDeltaAlpha()); //give the particle a random da
-			game.addEntity(new Entity(p), false);
+			game.addEntity(new DrawableEntity(Utils.getRandomPositionInCircle(spawn_point, spawn_range), p), false);
 			have_spawned++;
 		}
 		
 		return true;
 	}
 	
-	private class ParticleEmitterRandomizer{
+	private class ParticleEmitterRandomizer
+	{
 		
 		private double h0_min,   h0_max,   dh_min,   dh_max, 
 		w0_min,   w0_max,   dw_min,   dw_max,
@@ -82,7 +89,8 @@ public class ParticleEmitter {
 		protected ParticleEmitterRandomizer(double h0_min, double h0_max, double dh_min, double dh_max, double w0_min,
 			double w0_max, double dw_min, double dw_max, double r0_min, double r0_max, double dr_min, double dr_max,
 			double a0_min, double a0_max, double da_min, double da_max, double dx_min, double dx_max, double dy_min,
-			double dy_max) {
+			double dy_max) 
+		{
 			super();
 			this.h0_min = h0_min;
 			this.h0_max = h0_max;
@@ -106,43 +114,53 @@ public class ParticleEmitter {
 			this.dy_max = dy_max;
 		}
 		
-		protected double getStartingHeight(){
+		protected double getStartingHeight()
+		{
 			return (Utils.RANDOM.nextDouble() * (h0_max - h0_min) + h0_min);
 		}
 		
-		protected double getDeltaHeight(){
+		protected double getDeltaHeight()
+		{
 			return (Utils.RANDOM.nextDouble() * (dh_max - dh_min) + dh_min);
 		}
 		
-		protected double getStartingWidth(){
+		protected double getStartingWidth()
+		{
 			return (Utils.RANDOM.nextDouble() * (w0_max - w0_min) + w0_min);
 		}
 		
-		protected double getDeltaWidth(){
+		protected double getDeltaWidth()
+		{
 			return (Utils.RANDOM.nextDouble() * (dw_max - dw_min) + dw_min);
 		}
 		
-		protected double getStartingRotation(){
+		protected double getStartingRotation()
+		{
 			return (Utils.RANDOM.nextDouble() * (r0_max - r0_min) + r0_min);
 		}
 		
-		protected double getDeltaRotation(){
+		protected double getDeltaRotation()
+		{
 			return (Utils.RANDOM.nextDouble() * (dr_max - dr_min) + dr_min);
 		}
 		
-		protected double getStartingAlpha(){
+		protected double getStartingAlpha()
+		{
 			return (Utils.RANDOM.nextDouble() * (a0_max - a0_min) + a0_min);
 		}
 		
-		protected double getDeltaAlpha(){
+		protected double getDeltaAlpha()
+		{
 			return (Utils.RANDOM.nextDouble() * (da_max - da_min) + da_min);
 		}
 		
-		protected double getDeltaX(){
+		protected double getDeltaX()
+		{
 			return (Utils.RANDOM.nextDouble() * (dx_max - dx_min) + dx_min);
 		}
 		
-		protected double getDeltaY(){
+		protected double getDeltaY()
+		{
 			return (Utils.RANDOM.nextDouble() * (dy_max - dy_min) + dy_min);
 		}
 		

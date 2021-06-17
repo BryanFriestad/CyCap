@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.cycapservers.game.entities.PowerUp;
+
 public class PowerUpSpawner {
 	
 	protected List<PowerUpSpawn> spawns;

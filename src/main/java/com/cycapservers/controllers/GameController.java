@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.cycapservers.BeanUtil;
 import com.cycapservers.account.Account;
 import com.cycapservers.account.AccountRepository;
-import com.cycapservers.game.LobbyManager;
-import com.cycapservers.game.LobbyType;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.CharacterClass;
-import com.cycapservers.game.Lobby;
 import com.cycapservers.game.Utils;
+import com.cycapservers.game.matchmaking.Lobby;
+import com.cycapservers.game.matchmaking.LobbyManager;
+import com.cycapservers.game.matchmaking.LobbyType;
 
 
 @Controller

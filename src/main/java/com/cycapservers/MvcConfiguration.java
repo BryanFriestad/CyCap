@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.cycapservers.game.LobbyManager;
+import com.cycapservers.game.matchmaking.LobbyManager;
 
 @Configuration
 @ComponentScan

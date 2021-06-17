@@ -47,7 +47,8 @@ let fps_frame_times = [];
 let rolling_buffer_length = 30;
 ///////////////////
 
-function GameState(role, pw, type){
+function GameState(role, pw, type)
+{
 	this.game_mode = type;
 	
 	this.player = new Player(grid_length, grid_length, player_images, 64, 64, role, "1", client_id); //the current player on this client
@@ -259,7 +260,8 @@ function GameState(role, pw, type){
 }
 
 //all functions
-function setup(arr) {
+function setup(arr) 
+{
 	
 	console.log("in setup");
 	
@@ -868,11 +870,18 @@ function BGTile(img, grid_x, grid_y, index){
 //but it needs to be at the end of the file because it references
 //certain functions in other files that require classes that exist in this file
 //to have already been defined
-if(document.getElementById("loading_screen").complete){
-	connectToServer();
+if(document.getElementById("loading_screen").complete)
+{
+	msg = new ServerMessage("join");
+	msg.addData("client_id", client_id);
+	connectToServer(msg);
 }
-else{
-	document.getElementById("loading_screen").onload = function(){
+else
+{
+	document.getElementById("loading_screen").onload = function()
+	{
+		msg = new ServerMessage("join");
+		msg.addData("client_id", client_id);
 		connectToServer();
 	}
 }

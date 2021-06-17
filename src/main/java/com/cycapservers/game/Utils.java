@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.cycapservers.game.components.drawing.ImageSprite;
+import com.cycapservers.game.components.positioning.PositionComponent;
+import com.cycapservers.game.entities.Entity;
+
 public final class Utils{
 	public final static boolean DEBUG = true;
 	public final static float GRAVITY = (float) -9.81;
@@ -104,7 +108,7 @@ public final class Utils{
 		return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
 	}
 	
-	public static double distanceBetween(Position p1, Position p2){
+	public static double distanceBetween(PositionComponent p1, PositionComponent p2){
 		return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2.0) + Math.pow(p2.getY() - p1.getY(), 2.0));
 	}
 	
@@ -114,10 +118,10 @@ public final class Utils{
 	 * @param from A source position
 	 * @return A unit-length vector representing the direction to-from
 	 */
-	public static Position getDirection(Position to, Position from) {
-		Position diff = new Position(to.getX() - from.getX(), to.getY() - from.getY());
-		double len = distanceBetween(new Position(), diff);
-		return new Position(diff.getX() / len, diff.getY() / len);
+	public static PositionComponent getDirection(PositionComponent to, PositionComponent from) {
+		PositionComponent diff = new PositionComponent(to.getX() - from.getX(), to.getY() - from.getY());
+		double len = distanceBetween(new PositionComponent(), diff);
+		return new PositionComponent(diff.getX() / len, diff.getY() / len);
 	}
 	
 	/**
@@ -128,16 +132,21 @@ public final class Utils{
 	 * @param b
 	 * @return
 	 */
-	public static Position difference(Position a, Position b) {
-		return new Position(a.getX() - b.getX(), a.getY() - b.getY());
+	public static PositionComponent difference(PositionComponent a, PositionComponent b) {
+		return new PositionComponent(a.getX() - b.getX(), a.getY() - b.getY());
 	}
 	
-	public static Position getRandomPositionInCircle(Position center, double radius){
+	public static PositionComponent add(PositionComponent a, PositionComponent b)
+	{
+		return new PositionComponent(a.getX() + b.getX(), a.getY() + b.getY());
+	}
+	
+	public static PositionComponent getRandomPositionInCircle(PositionComponent center, double radius){
 		double angle = RANDOM.nextDouble() *  2 * Math.PI;
 		double dist = (RANDOM.nextDouble() + RANDOM.nextDouble()) * radius;
 		double r = (dist > radius) ? (2 * radius) - dist : dist;
 		
-		return new Position(Math.cos(angle) * r, Math.sin(angle) * r);
+		return new PositionComponent(Math.cos(angle) * r, Math.sin(angle) * r);
 	}
 	
 	/**
