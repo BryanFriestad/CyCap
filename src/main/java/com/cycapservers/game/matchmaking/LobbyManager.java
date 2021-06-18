@@ -51,6 +51,7 @@ public class LobbyManager
 			String s = Utils.getGoodRandomString(used_lobby_join_codes, join_code_length);
 			used_lobby_join_codes.add(s);
 			Lobby new_lobby = LobbyFactory.getInstance().getLobby(type, s);
+			System.out.println("lobby factory done");
 			lobbies.add(new_lobby);
 			return new_lobby;
 		}
@@ -94,22 +95,9 @@ public class LobbyManager
 		
 	}
 	
-	public void closeConnection(WebSocketSession s)
-	{
-		throw new UnsupportedOperationException();
-	}
-	
-	public void handleTextMessage(WebSocketSession session, TextMessage textMessage)
-	{
-		JSONObject j_obj = new JSONObject(textMessage.getPayload());
-		System.out.println("Message type: " + j_obj.get("msg_type"));
-		System.out.println("Message: " + textMessage.getPayload());
-		throw new UnsupportedOperationException();
-	}
-	
 	public LobbyType[] getAvailableLobbyTypes()
 	{
-		LobbyType[] valid_types = {LobbyType.ctf, LobbyType.tdm};
+		LobbyType[] valid_types = {LobbyType.tdm};
 		return valid_types;
 	}
 	

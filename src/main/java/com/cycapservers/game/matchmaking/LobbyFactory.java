@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.maps.Map;
+import com.cycapservers.game.maps.MapLoader;
 
 public class LobbyFactory {
 	
@@ -32,7 +33,7 @@ public class LobbyFactory {
 				throw new UnsupportedOperationException("mixed lobbies not ready");
 				
 			case tdm:
-				return new Lobby(join_code,  LobbyType.tdm, getGameTypeList(type), 8, false, true, true, getMapList(type));
+				return new Lobby(join_code, LobbyType.tdm, getGameTypeList(type), 8, false, true, true, getMapList(type));
 				
 			default:
 				return null;
@@ -81,7 +82,7 @@ public class LobbyFactory {
 				return arr;
 				
 			case tdm:
-				
+				arr.add(MapLoader.LoadMap("empty_map"));
 				return arr;
 				
 			default:

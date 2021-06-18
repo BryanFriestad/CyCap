@@ -33,20 +33,23 @@ public class GameController {
     private final Logger logger = LoggerFactory.getLogger(GameController.class);
     
     @ModelAttribute("account")
-    public Account newAccount(){
+    public Account newAccount()
+    {
     	logger.info("Making new Account model attribute in GameController");
     	return new Account();
     }
     
     @GetMapping("new_game_list")
-    public String gameListPage(Model model, @ModelAttribute("account") Account account) {
-    	if(account.getUserID() != null) {
-//    		LobbyManager m = BeanUtil.getBean(LobbyManager.class);
+    public String gameListPage(Model model, @ModelAttribute("account") Account account) 
+    {
+    	if (account.getUserID() != null) 
+    	{
     		model.addAttribute("types", lobby_manager.getAvailableLobbyTypes());
     		model.addAttribute("counts", lobby_manager.getPlayerCountsByLobbyType());
     		return "game/game_list";
     	}
-    	else {
+    	else 
+    	{
     		logger.info("Entered into get accounts login controller Layer");
         	return "accounts/login";
     	}
@@ -54,15 +57,16 @@ public class GameController {
     
     @GetMapping("find_lobby")
     public String getLobby(@ModelAttribute("account") Account account,
-    					   @RequestParam(name="type", required=true) LobbyType lobby_type
-    ){
-    	if(account.getUserID() != null) {
-//    		LobbyManager m = BeanUtil.getBean(LobbyManager.class);
+    					   @RequestParam(name="type", required=true) LobbyType lobby_type)
+    {
+    	if (account.getUserID() != null) 
+    	{
 	    	Lobby l = lobby_manager.findValidLobby(account.getUserID(), lobby_type);
 	    	l.joinLobby(account.getUserID());
 	    	return "redirect:/new_lobby";
     	}
-    	else{
+    	else
+    	{
     		return "accounts/login";
     	}
     }
@@ -81,8 +85,10 @@ public class GameController {
 //    }
     
     @GetMapping("new_lobby")
-    public String Lobby(Model model, @ModelAttribute("account") Account account){
-    	if(account.getUserID() != null) {
+    public String Lobby(Model model, @ModelAttribute("account") Account account)
+    {
+    	if(account.getUserID() != null) 
+    	{
     		//info to add to lobby page model
     		//String - timer.tostring
     		//Char_class my_class
@@ -105,7 +111,8 @@ public class GameController {
     		
     		return "game/lobby";
     	}
-    	else {
+    	else 
+    	{
     		logger.info("Entered into get accounts login controller Layer");
         	return "accounts/login";
     	}

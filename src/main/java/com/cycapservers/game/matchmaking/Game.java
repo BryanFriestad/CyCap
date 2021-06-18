@@ -85,7 +85,7 @@ public abstract class Game {
 		if(map == null) throw new IllegalStateException("The map has not yet been set for this game");
 		
 		game_state = new GameState(this.type, this.max_characters_per_team.keySet().size()); //init the game state
-		map.initializeGameState(type, game_state, enable_power_ups);
+		map.InitializeGameState(type, game_state, enable_power_ups);
 		
 		for(String username : inc_player_ids)
 		{

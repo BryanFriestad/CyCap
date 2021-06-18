@@ -5,167 +5,90 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+
+import org.json.JSONObject;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
 
 import com.cycapservers.BeanUtil;
-import com.cycapservers.game.PowerUpSpawn;
-import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
-import com.cycapservers.game.database.GameType;
-import com.cycapservers.game.entities.Flag;
-import com.cycapservers.game.entities.Spawn;
-import com.cycapservers.game.entities.Wall;
 
-public class MapLoader{
+public class MapLoader
+{
 	
-	public static Map loadMap(String filename){
+	public static Map LoadMap(String filename)
+	{
+		Map output;
+		List<String> file_lines = ReadFile(filename);
+		RemoveCommentLines(file_lines);
+		RemoveBlankLines(file_lines);
+		List<JSONObject> wall_objs = DetermineLinesInSection("walls", file_lines);
+		List<JSONObject> dyn_objs = DetermineLinesInSection("dynamic", file_lines);
 		
-		ResourceLoader loader = BeanUtil.getBean(ResourceLoader.class);
-		try {
-			InputStream i_stream = loader.getResource("classpath:" + filename).getInputStream();
+		output = new Map(wall_objs, dyn_objs);
+		return output;
+	}
+	
+	private static List<String> ReadFile(String filename)
+	{
+		List<String> file_lines = new ArrayList<String>();
+		
+		try 
+		{
+			ClassPathResource resource = new ClassPathResource("maps/" + filename);
+			InputStream i_stream = resource.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(i_stream));
-			
-			ArrayList<GameType> valid_game_types = new ArrayList<GameType>();
-			ArrayList<HashMap<String, String>> walls = new ArrayList<HashMap<String, String>>();
-			ArrayList<HashMap<String, String>> bg_tiles = new ArrayList<HashMap<String, String>>();
-			ArrayList<HashMap<String, String>> ents = new ArrayList<HashMap<String, String>>();
-			boolean seen_section1 = false, seen_section2 = false, seen_section3 = false;
-			boolean ended_section1 = false, ended_section2 = false, ended_section3 = false;
-			while(reader.ready()){
+			while(reader.ready())
+			{
 				String line = reader.readLine();
-				line = line.trim();
-				
-				if(line.isEmpty()){
-					continue; //ignore whitespace lines
-				}
-				else if(line.startsWith("-- ")){
-					continue; //ignore comment lines
-				}
-				else if(line.startsWith("!")){
-					if(!seen_section1 && !seen_section2 && !seen_section3){
-						line = line.substring(1); //remove first char
-						String[] type_strings = line.split(",");
-						for(String s : type_strings){
-							GameType v = GameType.valueOf(s); //throws exception if illegal
-							valid_game_types.add(v); //add valid game type to list
-						}
-					}
-					else{
-						throw new Exception("game type tag appears after start of section tags");
-					}
-				}
-				else if(line.startsWith("<walls>")){
-					if(seen_section1)
-						throw new Exception("section 1 already started and saw a new starting tag");
-					else
-						seen_section1 = true;
-				}
-				else if(line.startsWith("<bg>")){
-					if(seen_section2)
-						throw new Exception("section 2 already started and saw a new starting tag");
-					else
-						seen_section2 = true;	
-				}
-				else if(line.startsWith("<dynamic>")){
-					if(seen_section3)
-						throw new Exception("section 3 already started and saw a new starting tag");
-					else
-						seen_section3 = true;
-				}
-				else if(line.startsWith("@")){
-					if(!ended_section1){
-						if(!seen_section1)
-							throw new Exception("Seeing entity tags but section 1 is not open");
-						else{
-							HashMap<String, String> map = buildEntityParamMap(line);
-							Class<?> c = Class.forName(map.get("class"));
-							if(!c.equals(Wall.class)){
-								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 1");
-							}
-							walls.add(map);
-						}
-					}
-					else if(!ended_section2){
-						if(!seen_section2)
-							throw new Exception("Seeing entity tags but section 2 is not open");
-						else{
-							HashMap<String, String> map = new HashMap<String, String>();
-//							HashMap<String, String> map = buildEntityParamMap(line);
-//							Class<?> c = Class.forName(map.get("class"));
-//							if(!c.equals(BackgroundTile.class)){
-//								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 2");
-//							}
-							bg_tiles.add(map);
-						}
-					}
-					else if(!ended_section3){
-						if(!seen_section3)
-							throw new Exception("Seeing entity tags but section 3 is not open");
-						else{
-							HashMap<String, String> map = buildEntityParamMap(line);
-							Class<?> c = Class.forName(map.get("class"));
-							if(!c.equals(Flag.class) && !c.equals(Spawn.class) && !c.equals(PowerUpSpawn.class) && !c.equals(GridLockedPositionComponent.class)){
-								throw new UnsupportedOperationException("Unsupported class(" + c.getName() + ") for section 3");
-							}
-							ents.add(map);
-						}
-					}
-				}
-				else if(line.startsWith("<end>")){
-					if(!ended_section1){
-						if(!seen_section1)
-							throw new Exception("Seeing end tag 1 but section 1 is not open");
-						else
-							ended_section1 = true;
-					}
-					else if(!ended_section2){
-						if(!seen_section2)
-							throw new Exception("Seeing end tag 2 but section 2 is not open");
-						else
-							ended_section2 = true;
-					}
-					else if(!ended_section3){
-						if(!seen_section3)
-							throw new Exception("Seeing end tag 3 but section 3 is not open");
-						else
-							ended_section3 = true;
-					}
-				}
-				else{
-					throw new Exception("Illegal starting character in map with filename = " + filename);
-				}
+				file_lines.add(line.trim());
 			}
-			
-			if(!ended_section1 || !ended_section2 || !ended_section3){
-				throw new Exception("not all sections were ended by the end of the file");
-			}
-			
-			return new Map(valid_game_types, walls, bg_tiles, ents);
 		}
-		catch (IOException e) {
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
-		catch(Exception e){
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
-		
-		throw new UnsupportedOperationException("map loader unfinished");
+		return file_lines;
 	}
 	
-	private static HashMap<String, String> buildEntityParamMap(String line){
-		line = line.substring(1); //trim off @ symbol
-		HashMap<String, String> map = new HashMap<String, String>(); //build map
-		String[] key_value_pairs = line.split(",");
-		for(String kvp : key_value_pairs){
-			String[] temp = kvp.split(":");
-			String key = temp[0];
-			String value = temp[1];
-			map.put(key, value);
+	private static void RemoveCommentLines(List<String> file_lines)
+	{
+		List<String> to_remove = new ArrayList<String>();
+		for (String line : file_lines)
+		{
+			if (line.startsWith("--")) to_remove.add(line);
 		}
-		
-		return map;
+		file_lines.removeAll(to_remove);
 	}
 	
+	private static void RemoveBlankLines(List<String> file_lines)
+	{
+		List<String> to_remove = new ArrayList<String>();
+		for (String line : file_lines)
+		{
+			if (line.isEmpty()) to_remove.add(line);
+		}
+		file_lines.removeAll(to_remove);
+	}
+	
+	private static List<JSONObject> DetermineLinesInSection(String section_name, List<String> file_lines)
+	{
+		// TODO: check for no nested sections
+		List<JSONObject> output = new ArrayList<JSONObject>();
+		boolean in_range = false;
+		for (int i = 0; i < file_lines.size(); ++i)
+		{
+			String line = file_lines.get(i);
+			if (line.startsWith("</" + section_name + ">")) break; // break before adding to output so the end line isn't included
+			if (in_range) output.add(new JSONObject(line));
+			if (line.startsWith("<" + section_name + ">")) in_range = true; // set range true after seeing start line, so it isn't included.
+		}
+		return output;
+	}
 }
 //package com.cycapservers.game;
 //

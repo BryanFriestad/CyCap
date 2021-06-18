@@ -66,9 +66,12 @@ public class GameState
 		
 	}
 	
-	public void handleSnapshot(InputSnapshot s){
-		for(Character c : characters){
-			if(c instanceof Player && c.getEntity_id().equals(s.getClient_id())){
+	public void handleSnapshot(InputSnapshot s)
+	{
+		for(Character c : characters)
+		{
+			if(c instanceof Player && c.getEntity_id().equals(s.getClient_id()))
+			{
 				Player p = (Player) c;
 				p.Send(new ComponentMessage(ComponentMessageId.EXTERNAL_INPUT_SNAPSHOT, s.GetRawData()));
 			}

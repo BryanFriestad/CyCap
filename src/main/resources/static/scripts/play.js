@@ -872,7 +872,7 @@ function BGTile(img, grid_x, grid_y, index){
 //to have already been defined
 if(document.getElementById("loading_screen").complete)
 {
-	msg = new ServerMessage("join");
+	msg = new ServerMessage("join_demo");
 	msg.addData("client_id", client_id);
 	connectToServer(msg);
 }
@@ -880,8 +880,8 @@ else
 {
 	document.getElementById("loading_screen").onload = function()
 	{
-		msg = new ServerMessage("join");
+		msg = new ServerMessage("join_demo");
 		msg.addData("client_id", client_id);
-		connectToServer();
+		connectToServer(msg);
 	}
 }

@@ -51,15 +51,12 @@ public class Lobby {
 	private boolean team_switching_active; 
 	private HashMap<String, Team> player_teams;
 	
-	public Lobby(String join_code, LobbyType type, ArrayList<GameType> available_game_types, int max_players, boolean mode_voting_enabled, boolean map_voting_enabled, boolean team_selection_enabled, ArrayList<Map> available_maps) {
+	public Lobby(String join_code, LobbyType type, ArrayList<GameType> available_game_types, int max_players, boolean mode_voting_enabled, boolean map_voting_enabled, boolean team_selection_enabled, ArrayList<Map> available_maps) 
+	{
 		super();
-		if(available_game_types.size() == 0)
-			throw new IllegalArgumentException("available_game_types list must not be empty");
-		if(available_maps.size() == 0)
-			throw new IllegalArgumentException("available_maps list must not be empty");
-		if(max_players < 1){
-			throw new IllegalArgumentException("max_players (" + max_players + ") must be at least 1");
-		}
+		if(available_game_types.size() == 0) throw new IllegalArgumentException("available_game_types list must not be empty");
+		if(available_maps.size() == 0) throw new IllegalArgumentException("available_maps list must not be empty");
+		if(max_players < 1) throw new IllegalArgumentException("max_players (" + max_players + ") must be at least 1");
 		
 		this.join_code = join_code;
 		this.type = type;
@@ -90,7 +87,8 @@ public class Lobby {
 		next_game_start = System.currentTimeMillis() + default_game_start_timer_ms;
 	}
 	
-	public void update(){
+	public void update()
+	{
 		//update lobby stuff
 		long time_remaining = this.next_game_start - System.currentTimeMillis();
 
@@ -113,19 +111,20 @@ public class Lobby {
 			this.current_game = GameFactory.getInstance().getGame(next_game_type);
 			this.map_voting_active = true;
 			this.team_switching_active = true;
-			for(String username : player_ids){
+			for(String username : player_ids)
+			{
 				player_teams.put(username, nextBalancedTeam());
 			}
 		}
 	}
 
-	public void joinLobby(String client_id){
-		if(player_ids.contains(client_id)) throw new IllegalArgumentException("The given client_id is already in this lobby.");
+	public void joinLobby(String client_id)
+	{
+		if (player_ids.contains(client_id)) throw new IllegalArgumentException("The given client_id is already in this lobby.");
 		
 		player_ids.add(client_id);
 		selected_classes.put(client_id, CharacterClass.Recruit);
-		if(this.team_switching_active)
-			player_teams.put(client_id, nextBalancedTeam());
+		if (this.team_switching_active) player_teams.put(client_id, nextBalancedTeam());
 	}
 	
 	/**
@@ -135,7 +134,7 @@ public class Lobby {
 	 * @return Enum - the team 
 	 */
 	private Team nextBalancedTeam(){
-		if(current_game == null)
+		if (current_game == null)
 			throw new IllegalStateException("current game must be not null before calling this function");
 		
 		//Get the map of players needed per team to reach the max values given by the current game
@@ -160,15 +159,18 @@ public class Lobby {
 		return most_players_needed;
 	}
 	
-	public boolean containsUser(String client_id){
+	public boolean containsUser(String client_id)
+	{
 		return player_ids.contains(client_id);
 	}
 	
-	public void leaveLobby(String client_id){
+	public void leaveLobby(String client_id)
+	{
 		
 	}
 	
-	public LobbyType getLobbyType(){
+	public LobbyType getLobbyType()
+	{
 		return type;
 	}
 	

@@ -1,15 +1,15 @@
 package com.cycapservers.game.entities;
 
 import com.cycapservers.game.Team;
-import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
+import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class Spawn extends Entity 
 {
 	private Team team;
 	
-	public Spawn(short x, short y, Team team) 
+	public Spawn(PositionComponent p, Team team) 
 	{
-		super(new GridLockedPositionComponent(x, y));
+		super(p);
 		this.team = team;
 	}
 

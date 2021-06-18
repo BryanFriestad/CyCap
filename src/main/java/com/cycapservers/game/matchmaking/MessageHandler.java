@@ -1,5 +1,6 @@
 package com.cycapservers.game.matchmaking;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import org.springframework.web.socket.CloseStatus;
@@ -10,9 +11,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.cycapservers.BeanUtil;
 
 @Component
-public class MessageHandler extends TextWebSocketHandler {
-	
-//	private static volatile GameManager gameManager = new GameManager();
+public class MessageHandler extends TextWebSocketHandler 
+{
 	private LobbyManager lobby_manager = BeanUtil.getBean(LobbyManager.class);
 	
 	private ThreadLocal<String> UserId = new ThreadLocal<String>();
@@ -34,7 +34,6 @@ public class MessageHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception 
 	{
 		System.out.println("Socket Closed");
-		lobby_manager.closeConnection(session);
     }
 	
     @Override
@@ -53,6 +52,29 @@ public class MessageHandler extends TextWebSocketHandler {
         		Connect.set(0);
         	}
     	}
-    	lobby_manager.handleTextMessage(session, textMessage);
+    	JSONObject message = new JSONObject(textMessage.getPayload());
+    	switch (message.get("msg_type").toString())
+    	{
+    	case "join_demo":
+    		handleJoinDemoGameMessage(message);
+    		break;
+    		
+    	case "lobby":
+    		handleFindLobbyMessage(message);
+    		break;
+    		
+    	default:
+    		break;
+    	}
+    }
+    
+    private void handleFindLobbyMessage(JSONObject message)
+    {
+    	
+    }
+    
+    private void handleJoinDemoGameMessage(JSONObject message)
+    {
+    	
     }
 }
