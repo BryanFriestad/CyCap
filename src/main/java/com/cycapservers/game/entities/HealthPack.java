@@ -1,6 +1,5 @@
 package com.cycapservers.game.entities;
 
-import com.cycapservers.JsonToStringObject;
 import com.cycapservers.game.components.collision.Collider;
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
@@ -59,20 +58,6 @@ public class HealthPack extends PowerUp
 		}
 		
 		return false;
-	}
-	
-	@Override
-	public String toJSONString() 
-	{
-		JsonToStringObject obj = new JsonToStringObject();
-		obj.put("class", this.getClass().getSimpleName());
-		obj.put("entity_id", getEntity_id());
-		obj.put("model", model);
-		obj.put("uses_remaining", uses_remaining);
-		obj.put("max_uses", getMax_uses());
-//		obj.put("heal_time_total", heal_time_total);
-//		obj.put("heal_time_elapsed", heal_time_elapsed);
-		return obj.toString();
 	}
 
 	@Override

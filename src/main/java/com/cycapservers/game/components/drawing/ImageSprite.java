@@ -1,9 +1,10 @@
 package com.cycapservers.game.components.drawing;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.JSON_Stringable;
+import org.json.JSONObject;
 
-public class ImageSprite implements JSON_Stringable {
+import com.cycapservers.JSON_returnable;
+
+public class ImageSprite implements JSON_returnable {
 	
 	private int x;
 	private int y;
@@ -57,14 +58,14 @@ public class ImageSprite implements JSON_Stringable {
 	}
 
 	@Override
-	public String toJSONString() {
-		JsonToStringObject object = new JsonToStringObject();
+	public JSONObject toJSONObject() {
+		JSONObject object = new JSONObject();
 		object.put("class", this.getClass().getSimpleName());
 		object.put("x", this.x);
 		object.put("y", this.y);
 		object.put("w", this.w);
 		object.put("h", this.h);
-		return object.toString();
+		return object;
 	}
 	
 	@Override

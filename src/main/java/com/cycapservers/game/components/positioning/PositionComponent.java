@@ -1,13 +1,14 @@
 package com.cycapservers.game.components.positioning;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.JSON_Stringable;
+import org.json.JSONObject;
+
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
 
-public class PositionComponent implements JSON_Stringable, Component
+public class PositionComponent implements JSON_returnable, Component
 {
 	private Object parent;
 	
@@ -53,23 +54,24 @@ public class PositionComponent implements JSON_Stringable, Component
 	}
 
 	@Override
-	public String toJSONString() {
-		JsonToStringObject object = new JsonToStringObject();
+	public JSONObject toJSONObject() {
+		JSONObject object = new JSONObject();
 		object.put("class", this.getClass().getSimpleName());
 		object.put("x", this.x);
 		object.put("y", this.y);
-		return object.toString();
+		return object;
 	}
 	
 	@Override
-	public PositionComponent clone() {
+	public PositionComponent clone() 
+	{
 		return new PositionComponent(x, y);
 	}
 
 	@Override
-	public void Receive(ComponentMessage message) {
+	public void Receive(ComponentMessage message) 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override

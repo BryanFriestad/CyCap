@@ -103,3 +103,53 @@ function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, ke
 		return message;
 	}
 }
+
+function SetupInputHandling()
+{
+	input_handler = new InputHandler("default");
+	
+	//when a key goes down it is added to a list and when it goes up its taken out
+	document.addEventListener("keydown", function(event) 
+	{
+		if (!input_handler.keys_down.includes(event.keyCode)) 
+		{
+			input_handler.keys_down.push(event.keyCode);
+		}
+	});
+	
+	document.addEventListener("keyup", function(event) 
+	{
+		input_handler.keys_down.splice(input_handler.keys_down.indexOf(event.keyCode), 1);
+		input_handler.keys_pnr.push(event.keyCode);
+	});
+	
+	//mouse click listener
+	document.addEventListener("click", function(event) 
+	{
+		input_handler.mouse_clicked = true;
+	});
+	
+	//left mouse button listener
+	document.addEventListener("mousedown", function(event) 
+	{
+		if(event.button == 0)
+		{
+			input_handler.lmb_down = true;
+		}
+	});
+	
+	document.addEventListener("mouseup", function(event) 
+	{
+		if(event.button == 0)
+		{
+			input_handler.lmb_down = false;
+		}
+	});
+	
+	window.addEventListener('mousemove', function(event)
+	{
+		this.rect = canvas.getBoundingClientRect();
+		input_handler.canvasX = (event.clientX - rect.left);
+		input_handler.canvasY = (event.clientY - rect.top);
+	}, false);
+}

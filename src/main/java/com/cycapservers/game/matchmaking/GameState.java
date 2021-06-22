@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.cycapservers.JSON_Stringable;
-import com.cycapservers.JsonToStringObject;
+import org.json.JSONObject;
+
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.ComponentMessage;
@@ -18,7 +19,7 @@ import com.cycapservers.game.entities.Entity;
 import com.cycapservers.game.entities.Player;
 import com.cycapservers.game.entities.Wall;
 
-public class GameState implements JSON_Stringable
+public class GameState implements JSON_returnable
 {	
 	private static int id_rand_len = 3;
 	
@@ -112,11 +113,9 @@ public class GameState implements JSON_Stringable
 	 */
 	public String prepareGameStateMessage(Player p)
 	{
-		JsonToStringObject obj = new JsonToStringObject();
+		JSONObject obj = new JSONObject();
 		//TODO
-		//add game type
-		//add game id
-		//add game join code
+		obj.put("game_type", type);
 		//add interpolating entities: characters, bullets, powerups, flags, etc.
 		//add persistent entities: walls, background tiles,
 		//add deleted persistent ents
@@ -126,9 +125,26 @@ public class GameState implements JSON_Stringable
 	}
 
 	@Override
-	public String toJSONString() 
+	public JSONObject toJSONObject() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject obj = new JSONObject();
+		obj.put("scores", this.team_scores);
+		for (Character c : characters)
+		{
+			obj.accumulate("characters", c.toJSONObject());
+		}
+		for (Wall w : current_walls)
+		{
+			obj.accumulate("walls", w.toJSONObject());
+		}
+		for (DrawableEntity d : background_tiles)
+		{
+			obj.accumulate("bg_tiles", d.toJSONObject());
+		}
+		for (Entity e : entities)
+		{
+			obj.accumulate("entities", e.toJSONObject());
+		}
+		return obj;
 	}
 }

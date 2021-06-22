@@ -1,7 +1,7 @@
 package com.cycapservers.game.entities;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.game.components.collision.Collider;
+import org.json.JSONObject;
+
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
@@ -43,15 +43,12 @@ public abstract class PowerUp extends Item
 	}
 	
 	@Override
-	public String toJSONString() 
+	public JSONObject toJSONObject() 
 	{
-		JsonToStringObject obj = new JsonToStringObject();
-		obj.put("class", this.getClass().getSimpleName());
-		obj.put("entity_id", getEntity_id());
-		obj.put("model", model);
+		JSONObject obj = super.toJSONObject();
 		obj.put("uses_remaining", uses_remaining);
 		obj.put("max_uses", max_uses);
-		return obj.toString();
+		return obj;
 	}
 	
 	@Override

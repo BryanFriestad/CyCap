@@ -1,7 +1,8 @@
 package com.cycapservers.game.components.drawing;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.JSON_Stringable;
+import org.json.JSONObject;
+
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
@@ -13,7 +14,7 @@ import com.cycapservers.game.entities.Entity;
  * @author Bryan Friestad
  *
  */
-public class DrawingComponent implements JSON_Stringable, Component 
+public class DrawingComponent implements JSON_returnable, Component 
 {
 	private Object parent;
 	
@@ -118,18 +119,18 @@ public class DrawingComponent implements JSON_Stringable, Component
 	}
 
 	@Override
-	public String toJSONString() 
+	public JSONObject toJSONObject() 
 	{
-		JsonToStringObject obj = new JsonToStringObject();
+		JSONObject obj = new JSONObject();
 		obj.put("class", this.getClass().getSimpleName());
-		obj.put("img", this.image);
+		obj.put("img", this.image.toJSONObject());
 		obj.put("sprIdx", spriteIndex);
-		obj.put("drawPos", this.drawPosition);
+		obj.put("drawPos", this.drawPosition.toJSONObject());
 		obj.put("drawH", drawHeight);
 		obj.put("drawW", drawWidth);
 		obj.put("rotation", rotation);
 		obj.put("alpha", alpha);
-		return obj.toString();
+		return obj;
 	}
 
 	public Image getImage() 

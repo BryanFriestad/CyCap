@@ -1,9 +1,9 @@
 package com.cycapservers.game.entities;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.JSON_Stringable;
+import org.json.JSONObject;
+
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.components.ComponentContainer;
-import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 
 /**
@@ -11,8 +11,8 @@ import com.cycapservers.game.components.positioning.PositionComponent;
  * @author Bryan Friestad
  *
  */
-public class Entity extends ComponentContainer implements JSON_Stringable{
-	
+public class Entity extends ComponentContainer implements JSON_returnable
+{	
 	//internal use
 	protected PositionComponent position;
 	protected String entity_id;
@@ -41,15 +41,14 @@ public class Entity extends ComponentContainer implements JSON_Stringable{
 	}
 
 	@Override
-	public String toJSONString() {
-		if(entity_id == null)
-			throw new IllegalStateException("Entity ID must be set before calling this function");
+	public JSONObject toJSONObject() {
+		if(entity_id == null) throw new IllegalStateException("Entity ID must be set before calling this function");
 		
-		JsonToStringObject obj = new JsonToStringObject();
+		JSONObject obj = new JSONObject();
 		obj.put("class", this.getClass().getSimpleName());
 		obj.put("entity_id", entity_id);
-		obj.put("position", position);
-		return obj.toString();
+		obj.put("position", position.toJSONObject());
+		return obj;
 	}
 
 	public double getX() {

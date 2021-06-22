@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.database.GameType;
@@ -94,7 +96,7 @@ public class Lobby {
 		if (time_remaining <= 0)
 		{
 			if (current_game == null) throw new IllegalStateException("current_game is null at the end of the lobby timer");
-			current_game.startGame(players);
+			if (!current_game.isStarted()) current_game.startGame(players);
 		}
 		else if (time_remaining <= 5000)
 		{
@@ -267,6 +269,6 @@ public class Lobby {
 	public String GetCurrentGameJoinMessage()
 	{
 		if (current_game == null) throw new IllegalStateException("current_game cannot be null.");
-		return current_game.GetInitialGameState();
+		return current_game.GetInitialGameState().toString();
 	}
 }

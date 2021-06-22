@@ -1,12 +1,13 @@
 package com.cycapservers.game.equipment;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.JSON_Stringable;
+import org.json.JSONObject;
+
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.input.ClientInputHandler;
 import com.cycapservers.game.entities.Character;
 
-public abstract class Equipment implements JSON_Stringable {
+public abstract class Equipment implements JSON_returnable {
 	
 	//params
 	private String name;
@@ -73,12 +74,13 @@ public abstract class Equipment implements JSON_Stringable {
 	public abstract boolean removeFromInventory();
 
 	@Override
-	public String toJSONString(){
-		JsonToStringObject obj = new JsonToStringObject();
+	public JSONObject toJSONObject()
+	{
+		JSONObject obj = new JSONObject();
 		obj.put("class", this.getClass().getSimpleName());
 		obj.put("equipped", this.equipped);
-		obj.put("icon", this.icon);
-		return obj.toString();
+		obj.put("icon", this.icon.toJSONObject());
+		return obj;
 	}
 
 	public String getName() {

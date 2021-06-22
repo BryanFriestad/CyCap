@@ -1,5 +1,7 @@
 package com.cycapservers.game.entities;
 
+import org.json.JSONObject;
+
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.collision.CollisionComponent;
@@ -16,22 +18,16 @@ public class ComputerCharacter extends Character {
 	}
 
 	@Override
-	public void respawn() {
+	public void respawn() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void resetClass() {
+	public void resetClass() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public String toJSONString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 }

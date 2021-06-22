@@ -3,6 +3,8 @@ package com.cycapservers.game.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.cycapservers.game.Buff;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.DamageDealer;
@@ -84,9 +86,6 @@ public abstract class Character extends CollidingDrawableEntity
 	 * resets equipment, health, visibility, speed to match the class spawn state
 	 */
 	public abstract void resetClass();
-
-	@Override
-	public abstract String toJSONString();
 	
 	////IMPLEMENTED METHODS////
 	public void takeDamage(DamageDealer d) 

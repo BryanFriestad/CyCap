@@ -1,7 +1,6 @@
 package com.cycapservers.game.entities;
 
-import org.springframework.web.socket.WebSocketSession;
-
+import org.json.JSONObject;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.collision.CollisionComponent;
@@ -36,36 +35,9 @@ public class Player extends Character {
 		return true;
 	}
 	
-	@Override
-	public String toJSONString(){
-//		if(this.get_entity_id().equals(client_id)) {
-//			String output = "";
-//			output += "000,";
-//			output += this.highestHandledSnapshot + ",";
-//			output += super.toDataString(client_id) + ",";
-//			output += this.getRole() + ",";
-//			output += this.getTeam() + ",";
-//			output += this.getCurrentEquipment().toString() + ",";
-//			if(this.getItem_slot() == null) {
-//				output += "empty" + ",";
-//			}
-//			else {
-//				output += this.getItem_slot().imageId + ",";
-//			}
-//			output += this.health + ",";
-//			output += this.is_invincible + ",";
-//			output += this.speed_boost + ",";
-//			output += this.damage_boost + ",";
-//			output += this.visibility;
-//			return output;
-//		}
-//		else {
-//			String output = "";
-//			output += "020,";
-//			output += super.toDataString(client_id);
-//			return output;
-//		}
-		return null; //TODO
+	public JSONObject GetJsonObjectForMyServerMessage()
+	{
+		return null; // TODO
 	}
 
 	@Override

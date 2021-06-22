@@ -61,7 +61,7 @@ public abstract class Game
 	private CollisionEngine collision_engine;
 	private PowerUpSpawner power_up_spawner;
 	
-	private String initial_game_state_message;
+	private JSONObject initial_game_state;
 	
 	// DATABASE OBJECTS
 	private List<GameEventsEntity> game_events; //A list of events that have happened in the game to save to the database
@@ -106,9 +106,15 @@ public abstract class Game
 	{
 		if(map == null) throw new IllegalStateException("The map has not yet been set for this game");
 		
-		game_state = new GameState((List<Team>) this.max_characters_per_team.keySet()); //init the game state
+		List<Team> team_list = new ArrayList<Team>();
+		for (Team t : this.max_characters_per_team.keySet())
+		{
+			if (t != Team.None) team_list.add(t);
+		}
+		
+		game_state = new GameState(team_list);
 		map.InitializeGameState(type, game_state, enable_power_ups);
-		initial_game_state_message = game_state.toJSONString();
+		initial_game_state = game_state.toJSONObject();
 		
 		for(IncomingPlayer i : incoming_players)
 		{
@@ -220,10 +226,10 @@ public abstract class Game
 		return max_characters_per_team;
 	}
 
-	public String GetInitialGameState() 
+	public JSONObject GetInitialGameState() 
 	{
 		if (!this.started) throw new IllegalStateException("game must be started to send initial state message");
-		return this.initial_game_state_message;
+		return this.initial_game_state;
 	}
 	
 	

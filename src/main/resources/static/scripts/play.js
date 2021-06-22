@@ -311,15 +311,21 @@ function GameState(role, pw, type)
 }
 
 //all functions
-function setup(arr) 
+function setup(initial_game_state) 
 {
 	console.log("in setup");
 	
-	//initialize the game state
-	gameState = new GameState(arr[4], arr[1], arr[3]);
+	// set global gameState to parameter
+	gameState = initial_game_state;
+	
+	// setting these because later parts of the function use them.
+	gameState.player = {};
+	gameState.player.x = 0;
+	gameState.player.y = 0;
 
 	//Draw fog of war images and put the normal zoom one on
-	drawFogOfWarImages(gameState.player.visibility);
+	// drawFogOfWarImages(gameState.player.visibility);
+	drawFogOfWarImages(50); // 50 sees all
 	fog_context.putImageData(fog_norm, 0, 0);
 
 	//set the global transforms
@@ -334,66 +340,30 @@ function setup(arr)
 	gt6 = -1 * ((gameState.player.y * gt4) - (canvas.height / 2));
 
 	canvas_box = new Entity(background_tiles, 0, gameState.player.x, gameState.player.y, canvas.width, canvas.height, 0, 0); //invisible box to determine whether or not to display an entity
-	map = new TiledBackground(background_tiles, arr[5], arr[6]);
 	
 	//////GUI ELEMENTS//////
-	guis.push(new HealthGUI(30, gui_canvas.height - 20, 200, 20)); //health bar
-	guis.push(new WeaponSelectGUI());
-	guis.push(new ItemSlotGUI(gui_canvas.width - 45, gui_canvas.height - 45));
-	guis.push(new AmmoGUI(30, gui_canvas.height - 50, 20, 200, 5));
+	//guis.push(new HealthGUI(30, gui_canvas.height - 20, 200, 20)); //health bar
+	//guis.push(new WeaponSelectGUI());
+	//guis.push(new ItemSlotGUI(gui_canvas.width - 45, gui_canvas.height - 45));
+	//guis.push(new AmmoGUI(30, gui_canvas.height - 50, 20, 200, 5));
 	
 	let respawn_time = 10000;
+	/*
 	if(arr[3] == "CTF"){
 		respawn_time = 10000;
 	}
 	else if(arr[3] == "TDM"){
 		respawn_time = 5000;
 	}
+	*/
 	respawnCounter = new  RespawnCounter(gui_canvas.width/2, gui_canvas.height/2, respawn_time);
 	
-	gameScoreGUI = new GameScoreGUI(gui_canvas.width/2, 0, gameState.game_mode);
+	gameScoreGUI = new GameScoreGUI(gui_canvas.width/2, 0);
 	////////////////////////
 
-	//////INPUT HANDLING//////
-	input_handler = new InputHandler(arr[2]);
-	//when a key goes down it is added to a list and when it goes up its taken out
-	document.addEventListener("keydown", function(event) {
-		if (!input_handler.keys_down.includes(event.keyCode)) {
-			input_handler.keys_down.push(event.keyCode);
-		}
-	});
-	document.addEventListener("keyup", function(event) {
-		input_handler.keys_down.splice(input_handler.keys_down.indexOf(event.keyCode), 1);
-		input_handler.keys_pnr.push(event.keyCode);
-	});
-	
-	//mouse click listener
-	document.addEventListener("click", function(event) {
-		input_handler.mouse_clicked = true;
-	});
-	
-	//left mouse button listener
-	document.addEventListener("mousedown", function(event) {
-		if(event.button == 0){
-			input_handler.lmb_down = true;
-		}
-	});
-	document.addEventListener("mouseup", function(event) {
-		if(event.button == 0){
-			input_handler.lmb_down = false;
-		}
-	});
-	window.addEventListener('mousemove', function(event){
-		this.rect = canvas.getBoundingClientRect();
-		input_handler.canvasX = (event.clientX - rect.left);
-		input_handler.canvasY = (event.clientY - rect.top);
-	}, false);
+	SetupInputHandling();
 
 	lastFrameTime = Date.now();
-	
-	////LOAD UP WALLS///
-	arr.splice(0, 7);
-	gameState.addWalls(arr);
 	
 	document.getElementById("loading_screen").remove();
 }
@@ -422,12 +392,13 @@ function run() {
 	
 
 	//////UPDATE EVERYTHING///////
-	input_handler.update();
-	sendMessageToServer(input_handler.getSnapshot()); //sends the InputSnapshot to the server
-	gameState.updateGameState(input_handler.getMostRecentInput()); //updates player and bullet stuff
+	//input_handler.update();
+	//sendMessageToServer(input_handler.getSnapshot()); //sends the InputSnapshot to the server
+	//gameState.updateGameState(input_handler.getMostRecentInput()); //updates player and bullet stuff
 	canvas_box.x = gameState.player.x; //update the canvas_box position
 	canvas_box.y = gameState.player.y;
 
+	/*
 	for(let i = part_fx.length - 1; i >= 0; i--){
 		part_fx[i].update(); //we go through this backwards so that if one is removed, it still checks the others
 	}
@@ -435,7 +406,7 @@ function run() {
 		guis[i].update();
 	}
 	respawnCounter.update(null);
-	
+	*/
 	
 	//TOGGLE THE ZOOM LEVEL V IMPORTANT
 	if(input_handler.keys_pnr.includes(90)){
@@ -447,15 +418,20 @@ function run() {
 
 	
 	//////DRAW EVERYTHING///////
-	map.draw();
 	
+	for (let i = 0; i < gameState.walls.length; i++)
+	{
+		RenderDrawingComponent(gameState.walls[i].model, gameState.walls[i].position);
+	}
+	
+	/*
 	gameState.drawGameState(); //draws the player and the bullets
 	
 	for(let i = 0; i < part_fx.length; i++){
 		part_fx[i].draw();
 	}
 
-	//need to draw rectangles outside of the map that
+	// TODO: need to draw rectangles outside of the map that
 	//are essentially below the GUI, but above pretty much everything else
 	//this keeps the fog of war and particle effects from displaying outside of the map
 
@@ -469,12 +445,29 @@ function run() {
 	//reset the 1 frame inputs
 	input_handler.keys_pnr.splice(0, input_handler.keys_pnr.length);
 	input_handler.mouse_clicked = false;
+	*/
 	
 	requestAnimationFrame(run); //run again please
 }
 
-function ToggleZoom(){
-	if(current_zoom_lvl == 1){
+function RenderDrawingComponent(model, position)
+{
+	context.setTransform(gt1, gt2, gt3, gt4, Math.round(gt5 + (position.x * gt1)), Math.round(gt6 + (position.y * gt4))); //we must round the X & Y positions so that it doesn't break the textures
+	context.rotate(model.rotation); //this is in radians
+	context.globalAlpha = model.alpha;
+		
+	let i = wall_image;
+	//i.src = model.img.src;
+		
+	let sprite = model.img.sprites[model.sprIdx];
+		
+	context.drawImage(i, sprite.x, sprite.y, sprite.w, sprite.h, -model.drawW/2, -model.drawH/2, model.drawW, model.drawH);
+}
+
+function ToggleZoom()
+{
+	if (current_zoom_lvl == 1)
+	{
 		current_zoom_lvl = 2;
 		gt1 = NORMAL_ZOOM_LEVEL; //setting scaling to normal levels
 		gt4 = NORMAL_ZOOM_LEVEL;
@@ -482,7 +475,8 @@ function ToggleZoom(){
 		gt6 = -1 * ((gameState.player.y * gt4) - (canvas.height / 2));
 		fog_context.putImageData(fog_norm, 0, 0);
 	}
-	else if(current_zoom_lvl == 2){
+	else if (current_zoom_lvl == 2)
+	{
 		current_zoom_lvl = 3;
 		gt1 = FAR_ZOOM_LEVEL; //setting scaling to wide levels
 		gt4 = FAR_ZOOM_LEVEL;
@@ -490,7 +484,8 @@ function ToggleZoom(){
 		gt6 = -1 * ((gameState.player.y * gt4) - (canvas.height / 2));
 		fog_context.putImageData(fog_far, 0, 0);
 	}
-	else if(current_zoom_lvl == 3){
+	else if (current_zoom_lvl == 3)
+	{
 		current_zoom_lvl = 1;
 		gt1 = CLOSE_ZOOM_LEVEL; //setting scaling to zoomed levels
 		gt4 = CLOSE_ZOOM_LEVEL;
@@ -899,39 +894,6 @@ function Player(width, height, img, x, y, role, team, client_id)
 			}
 		}
 	}
-}
-
-//Grid_x and grid_y are the positions on the grid, with top left grid coordinates being (0,0)
-function Wall(img, grid_x, grid_y){
-	this.grid_x = grid_x;
-	this.grid_y = grid_y;
-	this.base = Entity;
-	//we will use wall sprite 0, rotate 0, trans 1
-	this.base(img, 0, (this.grid_x * grid_length) + (grid_length/2), (this.grid_y * grid_length) + (grid_length/2), grid_length, grid_length, 0, 1);
-}
-
-function TiledBackground(img, width, height){
-	this.img = img;
-	this.tile_list = [];
-	for(let i = 0; i < width; i++){
-		for(let j = 0; j < height; j++){
-			this.tile_list.push(new BGTile(img, i, j, getWeightedIndex(this.img.chances)));
-		}
-	}
-
-	this.draw = function(){
-		for(let i = 0; i < this.tile_list.length; i++){
-			this.tile_list[i].draw();
-		}
-	}
-}
-
-function BGTile(img, grid_x, grid_y, index){
-	this.grid_x = grid_x;
-	this.grid_y = grid_y;
-	this.base = Entity;
-	//we will use rotate 0, trans 1
-	this.base(img, index, (this.grid_x * grid_length) + (grid_length/2), (this.grid_y * grid_length) + (grid_length/2), grid_length, grid_length, 0, 1);
 }
 
 //this code executes right when the page is loaded

@@ -176,27 +176,15 @@ function TextGUI(txt, font, x, y, a){
 	}
 }
 
-function GameScoreGUI(x, y, type){
+function GameScoreGUI(x, y)
+{
 	this.base = TextGUI;
 	this.base("Red: 0  |  Blue: 0", "25px Arial", x - 100, y + 20, 1.0);
-	this.game_type = type;
-	if(this.game_type == "CTF"){
-		this.txt = "Red: 0  |  Blue: 0";
-	}
-	if(this.game_type == "TDM"){
-		this.txt = "Red: 0  |  Blue: 0";
-	}
 	
-	this.update = function(txt){
-		let data = txt.split(",");
-		if(this.game_type == "CTF"){
-			this.txt = "Red: " + data[1] + "  |  Blue: " + data[2];
-			this.txt += " Time Left: " + (data[3]/1000.0);
-		}
-		if(this.game_type == "TDM"){
-			this.txt = "Red: " + data[1] + "  |  Blue: " + data[2];
-			this.txt += " Time Left: " + (data[3]/1000.0);
-		}
+	this.update = function(scores)
+	{
+		this.txt = "Red: " + scores.Red + "  |  Blue: " + scores.Blue;
+		this.txt += " Time Left: " + (0/1000.0);
 	}
 	
 }

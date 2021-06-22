@@ -1,10 +1,11 @@
 package com.cycapservers.game.components.drawing;
 
-import com.cycapservers.JsonToStringObject;
-import com.cycapservers.JSON_Stringable;
+import org.json.JSONObject;
+
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.Utils;
 
-public class Image implements JSON_Stringable {
+public class Image implements JSON_returnable {
 	
 	//params
 	private String src;
@@ -50,13 +51,23 @@ public class Image implements JSON_Stringable {
 	}
 
 	@Override
-	public String toJSONString() {
-		JsonToStringObject object = new JsonToStringObject();
+	public JSONObject toJSONObject() {
+		JSONObject object = new JSONObject();
 		object.put("class", this.getClass().getSimpleName());
 		object.put("src", this.src);
 		object.put("code", this.imageCode);
-		object.put("sprites", this.sprites);
-		return object.toString();
+		object.put("sprites", GetSpritesAsJsonObjectArray());
+		return object;
+	}
+	
+	private JSONObject[] GetSpritesAsJsonObjectArray()
+	{
+		JSONObject[] arr = new JSONObject[sprites.length];
+		for (int i = 0; i < sprites.length; i++)
+		{
+			arr[i] = sprites[i].toJSONObject();
+		}
+		return arr;
 	}
 	
 	@Override

@@ -1,9 +1,9 @@
 package com.cycapservers.game;
 
-import com.cycapservers.JSON_Stringable;
+import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.components.positioning.PositionComponent;
 
-public abstract class Sound implements JSON_Stringable
+public abstract class Sound implements JSON_returnable
 {
 	private String src;
 	private double volume;

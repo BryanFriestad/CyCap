@@ -1,6 +1,7 @@
 package com.cycapservers.game.entities;
 
-import com.cycapservers.JsonToStringObject;
+import org.json.JSONObject;
+
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
@@ -28,16 +29,13 @@ public class CollidingDrawableEntity extends Entity {
 	}
 	
 	@Override
-	public String toJSONString() {
-		if(entity_id == null)
-			throw new IllegalStateException("Entity ID must be set before calling this function");
+	public JSONObject toJSONObject() 
+	{
+		if(entity_id == null) throw new IllegalStateException("Entity ID must be set before calling this function");
 		
-		JsonToStringObject obj = new JsonToStringObject();
-		obj.put("class", this.getClass().getSimpleName());
-		obj.put("entity_id", entity_id);
-		obj.put("position", position);
-		obj.put("model", model);
-		return obj.toString();
+		JSONObject obj = super.toJSONObject();
+		obj.put("model", model.toJSONObject());
+		return obj;
 	}
 
 }

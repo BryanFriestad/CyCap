@@ -54,11 +54,6 @@ public class Projectile extends CollidingDrawableEntity
 		return alive;
 	}
 	
-	@Override
-	public String toJSONString(){
-		return null; //TODO
-	}
-	
 	public long getTime_of_creation() {
 		return time_of_creation;
 	}
