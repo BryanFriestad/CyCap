@@ -64,38 +64,46 @@ function GameState(role, pw, type)
 	this.currentServerTimeStep = 0;
 	
 	//this takes in the message from the server and builds the game state from that
-	this.receiveGameState = function(message){
-		
+	this.receiveGameState = function(message)
+	{	
 		this.currentServerTimeStep = Date.now() - this.lastTime;
 		this.lastTime = Date.now();
 		
 		let objects = message.split(":");
 		
 		//set all interpolating entities' updated fields to false
-		for(let i = 0; i < this.intp_entities.length; i++){
+		for(let i = 0; i < this.intp_entities.length; i++)
+		{
 			this.intp_entities[i].updated = false;
 		}
-		for(let i = 0; i < this.part_fx.length; i++){
+		for(let i = 0; i < this.part_fx.length; i++)
+		{
 			this.part_fx[i].updated = false;
 		}
-		for(let i = 0; i < this.masks.length; i++){
+		for(let i = 0; i < this.masks.length; i++)
+		{
 			this.masks[i].updated = false;
 		}
 		
-		for(let i = 0; i < objects.length; i++){
+		for(let i = 0; i < objects.length; i++)
+		{
 			let obj = objects[i].split(",");
 			
 			//player
-			if(obj[0] == "000"){
-				if(obj[2] == this.player.client_id){ //is the current player
+			if(obj[0] == "000")
+			{
+				if(obj[2] == this.player.client_id)
+				{ //is the current player
 					input_handler.removeHandledSnapshots(+obj[1]);
 					this.player.resetData(+obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9], +obj[10]);
 					this.player.team = +obj[12];
 					this.player.updateCurrentWeapon(obj[13]);
-					if(obj[14] != "empty"){
+					if(obj[14] != "empty")
+					{
 						this.player.item_slot = +obj[14];
 					}
-					else{
+					else
+					{
 						this.player.item_slot = "EMPTY";
 					}
 					this.player.health = +obj[15];
@@ -104,156 +112,199 @@ function GameState(role, pw, type)
 					this.player.damage_boost = +obj[18];
 					this.player.visibility = +obj[19];
 					
-					if(this.player.health <= 0){
+					if(this.player.health <= 0)
+					{
 						respawnCounter.start();
 					}
 				}
 			}
-			else if(obj[0] == "001"){
-				if(this.game_mode == "CTF"){
+			else if(obj[0] == "001")
+			{
+				if(this.game_mode == "CTF")
+				{
 					//TODO: update the game score gui
 					gameScoreGUI.update(objects[i]);
 				}
-				if(this.game_mode == "TDM"){
+				if(this.game_mode == "TDM")
+				{
 					//TODO: update the game score gui
 					gameScoreGUI.update(objects[i]);
 				}
 			}
-			else if(obj[0] == "002"){
+			else if(obj[0] == "002")
+			{
 				//new sound
-				if(obj[3] == "m9_gunshot"){
+				if(obj[3] == "m9_gunshot")
+				{
 					let sound_test = new SoundEmitter(gunshot1, false, +obj[1], +obj[2]);
 					sound_test.play();
 				}
 			}
-			else if(obj[0] == "003"){
+			else if(obj[0] == "003")
+			{
 				let found = false;
-				for(let i = 0; i < this.part_fx.length; i++){
-					if(this.part_fx[i].entity_id == obj[1]){
+				for(let i = 0; i < this.part_fx.length; i++)
+				{
+					if(this.part_fx[i].entity_id == obj[1])
+					{
 						found = true;
 						this.part_fx[i].updateNewEntity(new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9]), this.currentServerTimeStep);
 						this.part_fx[i].updated = true;
 						break;
 					}
 				}
-				if(!found){
+				if(!found)
+				{
 					this.part_fx.push(new InterpolatingEntity(obj[1], new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9])));
 				}
 			}
-			else if(obj[0] == "010"){
+			else if(obj[0] == "010")
+			{
 				let found = false;
-				for(let i = 0; i < this.masks.length; i++){
-					if(this.masks[i].entity_id == obj[1]){
+				for(let i = 0; i < this.masks.length; i++)
+				{
+					if(this.masks[i].entity_id == obj[1])
+					{
 						found = true;
 						this.masks[i].updateNewEntity(new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9]), this.currentServerTimeStep);
 						this.masks[i].updated = true;
 						break;
 					}
 				}
-				if(!found){
+				if(!found)
+				{
 					this.masks.push(new InterpolatingEntity(obj[1], new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9])));
 				}
 			}
-			else if(obj[0] == "012"){
+			else if(obj[0] == "012")
+			{
 				//add wall
 				this.addWall(obj);
 			}
-			else if(obj[0] == "013"){
+			else if(obj[0] == "013")
+			{
 				//remove wall
 				this.removeWall(obj);
 			}
-			else if(obj[0] == "020"){
+			else if(obj[0] == "020")
+			{
 				let found = false;
-				for(let i = 0; i < this.intp_entities.length; i++){
-					if(this.intp_entities[i].entity_id == obj[1]){
+				for(let i = 0; i < this.intp_entities.length; i++)
+				{
+					if(this.intp_entities[i].entity_id == obj[1])
+					{
 						found = true;
 						this.intp_entities[i].updateNewEntity(new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9]), this.currentServerTimeStep);
 						this.intp_entities[i].updated = true;
 						break;
 					}
 				}
-				if(!found){
+				if(!found)
+				{
 					this.intp_entities.push(new InterpolatingEntity(obj[1], new Entity(findImageFromCode(+obj[2]), +obj[3], +obj[4], +obj[5], +obj[6], +obj[7], +obj[8], +obj[9])));
 				}
 			}
 		}
 		
 		//delete the interpolating entities that weren't updated
-		for(let i = this.intp_entities.length - 1; i >= 0; i--){
-			if(this.intp_entities[i].updated == false){
+		for(let i = this.intp_entities.length - 1; i >= 0; i--)
+		{
+			if(this.intp_entities[i].updated == false)
+			{
 				this.intp_entities.splice(i, 1);
 			}
 		}
-		for(let i = this.part_fx.length - 1; i >= 0; i--){
-			if(this.part_fx[i].updated == false){
+		for(let i = this.part_fx.length - 1; i >= 0; i--)
+		{
+			if(this.part_fx[i].updated == false)
+			{
 				this.part_fx.splice(i, 1);
 			}
 		}
-		for(let i = this.masks.length - 1; i >= 0; i--){
-			if(this.masks[i].updated == false){
+		for(let i = this.masks.length - 1; i >= 0; i--)
+		{
+			if(this.masks[i].updated == false)
+			{
 				this.masks.splice(i, 1);
 			}
 		}
 		
 		//apply the ClientPrediction
-		for(let i = 0; i < input_handler.clientPredictiveState.length; i++){
+		for(let i = 0; i < input_handler.clientPredictiveState.length; i++)
+		{
 			this.player.update(input_handler.clientPredictiveState[i]);
 		}
 	}
 	
-	this.addWall = function(wallObject){
+	this.addWall = function(wallObject)
+	{
 		this.walls.push(new Wall(wall_image, +wallObject[2], +wallObject[3]));
 	}
 	
-	this.addWalls = function(wallList){
-		for(let i = 0; i < wallList.length; i++){
+	this.addWalls = function(wallList)
+	{
+		for(let i = 0; i < wallList.length; i++)
+		{
 			let obj = wallList[i].split(",");
 			this.addWall(obj);
 		}
 	}
 	
-	this.removeWall = function(wallObject){
-		for(let i = 0; i < this.walls.length; i++){
-			if(+wallObject[2] == this.walls[i].grid_x  && +wallObject[3] == this.walls[i].grid_y){
+	this.removeWall = function(wallObject)
+	{
+		for(let i = 0; i < this.walls.length; i++)
+		{
+			if(+wallObject[2] == this.walls[i].grid_x  && +wallObject[3] == this.walls[i].grid_y)
+			{
 				this.walls.splice(i, 1);
 				return;
 			}
 		}
 	}
 	
-	this.updateGameState = function(snapshot) {
+	this.updateGameState = function(snapshot) 
+	{
 		this.player.update(snapshot);
-		for(let i = 0; i < this.intp_entities.length; i++){
+		for(let i = 0; i < this.intp_entities.length; i++)
+		{
 			this.intp_entities[i].update();
 		}
-		for(let i = 0; i < this.part_fx.length; i++){
-			if(this.part_fx[i].d_sprIdx < 0){
+		for(let i = 0; i < this.part_fx.length; i++)
+		{
+			if(this.part_fx[i].d_sprIdx < 0)
+			{
 				this.part_fx[i].d_sprIdx = 0;
 			}
 			this.part_fx[i].update();
 		}
-		for(let i = 0; i < this.masks.length; i++){
+		for(let i = 0; i < this.masks.length; i++)
+		{
 			this.masks[i].update();
 		}
 	}
 	
-	this.drawGameState = function(){
+	this.drawGameState = function()
+	{
 		/*
 		this.map.draw();
 		*/
-		for(let i = 0; i < this.masks.length; i++){
+		for(let i = 0; i < this.masks.length; i++)
+		{
 			this.masks[i].draw();
 		}
-		for(let i = 0; i < this.walls.length; i++){
+		for(let i = 0; i < this.walls.length; i++)
+		{
 			this.walls[i].draw();
 		}
 		
 		this.player.draw();
-		for(let i = 0; i < this.intp_entities.length; i++){
+		for(let i = 0; i < this.intp_entities.length; i++)
+		{
 			this.intp_entities[i].draw();
 		}
 		
-		for(let i = 0; i < this.part_fx.length; i++){
+		for(let i = 0; i < this.part_fx.length; i++)
+		{
 			this.part_fx[i].draw();
 		}
 	}
@@ -262,7 +313,6 @@ function GameState(role, pw, type)
 //all functions
 function setup(arr) 
 {
-	
 	console.log("in setup");
 	
 	//initialize the game state
@@ -462,7 +512,8 @@ function ToggleZoom(){
 *r is the rotation in degrees
 *a is the alpha value between 0.0 and 1.0
 */
-function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
+function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a)
+{
 	this.image = img; //this already needs to be defined in another file
 	this.sprIdx = sprIdx
 	this.sprite = this.image.sprites[this.sprIdx];
@@ -474,7 +525,8 @@ function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
 	this.r = r;
 	this.a = a;
 	
-	this.resetData = function(imgCode, sprIdx, x, y, dWidth, dHeight, r, a){
+	this.resetData = function(imgCode, sprIdx, x, y, dWidth, dHeight, r, a)
+	{
 		this.image = findImageFromCode(imgCode);
 		this.sprIdx = sprIdx
 		this.sprite = this.image.sprites[this.sprIdx];
@@ -487,12 +539,15 @@ function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
 		this.a = a;
 	}
 	
-	this.updateCollisionRadius = function(){
+	this.updateCollisionRadius = function()
+	{
 		this.collision_radius = distanceBetween(this.x, this.y, (this.x + (this.dWidth/2)), (this.y + (this.dHeight/2)));
 	}
 	
-	this.draw = function(){
-		if(isColliding(this, canvas_box)){ //this keeps things from drawing if they are outside of the canvas
+	this.draw = function()
+	{
+		if (isColliding(this, canvas_box)) //this keeps things from drawing if they are outside of the canvas
+		{ 
 			this.sprite = this.image.sprites[Math.floor(this.sprIdx)]; //make sure the correct sprite is being displayed
 			context.setTransform(gt1, gt2, gt3, gt4, Math.round(gt5 + (this.x * gt1)), Math.round(gt6 + (this.y * gt4))); //we must round the X & Y positions so that it doesn't break the textures
 			//context.transform(1, 0, 0, 1, this.x, this.y); //set draw position
@@ -503,7 +558,8 @@ function Entity(img, sprIdx, x, y, dWidth, dHeight, r, a){
 	}
 }
 
-function InterpolatingEntity(entity_id, ent){
+function InterpolatingEntity(entity_id, ent)
+{
 	this.entity_id = entity_id;
 	this.last_ent = null;
 	this.new_ent = ent;
@@ -518,13 +574,17 @@ function InterpolatingEntity(entity_id, ent){
 	
 	this.updated = true;
 	
-	this.update = function(){
-		if(this.last_ent != null){
+	this.update = function()
+	{
+		if(this.last_ent != null)
+		{
 			this.last_ent.sprIdx += (this.d_sprIdx * global_delta_t);
-			if(this.last_ent.sprIdx >= this.last_ent.image.sprites.length){
+			if(this.last_ent.sprIdx >= this.last_ent.image.sprites.length)
+			{
 				this.last_ent.sprIdx = this.last_ent.image.sprites.length - 1;
 			}
-			else if(this.last_ent.sprIdx < 0){
+			else if(this.last_ent.sprIdx < 0)
+			{
 				this.last_ent.sprIdx = 0;
 			}
 			this.last_ent.sprite = this.last_ent.image.sprites[Math.floor(this.last_ent.sprIdx)];
@@ -535,17 +595,21 @@ function InterpolatingEntity(entity_id, ent){
 			this.last_ent.updateCollisionRadius();
 			this.last_ent.r += (this.d_r * global_delta_t);
 			this.last_ent.a += (this.d_a * global_delta_t);
-			if(this.last_ent.a > 1.0){
+			if (this.last_ent.a > 1.0)
+			{
 				this.last_ent.a = 1.0;
 			}
-			else if(this.last_ent.a < 0.0){
+			else if (this.last_ent.a < 0.0)
+			{
 				this.last_ent.a = 0;
 			}
 		}
 	}
 	
-	this.updateNewEntity = function(ent2, time){
-		if(this.last_ent == null){
+	this.updateNewEntity = function(ent2, time)
+	{
+		if(this.last_ent == null)
+		{
 			this.last_ent = this.new_ent;
 		}
 		this.new_ent = ent2;
@@ -560,14 +624,17 @@ function InterpolatingEntity(entity_id, ent){
 		this.d_a = (this.new_ent.a - this.last_ent.a) / (time/1000);
 	}
 	
-	this.draw = function(){
-		if(this.last_ent != null){
+	this.draw = function()
+	{
+		if(this.last_ent != null)
+		{
 			this.last_ent.draw();
 		}
 	}
 }
 
-function Player(width, height, img, x, y, role, team, client_id) {
+function Player(width, height, img, x, y, role, team, client_id)
+{
 	this.client_id = client_id; //this is the player's specific id. no one else in any match is allowed to have this at the same time
 
 	this.base = Entity;
@@ -595,7 +662,8 @@ function Player(width, height, img, x, y, role, team, client_id) {
 
 	this.has_flag = false;
 	
-	this.setRoleData = function(){
+	this.setRoleData = function()
+	{
 		switch(this.role){
 			case "recruit":
 				this.mov_speed = 140;
@@ -872,7 +940,7 @@ function BGTile(img, grid_x, grid_y, index){
 //to have already been defined
 if(document.getElementById("loading_screen").complete)
 {
-	msg = new ServerMessage("join_demo");
+	msg = new ServerMessage("join");
 	msg.addData("client_id", client_id);
 	connectToServer(msg);
 }
@@ -880,7 +948,7 @@ else
 {
 	document.getElementById("loading_screen").onload = function()
 	{
-		msg = new ServerMessage("join_demo");
+		msg = new ServerMessage("join");
 		msg.addData("client_id", client_id);
 		connectToServer(msg);
 	}

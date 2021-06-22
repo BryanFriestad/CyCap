@@ -12,8 +12,8 @@ import com.cycapservers.game.matchmaking.Game;
 
 public class Player extends Character {
 	
-	public Player(CollisionComponent c, DrawingComponent model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives, String password, WebSocketSession session) {
-		super(new PositionComponent(), c, model, new ClientInputComponent(password, session), game, team, class_name, inventory_size, starting_lives);
+	public Player(CollisionComponent c, DrawingComponent model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives) {
+		super(new PositionComponent(), c, model, new ClientInputComponent(), game, team, class_name, inventory_size, starting_lives);
 	}
 	
 	@Override

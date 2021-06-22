@@ -1,28 +1,19 @@
 package com.cycapservers.game.matchmaking;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
-import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.entities.Character;
 import com.cycapservers.game.entities.Spawn;
 
-public class TeamDeathMatch extends Game {
-	
-	private static final HashMap<Team, Integer> getTeamLayout(){
+public class TeamDeathMatch extends Game 
+{	
+	private static final HashMap<Team, Integer> getTeamLayout()
+	{
 		HashMap<Team, Integer> map = new HashMap<Team, Integer>();
 		map.put(Team.Red, 4);
 		map.put(Team.Blue, 4);
+		map.put(Team.None, 0);
 		return map;
 	}
 
@@ -40,11 +31,6 @@ public class TeamDeathMatch extends Game {
 	public boolean removeCharacter(Character c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public void startGame(List<String> inc_player_ids, HashMap<String, Team> inc_player_teams, HashMap<String, CharacterClass> inc_player_classes) {
-		super.startGame(inc_player_ids, inc_player_teams, inc_player_classes);
 	}
 
 	@Override

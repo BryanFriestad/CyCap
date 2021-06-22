@@ -11,7 +11,6 @@
 					<li class="outer_list">Game
 						<ul class="inner_list">
 							<li class="inner_list"><a href="/how_to">How To Play</a></li>
-							<li class="inner_list" th:if="${account.getUserID()} == null"><a href="/play">Play Now</a></li>
 							<li class="inner_list" th:unless="${account.getUserID()} == null"><a href="/game_list">Find a Game</a></li>
 						</ul>
 					</li>

@@ -1,44 +1,30 @@
 package com.cycapservers.game.matchmaking;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimerTask;
 
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import com.cycapservers.BeanUtil;
-import com.cycapservers.JsonToStringObject;
 import com.cycapservers.JSON_Stringable;
-import com.cycapservers.account.ProfileDataUpdate;
+import com.cycapservers.JsonToStringObject;
+import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
 import com.cycapservers.game.components.input.InputSnapshot;
-import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.database.GameEventsEntity;
-import com.cycapservers.game.database.GameEventsRepository;
-import com.cycapservers.game.database.GamePlayersEntity;
-import com.cycapservers.game.database.GamePlayersRepository;
 import com.cycapservers.game.database.GameType;
-import com.cycapservers.game.database.GamesEntity;
-import com.cycapservers.game.database.GamesRepository;
 import com.cycapservers.game.entities.Character;
 import com.cycapservers.game.entities.DrawableEntity;
 import com.cycapservers.game.entities.Entity;
 import com.cycapservers.game.entities.Player;
 import com.cycapservers.game.entities.Wall;
-import com.cycapservers.game.pathfinding.PathfindingNode;
 
-public class GameState
+public class GameState implements JSON_Stringable
 {	
 	private static int id_rand_len = 3;
 	
 	private GameType type;
 	
-	private HashMap<Integer, Integer> team_scores;
+	private HashMap<Team, Integer> team_scores;
 	
 	private List<Character> characters;
 	private List<Wall> current_walls;
@@ -47,14 +33,15 @@ public class GameState
 	
 	private List<String> used_entity_id;
 
-	public GameState(GameType type, int team_count) {
+	public GameState(List<Team> team_list) 
+	{
 		super();
 		used_entity_id = new ArrayList<String>();
-		team_scores = new HashMap<Integer, Integer>();
-		for(int i = 0; i < team_count; i++) {
-			team_scores.put(i, 0);
+		team_scores = new HashMap<Team, Integer>();
+		for (Team t : team_list)
+		{
+			team_scores.put(t, 0);
 		}
-		
 		entities = new ArrayList<Entity>();
 		background_tiles = new ArrayList<DrawableEntity>();
 		current_walls = new ArrayList<Wall>();
@@ -84,16 +71,20 @@ public class GameState
 	 * Then it adds them to the appropriate list
 	 * @param e
 	 */
-	public void addEntity(Entity e) {
-		if(e instanceof Wall) {
+	public void addEntity(Entity e) 
+	{
+		if (e instanceof Wall) 
+		{
 			setUniqueEntityId(e);
 			current_walls.add((Wall) e);
 		}
-		else if(e instanceof Character) {
+		else if (e instanceof Character) 
+		{
 			used_entity_id.add(e.getEntity_id());
 			characters.add((Character) e);
 		}
-		else {
+		else 
+		{
 			setUniqueEntityId(e);
 			entities.add(e);
 		}
@@ -105,7 +96,8 @@ public class GameState
 		background_tiles.add(e);
 	}
 	
-	private void setUniqueEntityId(Entity e) {
+	private void setUniqueEntityId(Entity e) 
+	{
 		String s = Utils.getGoodRandomString(used_entity_id, id_rand_len) + "(" + used_entity_id.size() + ")";
 		used_entity_id.add(s);
 		e.setEntity_id(s);
@@ -118,7 +110,8 @@ public class GameState
 	 * @param p The player to send the message to
 	 * @return String
 	 */
-	public String prepareGameStateMessage(Player p){
+	public String prepareGameStateMessage(Player p)
+	{
 		JsonToStringObject obj = new JsonToStringObject();
 		//TODO
 		//add game type
@@ -132,12 +125,10 @@ public class GameState
 		return null;
 	}
 
-	public PositionComponent getGraveyardPosition() {
-		throw new UnsupportedOperationException(); // TODO
+	@Override
+	public String toJSONString() 
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public List<PathfindingNode> getPathfindingNodes(){
-		throw new UnsupportedOperationException();
-	}
-	
 }

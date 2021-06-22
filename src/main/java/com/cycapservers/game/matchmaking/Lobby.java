@@ -19,9 +19,9 @@ public class Lobby {
 	//params
 	private String join_code; //a code needed to join this lobby via invite
 	//lobby options
-	private boolean mode_voting_enabled; //whether or not players can vote on game modes in this lobby type at all
-	private boolean map_voting_enabled;
-	private boolean team_selection_enabled;
+//	private boolean mode_voting_enabled; //whether or not players can vote on game modes in this lobby type at all
+//	private boolean map_voting_enabled;
+//	private boolean team_selection_enabled;
 	private List<GameType> available_game_types;
 	private List<Map> available_maps;
 	private int max_players;
@@ -34,22 +34,20 @@ public class Lobby {
 	private Map next_game_map;
 	private long next_game_start;
 	
-	private List<String> player_ids;
-	private HashMap<String, CharacterClass> selected_classes;
+	private List<IncomingPlayer> players;
 	
 	//various internal voting-enabling members
-	private boolean mode_voting_active; //whether players can currently vote on game mode, or if it is already decided;
-	private GameType mode_opt_1;
-	private GameType mode_opt_2;
-	private HashMap<String, Integer> player_mode_votes;
+//	private boolean mode_voting_active; //whether players can currently vote on game mode, or if it is already decided;
+//	private GameType mode_opt_1;
+//	private GameType mode_opt_2;
+//	private HashMap<String, Integer> player_mode_votes;
+//	
+//	private boolean map_voting_active;
+//	private Map map_opt_1;
+//	private Map map_opt_2;
+//	private HashMap<String, Integer> player_map_votes;
 	
-	private boolean map_voting_active;
-	private Map map_opt_1;
-	private Map map_opt_2;
-	private HashMap<String, Integer> player_map_votes;
-	
-	private boolean team_switching_active; 
-	private HashMap<String, Team> player_teams;
+//	private boolean team_switching_active;
 	
 	public Lobby(String join_code, LobbyType type, ArrayList<GameType> available_game_types, int max_players, boolean mode_voting_enabled, boolean map_voting_enabled, boolean team_selection_enabled, ArrayList<Map> available_maps) 
 	{
@@ -62,14 +60,14 @@ public class Lobby {
 		this.type = type;
 		this.available_game_types = available_game_types;
 		this.max_players = max_players;
-		this.mode_voting_enabled = mode_voting_enabled;
-		this.map_voting_enabled = map_voting_enabled;
-		this.team_selection_enabled = team_selection_enabled;
+//		this.mode_voting_enabled = mode_voting_enabled;
+//		this.map_voting_enabled = map_voting_enabled;
+//		this.team_selection_enabled = team_selection_enabled;
 		this.available_maps = available_maps;
 		
-		mode_voting_active = true;
-		map_voting_active = false;
-		team_switching_active = false; 
+//		mode_voting_active = true;
+//		map_voting_active = false;
+//		team_switching_active = false; 
 		
 		this.current_game = null;
 		
@@ -78,90 +76,110 @@ public class Lobby {
 		//pick map opt 1
 		//pick map opt 2
 		
-		this.player_mode_votes = new HashMap<String, Integer>();
-		this.player_map_votes = new HashMap<String, Integer>();
+//		this.player_mode_votes = new HashMap<String, Integer>();
+//		this.player_map_votes = new HashMap<String, Integer>();
 		
-		player_ids = new ArrayList<String>();
-		player_teams = new HashMap<String, Team>();
-		selected_classes = new HashMap<String, CharacterClass>();
+		players = new ArrayList<IncomingPlayer>();
+		
 		next_game_start = System.currentTimeMillis() + default_game_start_timer_ms;
+		next_game_type = available_game_types.get(0);
+		next_game_map = available_maps.get(0);
 	}
 	
 	public void update()
 	{
 		//update lobby stuff
-		long time_remaining = this.next_game_start - System.currentTimeMillis();
+		long time_remaining = GetTimeRemaining();
 
-		if(time_remaining <= 0){
-			if(current_game == null)
-				throw new IllegalStateException("current_game is null at the end of the lobby timer");
-			current_game.startGame(player_ids, player_teams, selected_classes);
+		if (time_remaining <= 0)
+		{
+			if (current_game == null) throw new IllegalStateException("current_game is null at the end of the lobby timer");
+			current_game.startGame(players);
 		}
-		else if(time_remaining <= 5000){
-			this.team_switching_active = false;
+		else if (time_remaining <= 5000)
+		{
+//			this.team_switching_active = false;
 		}
-		else if(time_remaining <= 20000){
+		else if (time_remaining <= 20000)
+		{
 			//lock in map
-			this.map_voting_active = false;
+//			this.map_voting_active = false;
 			current_game.setMap(next_game_map);
 		}
-		else if(time_remaining <= 40000){
+		else if (time_remaining <= 40000)
+		{
 			//lock in game_mode
-			this.mode_voting_active = false;
+//			this.mode_voting_active = false;
 			this.current_game = GameFactory.getInstance().getGame(next_game_type);
-			this.map_voting_active = true;
-			this.team_switching_active = true;
-			for(String username : player_ids)
-			{
-				player_teams.put(username, nextBalancedTeam());
-			}
+//			this.map_voting_active = true;
+//			this.team_switching_active = true;
+			BalanceTeams();
 		}
 	}
 
 	public void joinLobby(String client_id)
 	{
-		if (player_ids.contains(client_id)) throw new IllegalArgumentException("The given client_id is already in this lobby.");
-		
-		player_ids.add(client_id);
-		selected_classes.put(client_id, CharacterClass.Recruit);
-		if (this.team_switching_active) player_teams.put(client_id, nextBalancedTeam());
+		if (IsPlayerInLobby(client_id)) throw new IllegalArgumentException("The given client_id is already in this lobby.");
+		if (players.size() >= max_players) throw new IllegalStateException("The lobby is already full.");
+		players.add(new IncomingPlayer(client_id, CharacterClass.Recruit, Team.None));
 	}
 	
-	/**
-	 * Gets the next team such that the number of players per team is as balanced as can be.
-	 * Before calling this function, the player's client id should be added to the list
-	 * of client ids.
-	 * @return Enum - the team 
-	 */
-	private Team nextBalancedTeam(){
-		if (current_game == null)
-			throw new IllegalStateException("current game must be not null before calling this function");
-		
-		//Get the map of players needed per team to reach the max values given by the current game
-		HashMap<Team, Integer> chars_per_team = this.current_game.getMax_characters_per_team();
-		for(Team t : player_teams.values()){
-			chars_per_team.put(t, chars_per_team.get(t) - 1); //for each already assigned player, subtract one from the totals needed
+	public boolean IsPlayerInLobby(String client_id)
+	{
+		for (IncomingPlayer i : players)
+		{
+			if (i.GetClientId().equals(client_id)) return true;
 		}
+		return false;
+	}
+	
+	private void BalanceTeams()
+	{
+		// Places unassigned players onto teams so they are balanced.
+		if (current_game == null) throw new IllegalStateException("current game must be not null before calling this function");
 		
-		System.out.println(this.current_game.getMax_characters_per_team());
+		List<IncomingPlayer> unassigned_players = new ArrayList<IncomingPlayer>();
 		
-		//find the team which has the most players left until full
-		Team most_players_needed = null;
-		int most_players = 0;
-		for(Team t : chars_per_team.keySet()){
-			int temp = chars_per_team.get(t); 
-			if(temp > most_players){
-				most_players_needed = t;
-				most_players = temp;
+		// Get the map of players needed per team to reach the max values given by the current game
+		HashMap<Team, Integer> characters_needed_per_team = this.current_game.getMax_characters_per_team();
+		for (IncomingPlayer i : players)
+		{
+			Team t = i.GetTeam();
+			if (t == Team.None)
+			{
+				unassigned_players.add(i);
+			}
+			else
+			{
+				characters_needed_per_team.put(t, characters_needed_per_team.get(t) - 1); //for each already assigned player, subtract one from the totals needed
 			}
 		}
 		
-		return most_players_needed;
+		// Assign players to teams that need the most.
+		for (IncomingPlayer i : unassigned_players)
+		{
+			Team most_needy_team = GetMostNeedyTeam(characters_needed_per_team);
+			if (most_needy_team != Team.None)
+			{
+				i.SetTeam(most_needy_team);
+				characters_needed_per_team.put(most_needy_team, characters_needed_per_team.get(most_needy_team) - 1);
+			}
+		}
 	}
 	
-	public boolean containsUser(String client_id)
+	private Team GetMostNeedyTeam(HashMap<Team, Integer> needed_per_team)
 	{
-		return player_ids.contains(client_id);
+		Team most_needy_team = Team.None;
+		for (Team t : needed_per_team.keySet())
+		{
+			int characters_needed = needed_per_team.get(t);
+			if (needed_per_team.get(most_needy_team) == null) throw new IllegalStateException("characters needed per team map does not have Team.None set");
+			if (characters_needed > needed_per_team.get(most_needy_team))
+			{
+				most_needy_team = t;
+			}
+		}
+		return most_needy_team;
 	}
 	
 	public void leaveLobby(String client_id)
@@ -180,49 +198,75 @@ public class Lobby {
 	//vote for map
 	//get last game stats
 	
-	public boolean canPlayerJoin(String client_id){
-		return !current_game.isStarted() && player_ids.size() < current_game.getMax_players();
+	public boolean canPlayerJoin(String client_id)
+	{
+		return !current_game.isStarted() && (getPlayerCount() < current_game.getMax_players());
 	}
 	
-	public int getPlayerCount(){
-		return player_ids.size();
+	public int getPlayerCount()
+	{
+		return players.size();
 	}
 	
-	public String getTimeRemaining(){
-		long time_diff = this.next_game_start - System.currentTimeMillis();
+	public long GetTimeRemaining()
+	{
+		return Math.max(0, this.next_game_start - System.currentTimeMillis());
+	}
+	
+	public String getTimeRemainingString()
+	{
+		long time_diff = GetTimeRemaining();
 		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 		Date date = new Date(time_diff);
 		return sdf.format(date);
 	}
-
-	public List<String> getPlayer_ids() {
-		return player_ids;
-	}
-
-	public HashMap<String, Team> getPlayer_teams() {
-		return player_teams;
-	}
-
-	public HashMap<String, CharacterClass> getSelected_classes() {
-		return selected_classes;
-	}
 	
 	public void voteOnGameType(String username, Integer vote){
-		if(!this.mode_voting_active)
-			return;
+//		if(!this.mode_voting_active)
+//			return;
 		throw new UnsupportedOperationException();
 	}
 	
 	public void voteOnMap(String username, Integer vote){
-		if(!this.map_voting_active)
-			return;
+//		if(!this.map_voting_active)
+//			return;
 		throw new UnsupportedOperationException();
 	}
 	
 	public void switchTeam(String username, Team t){
-		if(!this.team_switching_active)
-			return;
+//		if(!this.team_switching_active)
+//			return;
 		throw new UnsupportedOperationException();
 	}
 	
+	public String GetJoinCode()
+	{
+		return join_code;
+	}
+	
+	public List<IncomingPlayer> GetPlayersInLobby()
+	{
+		return players;
+	}
+	
+	public CharacterClass GetClassOfPlayer(String client_id)
+	{
+		if (!IsPlayerInLobby(client_id)) throw new IllegalArgumentException("cannot get class of player not in game.");
+		return GetPlayerWithName(client_id).GetCharacterClass();
+	}
+	
+	private IncomingPlayer GetPlayerWithName(String client_id)
+	{
+		for (IncomingPlayer i : players)
+		{
+			if (i.GetClientId().equals(client_id)) return i;
+		}
+		return null;
+	}
+	
+	public String GetCurrentGameJoinMessage()
+	{
+		if (current_game == null) throw new IllegalStateException("current_game cannot be null.");
+		return current_game.GetInitialGameState();
+	}
 }

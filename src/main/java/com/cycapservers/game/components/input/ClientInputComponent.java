@@ -21,10 +21,10 @@ public class ClientInputComponent extends InputComponent
 	
 	private ClientInputHandler input_handler;
 	
-	public ClientInputComponent(String pw, WebSocketSession s)
+	public ClientInputComponent()
 	{
-		session = s;
-		input_handler = new ClientInputHandler(pw);
+//		session = s;
+		input_handler = new ClientInputHandler();
 	}
 	
 	@Override

@@ -21,6 +21,7 @@ public class CaptureTheFlag extends Game {
 		HashMap<Team, Integer> map = new HashMap<Team, Integer>();
 		map.put(Team.Red, 4);
 		map.put(Team.Blue, 4);
+		map.put(Team.None, 0);
 		return map;
 	}
 	
@@ -43,11 +44,6 @@ public class CaptureTheFlag extends Game {
 	public boolean removeCharacter(Character c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
-	@Override
-	public void startGame(List<String> inc_player_ids, HashMap<String, Team> inc_player_teams, HashMap<String, CharacterClass> inc_player_classes) {
-		super.startGame(inc_player_ids, inc_player_teams, inc_player_classes);
 	}
 	
 	@Override

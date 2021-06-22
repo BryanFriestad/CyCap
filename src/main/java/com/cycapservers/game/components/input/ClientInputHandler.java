@@ -4,9 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.positioning.PositionComponent;
 
-public class ClientInputHandler {
+public class ClientInputHandler 
+{
+	// STATIC functions
+	private static final int NUM_CHARS_IN_CODE = 6;
+	private static List<String> used_input_codes = new ArrayList<String>();
+	
+	private static String GenInputCode()
+	{
+		return Utils.getGoodRandomString(used_input_codes, NUM_CHARS_IN_CODE);
+	}
 	
 	//parameters
 	private String input_passcode;
@@ -21,10 +31,10 @@ public class ClientInputHandler {
 	private List<Integer> keys_down;
 	private List<Integer> keys_pnr;
 	
-	public ClientInputHandler(String input_passcode, HashMap<InputAction, Integer> input_mapping) 
+	public ClientInputHandler(HashMap<InputAction, Integer> input_mapping) 
 	{
 		super();
-		this.input_passcode = input_passcode;
+		this.input_passcode = GenInputCode();
 		this.input_mapping = input_mapping;
 		previous_snapshot = null;
 		current_snapshot = null;
@@ -33,10 +43,10 @@ public class ClientInputHandler {
 		keys_pnr = new ArrayList<Integer>();
 	}
 
-	public ClientInputHandler(String input_passcode) 
+	public ClientInputHandler() 
 	{
 		super();
-		this.input_passcode = input_passcode;
+		this.input_passcode = GenInputCode();
 		input_mapping = new HashMap<InputAction, Integer>();
 		input_mapping.put(InputAction.WEAPON_1_SELECT, 49);
 		input_mapping.put(InputAction.WEAPON_2_SELECT, 50);

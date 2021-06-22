@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.cycapservers.BeanUtil;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.PowerUpSpawner;
@@ -12,6 +14,7 @@ import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.CollisionEngine;
+import com.cycapservers.game.components.drawing.DrawingComponentFactory;
 import com.cycapservers.game.components.input.InputSnapshot;
 import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.database.GameEventsEntity;
@@ -25,6 +28,7 @@ import com.cycapservers.game.entities.Entity;
 import com.cycapservers.game.entities.Player;
 import com.cycapservers.game.entities.Spawn;
 import com.cycapservers.game.maps.Map;
+import com.cycapservers.game.pathfinding.PathfindingNode;
 
 /**
  * A game is held and managed by a Lobby
@@ -33,10 +37,11 @@ import com.cycapservers.game.maps.Map;
  * @author Bryan Friestad
  *
  */
-public abstract class Game {
-	
+public abstract class Game 
+{	
 	//parameters
 	private GameType type; //used to store in DB
+	
 	//Game options
 	private int max_characters; //calculated internally
 	private HashMap<Team, Integer> max_characters_per_team; //a mapping between the available teams in this game and the max # of players on each
@@ -55,41 +60,59 @@ public abstract class Game {
 	private long start_time; //the unix time in ms since the start of the game
 	private CollisionEngine collision_engine;
 	private PowerUpSpawner power_up_spawner;
+	
+	private String initial_game_state_message;
+	
+	// DATABASE OBJECTS
 	private List<GameEventsEntity> game_events; //A list of events that have happened in the game to save to the database
 	private List<GamePlayersEntity> game_players;
 	
+	private List<String> player_input_codes;
 	
-	public Game(GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) {
+	public Game(GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) 
+	{
 		this.type = type;
 		this.friendly_fire = friendly_fire;
 		this.max_character_lives = max_character_lives;
 		this.respawn_time = respawn_time;
 		this.enable_power_ups = enable_power_ups;
 		this.time_limit = time_limit;
-		this.max_characters = Utils.sumIntArray((Integer[]) max_characters_per_team.values().toArray());
+		this.max_characters = CalculateMaxCharacters(max_characters_per_team);
 		this.max_characters_per_team = max_characters_per_team;
 		
 		this.game_events = new ArrayList<GameEventsEntity>();
 		this.game_players = new ArrayList<GamePlayersEntity>();
+		player_input_codes = new ArrayList<String>();
 		this.collision_engine = new CollisionEngine();
 		this.game_ended = false;
 		this.started = false;
+	}
+	
+	private int CalculateMaxCharacters(HashMap<Team, Integer> max_characters_per_team)
+	{
+		int sum = 0;
+		for (Team t : max_characters_per_team.keySet())
+		{
+			sum += max_characters_per_team.get(t);
+		}
+		return sum;
 	}
 	
 	protected abstract boolean addCharacter(Character c);
 	
 	protected abstract boolean removeCharacter(Character c);
 	
-	public void startGame(List<String> inc_player_ids, HashMap<String, Team> inc_player_teams, HashMap<String, CharacterClass> inc_player_classes)
+	public void startGame(List<IncomingPlayer> incoming_players)
 	{
 		if(map == null) throw new IllegalStateException("The map has not yet been set for this game");
 		
-		game_state = new GameState(this.type, this.max_characters_per_team.keySet().size()); //init the game state
+		game_state = new GameState((List<Team>) this.max_characters_per_team.keySet()); //init the game state
 		map.InitializeGameState(type, game_state, enable_power_ups);
+		initial_game_state_message = game_state.toJSONString();
 		
-		for(String username : inc_player_ids)
+		for(IncomingPlayer i : incoming_players)
 		{
-			addCharacter(new Player(new CharacterCollisionComponent(new CircleCollider(), 10, new PositionComponent()), null, this, inc_player_teams.get(username), inc_player_classes.get(username), Character.DEFAULT_INVENTORY_SIZE, max_character_lives, null, null)); //TODO: get model, password and websocket session figured out
+			addCharacter(i.BuildPlayer(this, Character.DEFAULT_INVENTORY_SIZE, max_character_lives));
 		}
 		
 		this.start_time = System.currentTimeMillis();
@@ -154,7 +177,12 @@ public abstract class Game {
 
 	public PositionComponent getGraveyardPosition() 
 	{
-		return this.game_state.getGraveyardPosition();
+		throw new UnsupportedOperationException(); // TODO
+	}
+	
+	public List<PathfindingNode> getPathfindingNodes()
+	{
+		throw new UnsupportedOperationException();
 	}
 
 	public long getRespawn_time() 
@@ -190,6 +218,12 @@ public abstract class Game {
 	public HashMap<Team, Integer> getMax_characters_per_team() 
 	{
 		return max_characters_per_team;
+	}
+
+	public String GetInitialGameState() 
+	{
+		if (!this.started) throw new IllegalStateException("game must be started to send initial state message");
+		return this.initial_game_state_message;
 	}
 	
 	

@@ -15,17 +15,16 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
-	
-	
+public class WebSocketConfig implements WebSocketConfigurer 
+{
     @Bean
-    public WebSocketHandler MessageHandler() {
+    public WebSocketHandler MessageHandler() 
+    {
         return new MessageHandler();
     }
     
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) 
+    {
         registry.addHandler(MessageHandler(), "/my-websocket-endpoint");
     }
-    
 }
-

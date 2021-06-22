@@ -71,7 +71,7 @@ public class LobbyManager
 	{
 		for (Lobby l : lobbies)
 		{
-			if(l.containsUser(client_id)) return l;
+			if(l.IsPlayerInLobby(client_id)) return l;
 		}
 		
 		return null;

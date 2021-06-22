@@ -71,33 +71,9 @@ public class HomepageController {
         return "main_page";
     }
     
-    @GetMapping("game_list")
-    public String gameListPage(@ModelAttribute("account") Account account) {
-    	if(account.getUserID() != null) {
-    		return "game_list2";
-    	}
-    	else {
-    		logger.info("Entered into get accounts login controller Layer");
-        	return "accounts/login";
-    	}
-    }
-    
     @GetMapping("/how_to")
     public String how_to() {
         return "how_to";
-    }
-    
-    @GetMapping("/play")
-    public String playNow(Model model, @ModelAttribute("account") Account account) {
-    	if(account.getUserID() != null) {
-	    	model.addAttribute("user", account.getUserID());
-	    	return "play";
-    	}
-    	else {
-	    	Random rand = new Random();
-	    	model.addAttribute("user", "guest" + rand.nextInt(1000000));
-	    	return "play";
-    	}
     }
     
     @GetMapping("/logout")
@@ -211,28 +187,6 @@ public class HomepageController {
     	if(account.getUserID() != null) {
     		logger.info("Entered into get Chat controller Layer");
         	return "accounts/chat";
-    	}
-    	else {
-    		logger.info("Entered into get accounts login controller Layer");
-        	return "accounts/login";
-    	}
-    }
-    
-    @GetMapping("/Lobby")
-    public String Lobby(@ModelAttribute("account") Account account){
-    	if(account.getUserID() != null) {
-    		return "game_list2";
-    	}
-    	else {
-    		logger.info("Entered into get accounts login controller Layer");
-        	return "accounts/login";
-    	}
-    }
-    
-    @GetMapping("/LobbyScreen")
-    public String LobbyScreen(@ModelAttribute("account") Account account){
-    	if(account.getUserID() != null) {
-    		return "LobbyScreen";
     	}
     	else {
     		logger.info("Entered into get accounts login controller Layer");

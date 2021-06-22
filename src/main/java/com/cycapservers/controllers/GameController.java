@@ -39,7 +39,7 @@ public class GameController {
     	return new Account();
     }
     
-    @GetMapping("new_game_list")
+    @GetMapping("game_list")
     public String gameListPage(Model model, @ModelAttribute("account") Account account) 
     {
     	if (account.getUserID() != null) 
@@ -63,28 +63,31 @@ public class GameController {
     	{
 	    	Lobby l = lobby_manager.findValidLobby(account.getUserID(), lobby_type);
 	    	l.joinLobby(account.getUserID());
-	    	return "redirect:/new_lobby";
+	    	return "redirect:/lobby";
     	}
     	else
     	{
-    		return "accounts/login";
+    		logger.info("Entered into get accounts login controller Layer");
+        	return "accounts/login";
     	}
     }
     
-//    @GetMapping("play")
-//    public String playNow(Model model, @ModelAttribute("account") Account account) {
-//    	if(account.getUserID() != null) {
-//	    	model.addAttribute("user", account.getUserID());
-//	    	return "play";
-//    	}
-//    	else {
-//	    	Random rand = new Random();
-//	    	model.addAttribute("user", "guest" + rand.nextInt(1000000));
-//	    	return "play";
-//    	}
-//    }
+    @GetMapping("play")
+    public String playNow(Model model, @ModelAttribute("account") Account account) 
+    {
+    	if (account.getUserID() != null) 
+    	{
+	    	model.addAttribute("user", account.getUserID());
+	    	return "play";
+    	}
+    	else 
+    	{
+    		logger.info("Entered into get accounts login controller Layer");
+        	return "accounts/login";
+    	}
+    }
     
-    @GetMapping("new_lobby")
+    @GetMapping("lobby")
     public String Lobby(Model model, @ModelAttribute("account") Account account)
     {
     	if(account.getUserID() != null) 
@@ -99,15 +102,14 @@ public class GameController {
     		//hashmap<string, char_class> character classes
     		
     		Lobby l = lobby_manager.findLobbyOfUser(account.getUserID()); //find lobby for given player
-    		if(l == null)
-    			return "redirect:/new_game_list"; //if it doesnt exist, kick them back to the find_game page
+    		if (l == null) return "redirect:/new_game_list"; //if it doesnt exist, kick them back to the find_game page
+    		
+    		if (l.GetTimeRemaining() <= 0) return "redirect:/play";
     		
     		model.addAttribute("lobby", l);
-    		model.addAttribute("my_class", l.getSelected_classes().get(account.getUserID()));
+    		model.addAttribute("my_class", l.GetClassOfPlayer(account.getUserID()));
     		model.addAttribute("available_classes", CharacterClass.values()); //TODO: replace this with a lookup to the DB
-    		model.addAttribute("player_names", l.getPlayer_ids());
-    		model.addAttribute("player_teams", l.getPlayer_teams());
-    		model.addAttribute("classes", l.getSelected_classes());
+    		model.addAttribute("players", l.GetPlayersInLobby());
     		
     		return "game/lobby";
     	}
@@ -117,15 +119,4 @@ public class GameController {
         	return "accounts/login";
     	}
     }
-    
-//    @GetMapping("/LobbyScreen")
-//    public String LobbyScreen(@ModelAttribute("account") Account account){
-//    	if(account.getUserID() != null) {
-//    		return "LobbyScreen";
-//    	}
-//    	else {
-//    		logger.info("Entered into get accounts login controller Layer");
-//        	return "accounts/login";
-//    	}
-//    }
 }

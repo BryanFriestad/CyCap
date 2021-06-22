@@ -1,5 +1,7 @@
 package com.cycapservers.game.matchmaking;
 
+import java.io.IOException;
+
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -55,12 +57,8 @@ public class MessageHandler extends TextWebSocketHandler
     	JSONObject message = new JSONObject(textMessage.getPayload());
     	switch (message.get("msg_type").toString())
     	{
-    	case "join_demo":
-    		handleJoinDemoGameMessage(message);
-    		break;
-    		
-    	case "lobby":
-    		handleFindLobbyMessage(message);
+    	case "join":
+    		handleJoinGameMessage(session, message);
     		break;
     		
     	default:
@@ -68,13 +66,10 @@ public class MessageHandler extends TextWebSocketHandler
     	}
     }
     
-    private void handleFindLobbyMessage(JSONObject message)
+    private void handleJoinGameMessage(WebSocketSession session, JSONObject message) throws IOException
     {
-    	
-    }
-    
-    private void handleJoinDemoGameMessage(JSONObject message)
-    {
-    	
+    	String client_id = message.getString("client_id");
+    	String msg = lobby_manager.findLobbyOfUser(client_id).GetCurrentGameJoinMessage();
+    	session.sendMessage(new TextMessage(msg));
     }
 }

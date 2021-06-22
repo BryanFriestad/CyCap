@@ -13,22 +13,25 @@ public class Image implements JSON_Stringable {
 	//internal
 	private ImageSprite[] sprites;
 	
-	public Image(String source, int img_code) {
+	public Image(String source, int img_code) 
+	{
 		this.src = source;
 		this.imageCode = img_code;
 		this.sprites = Utils.generateSpriteData(Utils.GRID_LENGTH, Utils.GRID_LENGTH, 1, 1);
 	}
 	
-	public Image(String source, int img_code, int image_width, int image_height) {
+	public Image(String source, int img_code, int image_width, int image_height) 
+	{
 		this.src = source;
 		this.imageCode = img_code;
 		this.sprites = Utils.generateSpriteData(image_width, image_height, 1, 1);
 	}
 	
-	public Image(String source, int img_code,  int image_width, int image_height, int sprite_rows, int sprite_cols) {
+	public Image(String source, int img_code,  int sprite_width, int sprite_height, int sprite_rows, int sprite_cols) 
+	{
 		this.src = source;
 		this.imageCode = img_code;
-		this.sprites = Utils.generateSpriteData(image_width, image_height, sprite_rows, sprite_cols);
+		this.sprites = Utils.generateSpriteData(sprite_width, sprite_height, sprite_rows, sprite_cols);
 	}
 	
 	/**

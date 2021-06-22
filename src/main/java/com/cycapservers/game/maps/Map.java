@@ -78,7 +78,8 @@ public class Map
 			{
 				short x = (short) o.getInt("x");
 				short y = (short) o.getInt("y");
-				Team t = (Team) o.get("team");
+				Team t = Team.valueOf((String) o.get("team"));
+				
 				state.addEntity(EntityFactory.getInstance().GetSpawn(x, y, t));
 			}
 		}
