@@ -30,36 +30,15 @@ public class CaptureTheFlag extends Game {
 	protected Flag team2_flag = new Flag(null, null, this, Team.Blue, null); 
 	/////////////////////
 	
-	public CaptureTheFlag() {
+	public CaptureTheFlag() 
+	{
 		super(GameType.ctf, false, -1, 10000, true, 3*60*1000, getTeamLayout());
 	}
-
-	@Override
-	public boolean addCharacter(Character c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	@Override
-	public boolean removeCharacter(Character c) {
+	protected boolean removeCharacter(Character c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
-	@Override
-	public void receiveInputSnapshot(InputSnapshot s) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void sendGameState() {
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public Spawn getValidSpawnNode(Team team) {

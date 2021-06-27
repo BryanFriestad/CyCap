@@ -8,11 +8,10 @@ import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 
 @SpringBootApplication
-public class CyCapApplication {
-
-    public static void main(String[] args) throws Exception {
-//    	Image im = new Image("res/images/flags.png", 4, 128, 128, 2, 4);
-//    	System.out.println(im.toJSONString());
+public class CyCapApplication 
+{
+    public static void main(String[] args) throws Exception 
+    {
         SpringApplication.run(CyCapApplication.class, args);
     }
 }

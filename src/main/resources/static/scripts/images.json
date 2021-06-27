@@ -1,0 +1,245 @@
+{
+    "images" :
+    [
+        {
+            "src" : "res/images/player_skins.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 8,
+                "rows" : 8
+            }
+        },
+        {
+            "src" : "res/images/walls.png",
+            "params" :
+            {
+                "sprite_height" : 64,
+                "sprite_width" : 64,
+                "columns" : 2,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/bullets.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 2,
+                "rows" : 2
+            }
+        },
+        {
+            "src" : "res/images/blast1.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/speed_potion.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 4,
+                "rows" : 2
+            }
+        },
+        {
+            "src" : "res/images/shield_potion.png",
+            "params" :
+            {
+                "sprite_height" : 256,
+                "sprite_width" : 256,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/ammo_box.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/health_pack.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/item_slot_frame.png",
+            "params" :
+            {
+                "sprite_height" : 64,
+                "sprite_width" : 64,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/ammo_symbol.png",
+            "params" :
+            {
+                "sprite_height" : 64,
+                "sprite_width" : 64,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/health_symbol.png",
+            "params" :
+            {
+                "sprite_height" : 64,
+                "sprite_width" : 64,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/weapon_select_frame.png",
+            "params" :
+            {
+                "sprite_height" : 800,
+                "sprite_width" : 1600,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/gui_selection_ring.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/assault_rifle_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/smg_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/machine_gun_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/shotgun_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/empty_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/pistol_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/mortar_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/smoke_icon.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/explosion_ss.png",
+            "params" :
+            {
+                "sprite_height" : 113,
+                "sprite_width" : 113,
+                "columns" : 9,
+                "rows" : 9
+            }
+        },
+        {
+            "src" : "res/images/smoke_cloud.png",
+            "params" :
+            {
+                "sprite_height" : 256,
+                "sprite_width" : 256,
+                "columns" : 1,
+                "rows" : 1
+            }
+        },
+        {
+            "src" : "res/images/flags.png",
+            "params" :
+            {
+                "sprite_height" : 128,
+                "sprite_width" : 128,
+                "columns" : 4,
+                "rows" : 2
+            }
+        }
+    ]
+}

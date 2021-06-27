@@ -41,8 +41,8 @@ public class ArtilleryShell extends FallingProjectile
 	{
 		if (!super.update()) 
 		{
-			shotFrom.getOwner().getGame().addEntity(explosion_template.clone(), true); //create explosion
-			shotFrom.getOwner().getGame().addEntity(new DrawableEntity(dest, cracked_ground_template.clone()), false); //create ground_mask
+			shotFrom.getOwner().getGame().addEntity(explosion_template.clone()); //create explosion
+			shotFrom.getOwner().getGame().addEntity(new DrawableEntity(dest, cracked_ground_template.clone())); //create ground_mask
 			return false;
 		}
 		return true;

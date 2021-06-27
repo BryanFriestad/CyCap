@@ -12,9 +12,9 @@ import com.cycapservers.game.matchmaking.Game;
 
 public class ComputerCharacter extends Character {
 
-	public ComputerCharacter(CollisionComponent c, DrawingComponent model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives) 
+	public ComputerCharacter(CollisionComponent c, DrawingComponent model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives, String client_id) 
 	{
-		super(new PositionComponent(), c, model, new ComputerInputComponent(), game, team, class_name, inventory_size, starting_lives);
+		super(new PositionComponent(), c, model, new ComputerInputComponent(), game, team, class_name, inventory_size, starting_lives, client_id);
 	}
 
 	@Override

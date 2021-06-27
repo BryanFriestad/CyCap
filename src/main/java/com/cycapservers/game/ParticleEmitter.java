@@ -70,7 +70,7 @@ public class ParticleEmitter {
 			p.setDw(randomizer.getDeltaWidth()); //give the particle a random dw
 			p.setDr(randomizer.getDeltaRotation()); //give the particle a random dr
 			p.setDa(randomizer.getDeltaAlpha()); //give the particle a random da
-			game.addEntity(new DrawableEntity(Utils.getRandomPositionInCircle(spawn_point, spawn_range), p), false);
+			game.addEntity(new DrawableEntity(Utils.getRandomPositionInCircle(spawn_point, spawn_range), p));
 			have_spawned++;
 		}
 		

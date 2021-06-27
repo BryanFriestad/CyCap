@@ -32,7 +32,7 @@ public class DrawingComponent implements JSON_returnable, Component
 	{
 		parent = null;
 		
-		if (spriteIndex < 0 || spriteIndex >= image.getSpritesLength())
+		if (spriteIndex < 0 || spriteIndex >= image.GetNumberOfSprites())
 		{
 			throw new IllegalArgumentException("spriteIndex(" + spriteIndex + ") is invalid");
 		}
@@ -70,7 +70,7 @@ public class DrawingComponent implements JSON_returnable, Component
 	 */
 	public DrawingComponent(Image image, int spriteIndex, double drawHeight, double drawWidth) 
 	{
-		if(spriteIndex < 0 || spriteIndex >= image.getSpritesLength()){
+		if(spriteIndex < 0 || spriteIndex >= image.GetNumberOfSprites()){
 			throw new IllegalArgumentException("spriteIndex(" + spriteIndex + ") is invalid");
 		}
 		if(drawHeight < 0){
@@ -95,7 +95,7 @@ public class DrawingComponent implements JSON_returnable, Component
 	 */
 	public DrawingComponent(Image image, int spriteIndex) 
 	{
-		if (spriteIndex < 0 || spriteIndex >= image.getSpritesLength()){
+		if (spriteIndex < 0 || spriteIndex >= image.GetNumberOfSprites()){
 			throw new IllegalArgumentException("spriteIndex(" + spriteIndex + ") is invalid");
 		}
 		this.image = image;
@@ -200,7 +200,7 @@ public class DrawingComponent implements JSON_returnable, Component
 	
 	public DrawingComponent clone() 
 	{
-		return new DrawingComponent(image.clone(), spriteIndex, drawHeight, drawWidth, rotation, alpha);
+		return new DrawingComponent(image, spriteIndex, drawHeight, drawWidth, rotation, alpha);
 	}
 
 	@Override

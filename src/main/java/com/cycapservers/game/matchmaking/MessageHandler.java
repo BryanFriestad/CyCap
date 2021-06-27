@@ -11,6 +11,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.cycapservers.BeanUtil;
+import com.cycapservers.game.components.input.InputSnapshot;
 
 @Component
 public class MessageHandler extends TextWebSocketHandler 
@@ -58,7 +59,11 @@ public class MessageHandler extends TextWebSocketHandler
     	switch (message.get("msg_type").toString())
     	{
     	case "join":
-    		handleJoinGameMessage(session, message);
+    		HandleJoinGameMessage(session, message);
+    		break;
+    		
+    	case "input":
+    		HandleInputMessage(message);
     		break;
     		
     	default:
@@ -66,10 +71,17 @@ public class MessageHandler extends TextWebSocketHandler
     	}
     }
     
-    private void handleJoinGameMessage(WebSocketSession session, JSONObject message) throws IOException
+    private void HandleJoinGameMessage(WebSocketSession session, JSONObject message) throws IOException
     {
     	String client_id = message.getString("client_id");
-    	String msg = lobby_manager.findLobbyOfUser(client_id).GetCurrentGameJoinMessage();
+    	String msg = lobby_manager.findLobbyOfUser(client_id).ConnectToCurrentGame(client_id, session);
     	session.sendMessage(new TextMessage(msg));
+    }
+    
+    private void HandleInputMessage(JSONObject message)
+    {
+    	String client_id = message.getString("client_id");
+    	Lobby l = lobby_manager.findLobbyOfUser(client_id);
+    	l.HandleInputSnapshot(new InputSnapshot(message));
     }
 }

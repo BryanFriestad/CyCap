@@ -1,10 +1,13 @@
 package com.cycapservers.game.matchmaking;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.BeanUtil;
 import com.cycapservers.game.CharacterClass;
@@ -13,6 +16,7 @@ import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
+import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.collision.CollisionEngine;
 import com.cycapservers.game.components.drawing.DrawingComponentFactory;
 import com.cycapservers.game.components.input.InputSnapshot;
@@ -68,6 +72,7 @@ public abstract class Game
 	private List<GamePlayersEntity> game_players;
 	
 	private List<String> player_input_codes;
+	private HashMap<String, WebSocketSession> websocket_session_map;
 	
 	public Game(GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) 
 	{
@@ -82,7 +87,10 @@ public abstract class Game
 		
 		this.game_events = new ArrayList<GameEventsEntity>();
 		this.game_players = new ArrayList<GamePlayersEntity>();
+		
 		player_input_codes = new ArrayList<String>();
+		websocket_session_map = new HashMap<String, WebSocketSession>();
+		
 		this.collision_engine = new CollisionEngine();
 		this.game_ended = false;
 		this.started = false;
@@ -98,7 +106,10 @@ public abstract class Game
 		return sum;
 	}
 	
-	protected abstract boolean addCharacter(Character c);
+	protected void addCharacter(Character c)
+	{
+		addEntity(c);
+	}
 	
 	protected abstract boolean removeCharacter(Character c);
 	
@@ -121,33 +132,50 @@ public abstract class Game
 			addCharacter(i.BuildPlayer(this, Character.DEFAULT_INVENTORY_SIZE, max_character_lives));
 		}
 		
-		this.start_time = System.currentTimeMillis();
-		this.db_entry = new GamesEntity(this.type);
-		db_entry.setGame_type(type);
+		db_entry = new GamesEntity(type);
+		initial_game_state.put("game_id", getId());
+		start_time = System.currentTimeMillis();
 		this.started = true;
 	}
-	
-	public abstract void sendGameState();
-	
+
 	public abstract Spawn getValidSpawnNode(Team team);
+	
+	public void sendGameState()
+	{
+		HashMap<String, String> client_id_to_message_map = this.game_state.PrepareGameStateMessages();
+		for (String client_id : client_id_to_message_map.keySet())
+		{
+			String msg = client_id_to_message_map.get(client_id);
+			try 
+			{
+				if (this.websocket_session_map.containsKey(client_id)) // if this is false it means that a client has not yet connected to the game.
+				{
+					this.websocket_session_map.get(client_id).sendMessage(new TextMessage(msg));
+				}
+			} 
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public void update()
 	{
 		//update AI 
-		//update game state
+		game_state.update();
 		//update collision engine
 		//check if game is completed
 	}
 	
 	/**
-	 * Checks if this input snapshot is valid for this game.
-	 * If so, it passes it on to the game_state to find the appropriate
-	 * player to attribute it to.
+	 * Checks if the input snapshot belongs to this game and passes it on to the game state.
 	 * After updating the inputs of the appropriate player, the game state
 	 * is globally updated
 	 * @param s
 	 */
-	public void receiveInputSnapshot(InputSnapshot s)
+	public void HandleInputSnapshot(InputSnapshot s)
 	{
 		if (s.getGame_id() != getId()) throw new IllegalArgumentException("This input snapshot does not belong to this game(" + getId() + ")");
 		game_state.handleSnapshot(s);
@@ -160,9 +188,9 @@ public abstract class Game
 		gameEventsRepo.save(game_events);
 	}
 	
-	public void addEntity(Entity e, boolean needsCollision)
+	public void addEntity(Entity e)
 	{
-		if(needsCollision) collision_engine.registerCollidable((CollidingEntity) e);
+		if (e.HasComponentOfType(CollisionComponent.class)) collision_engine.registerCollidable((CollisionComponent) e.GetComponentOfType(CollisionComponent.class));
 		game_state.addEntity(e);
 	}
 	
@@ -172,7 +200,9 @@ public abstract class Game
 		game_events.add(event);
 	}
 
-	public int getId() {
+	public int getId() 
+	{
+		if (db_entry == null) throw new IllegalStateException("db_entry must have been init before calling this"); 
 		return db_entry.getGame_id();
 	}
 
@@ -226,13 +256,23 @@ public abstract class Game
 		return max_characters_per_team;
 	}
 
-	public JSONObject GetInitialGameState() 
+	public JSONObject ConnectToGame(String client_id, WebSocketSession session) 
 	{
 		if (!this.started) throw new IllegalStateException("game must be started to send initial state message");
-		return this.initial_game_state;
+		
+		this.websocket_session_map.put(client_id, session);
+		
+		JSONObject o = this.initial_game_state;
+		o.remove("passcode"); // make sure the passcode key is empty before adding player specific one.
+		o.put("passcode", GetPlayer(client_id).GetInputPasscode());
+		
+		return o;
 	}
 	
-	
+	private Player GetPlayer(String client_id)
+	{
+		return game_state.GetPlayer(client_id);
+	}
 	
 //	public void endGame(int winner) {
 //		

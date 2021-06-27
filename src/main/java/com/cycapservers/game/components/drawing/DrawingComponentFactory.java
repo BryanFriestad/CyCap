@@ -14,10 +14,20 @@ public class DrawingComponentFactory
 	{
 		return instance;
 	}
+	
+	public DrawingComponent BuildRedWallDrawingComponent()
+	{
+		return new DrawingComponent(Image.GetImageBySrc("res/images/walls.png"), 0);
+	}
+	
+	public DrawingComponent BuildGreyWallDrawingComponent()
+	{
+		return new DrawingComponent(Image.GetImageBySrc("res/images/walls.png"), 1);
+	}
 
 	public DrawingComponent BuildPlayerDrawingComponent(Team team)
 	{
-		Image i = new Image("static/res/player_skins.png", -1,  128, 128, 8, 8);
+		Image i = Image.GetImageBySrc("res/images/player_skins.png");
 		int index;
 		switch (team)
 		{

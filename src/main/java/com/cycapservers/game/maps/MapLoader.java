@@ -9,9 +9,6 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.ResourceLoader;
-
-import com.cycapservers.BeanUtil;
 
 public class MapLoader
 {
@@ -38,11 +35,15 @@ public class MapLoader
 			ClassPathResource resource = new ClassPathResource("maps/" + filename);
 			InputStream i_stream = resource.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(i_stream));
-			while(reader.ready())
+			
+			String line = reader.readLine();
+			while(line != null)
 			{
-				String line = reader.readLine();
 				file_lines.add(line.trim());
+				line = reader.readLine();
 			}
+			reader.close();
+			i_stream.close();
 		}
 		catch (IOException e) 
 		{

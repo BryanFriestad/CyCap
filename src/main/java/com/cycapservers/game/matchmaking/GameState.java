@@ -11,10 +11,9 @@ import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
+import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.input.InputSnapshot;
-import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.entities.Character;
-import com.cycapservers.game.entities.DrawableEntity;
 import com.cycapservers.game.entities.Entity;
 import com.cycapservers.game.entities.Player;
 import com.cycapservers.game.entities.Wall;
@@ -23,16 +22,26 @@ public class GameState implements JSON_returnable
 {	
 	private static int id_rand_len = 3;
 	
-	private GameType type;
-	
 	private HashMap<Team, Integer> team_scores;
 	
 	private List<Character> characters;
-	private List<Wall> current_walls;
-	private List<DrawableEntity> background_tiles;
-	private List<Entity> entities;
+	/**
+	 * Entities which are only sent twice. Once when they are created, and once when they are destroyed. Used for non-moving entities.
+	 */
+	private List<Entity> persistent_entities;
+	/**
+	 * Entities which are sent everytime there is a game state message sent. Used for moving entities.
+	 */
+	private List<Entity> intermittent_entities;
+	/**
+	 * Entities which do not have drawing components.
+	 */
+	private List<Entity> undrawn_entities;
 	
 	private List<String> used_entity_id;
+	
+	private List<String> persistent_entities_deleted;
+	private List<Entity> persistent_entities_added;
 
 	public GameState(List<Team> team_list) 
 	{
@@ -43,17 +52,62 @@ public class GameState implements JSON_returnable
 		{
 			team_scores.put(t, 0);
 		}
-		entities = new ArrayList<Entity>();
-		background_tiles = new ArrayList<DrawableEntity>();
-		current_walls = new ArrayList<Wall>();
+		persistent_entities = new ArrayList<Entity>();
+		intermittent_entities = new ArrayList<Entity>();
+		undrawn_entities = new ArrayList<Entity>();
 		characters = new ArrayList<Character>();
+		
+		persistent_entities_deleted = new ArrayList<String>();
+		persistent_entities_added = new ArrayList<Entity>();
 	}
 	
 	public void update()
 	{
+		List<Entity> entities_to_delete = new ArrayList<Entity>();
 		
+		for (Entity e : undrawn_entities)
+		{
+			if (!e.update())
+			{
+				entities_to_delete.add(e);
+			}
+		}
+		
+		for (Entity e : persistent_entities)
+		{
+			if (!e.update())
+			{
+				persistent_entities_deleted.add(e.getEntity_id());
+				entities_to_delete.add(e);
+			}
+		}
+		
+		for (Entity e : intermittent_entities)
+		{
+			if (!e.update())
+			{
+				entities_to_delete.add(e);
+			}
+		}
+		
+		for (Character c : characters)
+		{
+			if (!c.update())
+			{
+				entities_to_delete.add(c);
+				System.out.println("Deleting " + c.getEntity_id());
+			}
+		}
+		
+		characters.removeAll(entities_to_delete);
+		intermittent_entities.removeAll(entities_to_delete);
+		persistent_entities.removeAll(entities_to_delete);
+		undrawn_entities.removeAll(entities_to_delete);
 	}
 	
+	/**
+	 * Finds the player in this game state which matches the client_id of the input snapshot and sends a message to its input component.
+	 */
 	public void handleSnapshot(InputSnapshot s)
 	{
 		for(Character c : characters)
@@ -61,7 +115,8 @@ public class GameState implements JSON_returnable
 			if(c instanceof Player && c.getEntity_id().equals(s.getClient_id()))
 			{
 				Player p = (Player) c;
-				p.Send(new ComponentMessage(ComponentMessageId.EXTERNAL_INPUT_SNAPSHOT, s.GetRawData()));
+				p.Send(new ComponentMessage(ComponentMessageId.EXTERNAL_INPUT_SNAPSHOT, s));
+				return;
 			}
 		}
 		throw new IllegalArgumentException("No client exists in this game state with the following id(" + s.getClient_id() + ")");
@@ -74,27 +129,71 @@ public class GameState implements JSON_returnable
 	 */
 	public void addEntity(Entity e) 
 	{
-		if (e instanceof Wall) 
+		if (isUndrawnEntity(e))
 		{
-			setUniqueEntityId(e);
-			current_walls.add((Wall) e);
+			addUndrawnEntity(e);
 		}
-		else if (e instanceof Character) 
+		else if (isCharacter(e))
 		{
-			used_entity_id.add(e.getEntity_id());
-			characters.add((Character) e);
+			addCharacter((Character) e);
 		}
-		else 
+		else if (isPersistentEntity(e))
 		{
-			setUniqueEntityId(e);
-			entities.add(e);
+			addPersistentEntity(e);
+			persistent_entities_added.add(e);
+		}
+		else if (IsIntermittentEntity(e))
+		{
+			addIntermittentEntity(e);
+		}
+		else
+		{
+			throw new IllegalStateException("This should not be possible.");
 		}
 	}
 	
-	public void addBackgroundtile(DrawableEntity e)
+	private boolean isUndrawnEntity(Entity e)
+	{
+		return !e.HasComponentOfType(DrawingComponent.class);
+	}
+	
+	private boolean isCharacter(Entity e)
+	{
+		return (e instanceof Character);
+	}
+	
+	private boolean isPersistentEntity(Entity e)
+	{
+		return (e instanceof Wall);
+	}
+	
+	private boolean IsIntermittentEntity(Entity e)
+	{
+		return !(isCharacter(e) || isPersistentEntity(e));
+	}
+	
+	private void addUndrawnEntity(Entity e)
 	{
 		setUniqueEntityId(e);
-		background_tiles.add(e);
+		undrawn_entities.add(e);
+	}
+	
+	private void addCharacter(Character c)
+	{
+		used_entity_id.add(c.getEntity_id());
+		characters.add(c);
+	}
+	
+	private void addPersistentEntity(Entity e)
+	{
+		setUniqueEntityId(e);
+		persistent_entities.add(e);
+	}
+	
+	private void addIntermittentEntity(Entity e)
+	{
+		setUniqueEntityId(e);
+		intermittent_entities.add(e);
 	}
 	
 	private void setUniqueEntityId(Entity e) 
@@ -103,25 +202,60 @@ public class GameState implements JSON_returnable
 		used_entity_id.add(s);
 		e.setEntity_id(s);
 	}
-
-	/**
-	 * Returns a valid game state message to send to the given player
-	 * The message should not include any privy information that a
-	 * client could use to cheat
-	 * @param p The player to send the message to
-	 * @return String
-	 */
-	public String prepareGameStateMessage(Player p)
+	
+	public HashMap<String, String> PrepareGameStateMessages()
 	{
-		JSONObject obj = new JSONObject();
-		//TODO
-		obj.put("game_type", type);
-		//add interpolating entities: characters, bullets, powerups, flags, etc.
-		//add persistent entities: walls, background tiles,
-		//add deleted persistent ents
-		//add new sounds
-		//add scores
-		return null;
+		HashMap<String, String> player_messages = new HashMap<String, String>();
+		for (Player p : GetPlayerList())
+		{
+//			System.out.println("putting message for player " + p.getEntity_id());
+			player_messages.put(p.getEntity_id(), prepareGameStateMessage(p));
+		}
+		ClearEntitiesDeletedAndAdded();
+		return player_messages;
+	}
+	
+	private List<Player> GetPlayerList()
+	{
+		List<Player> list = new ArrayList<Player>();
+		for (Character c : characters)
+		{
+			if (c instanceof Player)
+			{
+				list.add((Player) c);
+			}
+		}
+		return list;
+	}
+	
+	public Player GetPlayer(String client_id)
+	{
+		for (Character c : characters)
+		{
+			if (c instanceof Player && c.getEntity_id().equals(client_id))
+			{
+				return (Player) c;
+			}
+		}
+		throw new IllegalArgumentException("player does not exist in game state");
+	}
+	
+	private String prepareGameStateMessage(Player p)
+	{
+		JSONObject obj = toJSONObject();
+		for (Character c : characters)
+		{
+			// TODO: if (c.IsPlayerAllowedToRender(p))
+			obj.append("intermittent_entities", c.toJSONObject());
+		}
+		obj.put("client_player", p.toJSONObject());
+		return obj.toString();
+	}
+	
+	private void ClearEntitiesDeletedAndAdded()
+	{
+		this.persistent_entities_added.clear();
+		this.persistent_entities_deleted.clear();
 	}
 
 	@Override
@@ -129,21 +263,14 @@ public class GameState implements JSON_returnable
 	{
 		JSONObject obj = new JSONObject();
 		obj.put("scores", this.team_scores);
-		for (Character c : characters)
+		for (Entity e : intermittent_entities)
 		{
-			obj.accumulate("characters", c.toJSONObject());
+			obj.append("intermittent_entities", e.toJSONObject());
 		}
-		for (Wall w : current_walls)
+		obj.put("deleted_entities", persistent_entities_deleted);
+		for (Entity e : this.persistent_entities_added)
 		{
-			obj.accumulate("walls", w.toJSONObject());
-		}
-		for (DrawableEntity d : background_tiles)
-		{
-			obj.accumulate("bg_tiles", d.toJSONObject());
-		}
-		for (Entity e : entities)
-		{
-			obj.accumulate("entities", e.toJSONObject());
+			obj.append("persistent_entities", e.toJSONObject());
 		}
 		return obj;
 	}

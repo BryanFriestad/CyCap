@@ -58,7 +58,7 @@ public class ParticleComponent extends AnimatedDrawingComponent
 	@Override
 	public ParticleComponent clone() 
 	{
-		return new ParticleComponent(getImage().clone(), getSpriteIndex(), getDrawHeight(), getDrawWidth(), getRotation(), getAlpha(), 
+		return new ParticleComponent(getImage(), getSpriteIndex(), getDrawHeight(), getDrawWidth(), getRotation(), getAlpha(), 
 									 getNumber_of_sprites(), getAnimation_length(), isLooping(), isShow_while_not_running(), 
 									 dx, dy, dw, dh, dr, da);
 	}

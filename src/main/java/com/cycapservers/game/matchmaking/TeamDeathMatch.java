@@ -17,26 +17,15 @@ public class TeamDeathMatch extends Game
 		return map;
 	}
 
-	public TeamDeathMatch() {
+	public TeamDeathMatch() 
+	{
 		super(GameType.tdm, false, -1, 5000, true, 2*60*1000, getTeamLayout());
 	}
 
 	@Override
-	public boolean addCharacter(Character c) {
+	protected boolean removeCharacter(Character c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public boolean removeCharacter(Character c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void sendGameState() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -44,6 +33,7 @@ public class TeamDeathMatch extends Game
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
 //	public TeamDeathMatch(int id, int map_number) {
 //		super(id);

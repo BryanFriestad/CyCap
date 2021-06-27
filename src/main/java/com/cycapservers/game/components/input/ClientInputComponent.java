@@ -1,10 +1,7 @@
 package com.cycapservers.game.components.input;
 
-import org.springframework.web.socket.WebSocketSession;
-
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.ComponentMessage;
-import com.cycapservers.game.components.ComponentMessageId;
 import com.cycapservers.game.entities.Character;
 
 /**
@@ -14,11 +11,6 @@ import com.cycapservers.game.entities.Character;
  */
 public class ClientInputComponent extends InputComponent 
 {
-	/**
-	 * the websocket session associated with this player during the gameplay
-	 */
-	protected WebSocketSession session;
-	
 	private ClientInputHandler input_handler;
 	
 	public ClientInputComponent()
@@ -31,10 +23,11 @@ public class ClientInputComponent extends InputComponent
 	public boolean update(Character c) 
 	{
 		movePlayer(c, input_handler); //move the player first
-		c.getCurrentEquipment().update(input_handler); //checks to see if the current weapon is to be fired
+		if (c.getCurrentEquipment() != null) c.getCurrentEquipment().update(input_handler); //checks to see if the current weapon is to be fired
 		
 		//WEAPON AND ITEM RELATED KEYPRESSES
-		if (input_handler.isPressedAndReleased(InputAction.WEAPON_1_SELECT)){
+		if (input_handler.isPressedAndReleased(InputAction.WEAPON_1_SELECT))
+		{
 			c.switchEquipment(1);
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_2_SELECT))
@@ -140,7 +133,7 @@ public class ClientInputComponent extends InputComponent
 		switch (message.getMessage_id())
 		{
 		case EXTERNAL_INPUT_SNAPSHOT:
-			addNewInputSnapshot(new InputSnapshot(message.getMessage()));
+			addNewInputSnapshot((InputSnapshot) message.getData());
 			break;
 			
 		default:
@@ -162,6 +155,11 @@ public class ClientInputComponent extends InputComponent
 		}
 		input_handler.addNewInputSnapshot(i);
 		return true;
+	}
+	
+	public String GetInputPasscode()
+	{
+		return input_handler.getInput_passcode();
 	}
 
 }

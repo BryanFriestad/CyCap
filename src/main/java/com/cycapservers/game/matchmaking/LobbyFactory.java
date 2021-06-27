@@ -40,7 +40,8 @@ public class LobbyFactory {
 		}
 	}
 	
-	private static final ArrayList<GameType> getGameTypeList(LobbyType t){
+	private static final ArrayList<GameType> getGameTypeList(LobbyType t)
+	{
 		ArrayList<GameType> arr = new ArrayList<GameType>();
 		switch(t){
 			case ctf:
@@ -66,7 +67,8 @@ public class LobbyFactory {
 		}
 	}
 	
-	private static final ArrayList<Map> getMapList(LobbyType t){
+	private static final ArrayList<Map> getMapList(LobbyType t)
+	{
 		ArrayList<Map> arr = new ArrayList<Map>();
 		switch(t){
 			case ctf:

@@ -34,7 +34,8 @@ public class Entity extends ComponentContainer implements JSON_returnable
 	 * 
 	 * @return returns whether or not the entity should persist (true) or be deleted (false).
 	 */
-	public boolean update(){
+	public boolean update()
+	{
 		delta_update_time = System.currentTimeMillis() - last_update_time;
 		last_update_time = System.currentTimeMillis();
 		return true;

@@ -90,9 +90,13 @@ public class LobbyManager
 	}
 	
 	//schedule every 100 ms
+	@Scheduled(fixedRate = 100)
 	public void sendGameStates()
 	{
-		
+		for (Lobby l : lobbies)
+		{
+			if (l.IsGameStarted()) l.SendCurrentGameStateMessages(); 
+		}
 	}
 	
 	public LobbyType[] getAvailableLobbyTypes()

@@ -55,9 +55,11 @@ public abstract class Character extends CollidingDrawableEntity
 	private double speed_boost;
 	private double damage_boost;
 
-	public Character(PositionComponent p, CollisionComponent c, DrawingComponent model, InputComponent i, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives) 
+	public Character(PositionComponent p, CollisionComponent c, DrawingComponent model, InputComponent i, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives, String client_id) 
 	{
-		super(p, new CharacterCollisionComponent(new CircleCollider(Math.max(model.getDrawWidth(), model.getDrawHeight())), 10, p), model); //TODO pick an appropriate priority for characters
+		super(p, c, model); //TODO pick an appropriate priority for characters
+		this.entity_id = client_id;
+		
 		input_comp = i;
 		RegisterComponent(input_comp);
 		this.setGame(game);
@@ -137,33 +139,43 @@ public abstract class Character extends CollidingDrawableEntity
 	 * @param equipmentIndex which inventory slot to equip
 	 * @return true = success / false = failure
 	 */
-	public boolean switchEquipment(int equipmentIndex) {
-		if(equipmentIndex >= inventory.length || equipmentIndex < 0){
+	public boolean switchEquipment(int equipmentIndex) 
+	{
+		if (equipmentIndex >= inventory.length || equipmentIndex < 0)
+		{
 			throw new IllegalArgumentException("equipmentIndex(" + equipmentIndex + ") is out of bounds");
 		}
 		
-		if(inventory[equipmentIndex] != null){
+		if (inventory[equipmentIndex] != null)
+		{
 			Equipment old = getCurrentEquipment();
-			if(getCurrentEquipment().unequip()){
-				if(inventory[equipmentIndex].equip()){
+			if(getCurrentEquipment().unequip())
+			{
+				if (inventory[equipmentIndex].equip())
+				{
 					setCurrentEquipment(inventory[equipmentIndex]);
 					return true;
 				}
-				else{ //cannot equip new object for some reason
-					if(old.equip()){
+				else
+				{ //cannot equip new object for some reason
+					if (old.equip())
+					{
 						return false; //did not equip new object
 					}
-					else{ //cannot re-equip old object
+					else
+					{ //cannot re-equip old object
 						setCurrentEquipment(null);
 						throw new IllegalStateException("equipment switch failed and could not switch back.");
 					}
 				}
 			}
-			else{
+			else
+			{
 				return false; //cannot unequip current item
 			}
 		}
-		else{
+		else
+		{
 			return false; //new slot is empty
 		}
 	}
@@ -193,7 +205,8 @@ public abstract class Character extends CollidingDrawableEntity
 		this.last_time_of_death = last_time_of_death;
 	}
 
-	public Equipment getCurrentEquipment() {
+	public Equipment getCurrentEquipment() 
+	{
 		return currentEquipment;
 	}
 

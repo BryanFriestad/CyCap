@@ -8,15 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
+import com.cycapservers.game.components.input.InputSnapshot;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.maps.Map;
 
 public class Lobby {
 	
-	private static int default_game_start_timer_ms = 60000;
+	private static int default_game_start_timer_ms = 30000;
+//	private static int default_game_start_timer_ms = 60000;
 	
 	//params
 	private String join_code; //a code needed to join this lobby via invite
@@ -266,9 +269,31 @@ public class Lobby {
 		return null;
 	}
 	
-	public String GetCurrentGameJoinMessage()
+	public String ConnectToCurrentGame(String client_id, WebSocketSession session)
 	{
 		if (current_game == null) throw new IllegalStateException("current_game cannot be null.");
-		return current_game.GetInitialGameState().toString();
+		// TODO: check client_id
+		return current_game.ConnectToGame(client_id, session).toString();
+	}
+	
+	public boolean IsGameStarted()
+	{
+		return (current_game != null) && current_game.isStarted();
+	}
+	
+	public void SendCurrentGameStateMessages()
+	{
+		if (current_game == null) throw new IllegalStateException("current_game cannot be null.");
+//		System.out.println("Current Game is not null: " + current_game.);
+		current_game.sendGameState();
+	}
+	
+	/**
+	 * Checks that the current game is valid and passes the input snapshot to the game.
+	 */
+	public void HandleInputSnapshot(InputSnapshot i)
+	{
+		if (current_game == null) throw new IllegalStateException("current_game cannot be null.");
+		current_game.HandleInputSnapshot(i);
 	}
 }

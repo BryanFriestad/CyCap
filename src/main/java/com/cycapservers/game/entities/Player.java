@@ -11,13 +11,14 @@ import com.cycapservers.game.matchmaking.Game;
 
 public class Player extends Character {
 	
-	public Player(CollisionComponent c, DrawingComponent model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives) {
-		super(new PositionComponent(), c, model, new ClientInputComponent(), game, team, class_name, inventory_size, starting_lives);
+	public Player(CollisionComponent c, DrawingComponent model, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives, String client_id) 
+	{
+		super(new PositionComponent(64, 64), c, model, new ClientInputComponent(), game, team, class_name, inventory_size, starting_lives, client_id);
 	}
 	
 	@Override
 	public boolean update() 
-	{	
+	{
 		if (!this.isAlive())
 		{
 			if ((System.currentTimeMillis() - this.getLast_time_of_death()) > this.getGame().getRespawn_time() && this.getLives_remaining() > 0) 
@@ -59,5 +60,10 @@ public class Player extends Character {
 	public void resetClass() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String GetInputPasscode()
+	{
+		return ((ClientInputComponent) input_comp).GetInputPasscode();
 	}
 }

@@ -1,80 +1,80 @@
 package com.cycapservers.game.components.drawing;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.core.io.ClassPathResource;
 
 import com.cycapservers.JSON_returnable;
-import com.cycapservers.game.Utils;
 
-public class Image implements JSON_returnable {
-	
-	//params
+public class Image implements JSON_returnable 
+{
 	private String src;
-	private int imageCode;
-
-	//internal
-	private ImageSprite[] sprites;
+	private int num_sprites;
 	
-	public Image(String source, int img_code) 
+	private Image(String source, int num_sprites) 
 	{
 		this.src = source;
-		this.imageCode = img_code;
-		this.sprites = Utils.generateSpriteData(Utils.GRID_LENGTH, Utils.GRID_LENGTH, 1, 1);
+		this.num_sprites = num_sprites;
 	}
 	
-	public Image(String source, int img_code, int image_width, int image_height) 
+	public int GetNumberOfSprites()
 	{
-		this.src = source;
-		this.imageCode = img_code;
-		this.sprites = Utils.generateSpriteData(image_width, image_height, 1, 1);
-	}
-	
-	public Image(String source, int img_code,  int sprite_width, int sprite_height, int sprite_rows, int sprite_cols) 
-	{
-		this.src = source;
-		this.imageCode = img_code;
-		this.sprites = Utils.generateSpriteData(sprite_width, sprite_height, sprite_rows, sprite_cols);
-	}
-	
-	/**
-	 * 
-	 * @return the length of the sprites array in this image.
-	 */
-	public int getSpritesLength(){
-		return sprites.length;
-	}
-	
-	private void cloneSprites(ImageSprite[] arr) {
-		sprites = new ImageSprite[arr.length];
-		for(int i = 0; i < sprites.length; i++) {
-			sprites[i] = arr[i].clone();
-		}
+		return num_sprites;
 	}
 
 	@Override
-	public JSONObject toJSONObject() {
+	public JSONObject toJSONObject() 
+	{
 		JSONObject object = new JSONObject();
-		object.put("class", this.getClass().getSimpleName());
 		object.put("src", this.src);
-		object.put("code", this.imageCode);
-		object.put("sprites", GetSpritesAsJsonObjectArray());
 		return object;
 	}
 	
-	private JSONObject[] GetSpritesAsJsonObjectArray()
+	private static List<Image> game_images = new ArrayList<Image>();
+	
+	public static Image GetImageBySrc(String src)
 	{
-		JSONObject[] arr = new JSONObject[sprites.length];
-		for (int i = 0; i < sprites.length; i++)
+		for (Image i : game_images)
 		{
-			arr[i] = sprites[i].toJSONObject();
+			if (i.src.equals(src)) return i;
 		}
-		return arr;
+		throw new IllegalArgumentException("no image exists with that source path.");
 	}
 	
-	@Override
-	public Image clone() {
-		Image i = new Image(String.valueOf(src), imageCode, 0, 0);
-		i.cloneSprites(sprites); //clones this object's sprites into the new one
-		return i;
+	public static void LoadGameImages() throws IOException
+	{
+		ClassPathResource resource = new ClassPathResource("static/scripts/images.json");
+		InputStream i_stream = resource.getInputStream();
+		
+		StringBuilder builder = new StringBuilder();
+		int CR = 13;
+		int LF = 10;
+		int data;
+		while ((data = i_stream.read()) != -1)
+		{
+			if (!(data == CR || data == LF))
+			{
+				builder.append(Character.toString((char) data));
+			}
+		}
+		i_stream.close();
+//		System.out.println("Images file text: " + builder.toString());
+		JSONObject json = new JSONObject(builder.toString());
+		
+		JSONArray array = json.getJSONArray("images");
+		for (int index = 0; index < array.length(); index++)
+		{
+			JSONObject image = array.getJSONObject(index);
+			JSONObject params = image.getJSONObject("params");
+			Image i = new Image(image.getString("src"), params.getInt("columns") * params.getInt("rows"));
+//			System.out.println("Adding image: " + i.toJSONObject().toString());
+			game_images.add(i);
+		}
 	}
 
 }

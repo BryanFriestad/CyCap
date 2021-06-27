@@ -1,3 +1,4 @@
+let serverSocket = {}; //the web socket to connect to the server with
 let got_first_message = false;
 
 function ServerMessage(type)
@@ -20,6 +21,14 @@ function connectToServer(initial_msg)
 	serverSocket.onmessage = message_handler;
 }
 
+function sendInputMessageToServer(input_snapshot)
+{
+	let msg = new ServerMessage("input");
+	msg.addData("snapshot", input_snapshot);
+	msg.addData("client_id", client_id);
+	sendMessageToServer(msg);
+}
+
 function sendMessageToServer(msg)
 {
 	serverSocket.send(JSON.stringify(msg));
@@ -30,7 +39,7 @@ function message_handler(msg)
 {
 	console.log("msg length: " + msg.data.length);
 	let obj = JSON.parse(msg.data);
-	console.log(obj);
+	//console.log(obj);
 	
 	if (!got_first_message)
 	{
@@ -40,6 +49,6 @@ function message_handler(msg)
 	}
 	else
 	{
-	
+		gameState.ReceiveNewGameState(obj);
 	}
 }

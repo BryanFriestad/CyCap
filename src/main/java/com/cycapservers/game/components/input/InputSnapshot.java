@@ -3,71 +3,46 @@ package com.cycapservers.game.components.input;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class InputSnapshot {
 	
 	private PositionComponent mouse_position;
 	private List<Integer> keys_down;
+	
 	private int snapshotNum;
+	
 	private int game_id;
 	private String client_id;
 	private String password;
 	
-	//unused
-	private double frameTime;
-	private long timeStamp;
-	private double canvasX;
-	private double canvasY;
-	private boolean mouse_clicked;
-	private boolean lmb_down;
-	private List<Integer> keys_pnr;
-	protected double mapX;
-	protected double mapY;
-	
-	private String raw_data;
-	
-	/**
-	 * 
-	 * @param data Takes in a string representing the input sent from the client
-	 */
-	public InputSnapshot(String data) 
+	public InputSnapshot(JSONObject message)
 	{
-		this.raw_data = data;
-		this.timeStamp = System.currentTimeMillis();
-		String[] arr = data.split(":");
-		this.game_id = Integer.parseInt(arr[1]);
-		this.password = arr[2];
+		JSONObject snapshot_obj = message.getJSONObject("snapshot");
+		this.game_id = snapshot_obj.getInt("game_id");
+		this.client_id = message.getString("client_id");
+		this.password = snapshot_obj.getString("input_code");
 		
-		this.mapX = Double.parseDouble(arr[3]);
-		this.mapY = Double.parseDouble(arr[4]);
-		this.mouse_position = new PositionComponent(mapX, mapY);
-		this.canvasX = Double.parseDouble(arr[5]);
-		this.canvasY = Double.parseDouble(arr[6]);
-		this.mouse_clicked = Boolean.parseBoolean(arr[7]);
-		this.lmb_down = Boolean.parseBoolean(arr[8]);
+		double canvasX = snapshot_obj.getDouble("canvasX");
+		double canvasY = snapshot_obj.getDouble("canvasY");
+		this.mouse_position = new PositionComponent(canvasX, canvasY);
 		
-		this.keys_down = new ArrayList<Integer>();
-		String[] temp = arr[9].split(",");
-		if(!temp[0].equals("")) {
-			for(int i = 0; i < temp.length; i++) {
-				this.keys_down.add(Integer.parseInt(temp[i]));
-			}
-		}
-		if(lmb_down) {
-			this.keys_down.add(1); //JS keycode 1 is seemingly unused
+		keys_down = new ArrayList<Integer>();
+		JSONArray arr = snapshot_obj.getJSONArray("keys_down");
+		for (int i = 0; i < arr.length(); i++)
+		{
+			keys_down.add(arr.getInt(i));
 		}
 		
-		this.keys_pnr = new ArrayList<Integer>();
-		temp = arr[10].split(",");
-		if(!temp[0].equals("")) {
-			for(int i = 0; i < temp.length; i++) {
-				this.keys_pnr.add(Integer.parseInt(temp[i]));
-			}
+		if (snapshot_obj.getBoolean("lmb_down"))
+		{
+			keys_down.add(1); // The key number 1 is unused by JS I guess.
 		}
 		
-		this.snapshotNum = Integer.parseInt(arr[11]);
-		this.frameTime = Double.parseDouble(arr[12]);
+		this.snapshotNum = snapshot_obj.getInt("snapshotNum");
 	}
 	
 	public List<Integer> getDown(){
@@ -93,10 +68,4 @@ public class InputSnapshot {
 	public String getClient_id() {
 		return client_id;
 	}
-	
-	public String GetRawData()
-	{
-		return raw_data;
-	}
-	
 }

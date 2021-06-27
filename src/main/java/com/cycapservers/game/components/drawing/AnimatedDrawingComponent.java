@@ -37,7 +37,7 @@ public class AnimatedDrawingComponent extends DrawingComponent
 		if(animation_frames < 1){
 			throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be greater than 0");
 		}
-		if(startingSpriteIndex + animation_frames > image.getSpritesLength()){
+		if(startingSpriteIndex + animation_frames > image.GetNumberOfSprites()){
 			throw new IllegalArgumentException("startingSpriteIndex plus animation_frames(" + startingSpriteIndex + animation_frames + ") is out of bounds of image.getSpritesLength()");
 		}
 		if(ani_len < 0){
@@ -69,7 +69,7 @@ public class AnimatedDrawingComponent extends DrawingComponent
 		if(animation_frames < 1){
 			throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be greater than 0");
 		}
-		if(animation_frames > image.getSpritesLength()){
+		if(animation_frames > image.GetNumberOfSprites()){
 			throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be <= image.getSpritesLength()");
 		}
 		if(ani_len < 0){
@@ -100,7 +100,7 @@ public class AnimatedDrawingComponent extends DrawingComponent
 			throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
 		}
 		this.start_sprite_index = 0;
-		this.number_of_sprites = image.getSpritesLength();
+		this.number_of_sprites = image.GetNumberOfSprites();
 		this.animation_length = ani_len;
 		this.looping = false;
 		this.show_while_not_running = false;
@@ -161,12 +161,15 @@ public class AnimatedDrawingComponent extends DrawingComponent
 		
 		if(this.getAnimation_length() != 0){
 			int next_sprite_index = (int) Math.floor(elapsed_animation_time / time_per_sprite) + this.start_sprite_index;
-			if(next_sprite_index >= this.getImage().getSpritesLength()){
-				if(looping) {
+			if(next_sprite_index >= this.getImage().GetNumberOfSprites())
+			{
+				if(looping) 
+				{
 					elapsed_animation_time -= animation_length;
 					next_sprite_index = this.start_sprite_index;
 				}
-				else{
+				else
+				{
 					completed = true;
 					return false;
 				}

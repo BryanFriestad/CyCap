@@ -3,12 +3,12 @@ package com.cycapservers.game.components;
 public class ComponentMessage 
 {
 	private ComponentMessageId message_id;
-	private String message;
+	private Object data;
 	
-	public ComponentMessage(ComponentMessageId message_id, String message) 
+	public ComponentMessage(ComponentMessageId message_id, Object data) 
 	{
 		this.message_id = message_id;
-		this.message = message;
+		this.data = data;
 	}
 
 	public ComponentMessageId getMessage_id() 
@@ -16,8 +16,8 @@ public class ComponentMessage
 		return message_id;
 	}
 
-	public String getMessage() 
+	public Object getData() 
 	{
-		return message;
+		return data;
 	}
 }

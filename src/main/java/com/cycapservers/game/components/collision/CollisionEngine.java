@@ -32,8 +32,8 @@ public class CollisionEngine {
 			c.respond();
 	}
 	
-	public void registerCollidable(CollidingEntity ce){
-		collidables.add(ce.getCollider());
+	public void registerCollidable(CollisionComponent cc){
+		collidables.add(cc);
 	}
 	
 	private class Collision implements Comparable<Collision>{

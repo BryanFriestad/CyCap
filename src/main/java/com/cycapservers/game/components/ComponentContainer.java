@@ -19,6 +19,7 @@ public abstract class ComponentContainer {
 	
 	protected void RegisterComponent(Component c)
 	{
+		if (HasComponentOfType(c.getClass())) throw new IllegalArgumentException("A component container may have no more than one copy of a component."); 
 		components.add(c);
 		c.SetParent(this);
 	}
@@ -29,6 +30,24 @@ public abstract class ComponentContainer {
 		{
 			c.Receive(msg);
 		}
+	}
+	
+	public boolean HasComponentOfType(Class<? extends Component> c)
+	{
+		for (Component comp : components)
+		{
+			if (comp.getClass().equals(c)) return true;
+		}
+		return false;
+	}
+	
+	public Component GetComponentOfType(Class<? extends Component> c)
+	{
+		for (Component comp : components)
+		{
+			if (comp.getClass().equals(c)) return comp;
+		}
+		throw new IllegalArgumentException("This component container has no such component");
 	}
 
 }

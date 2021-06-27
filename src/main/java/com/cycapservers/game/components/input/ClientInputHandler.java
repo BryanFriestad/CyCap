@@ -68,7 +68,7 @@ public class ClientInputHandler
 	}
 	
 	/**
-	 * At this point it is already assumed that the input snapshot has been validated
+	 * At this point it is already assumed that the input snapshot has been validated.
 	 * @param i The new input snapshot
 	 */
 	public void addNewInputSnapshot(InputSnapshot i)
@@ -82,11 +82,14 @@ public class ClientInputHandler
 		current_snapshot = i;
 		keys_down = current_snapshot.getDown();
 		keys_pnr = new ArrayList<Integer>();
-		for (Integer key : previous_snapshot.getDown())
+		if (previous_snapshot != null)
 		{
-			if (!keys_down.contains(key))
+			for (Integer key : previous_snapshot.getDown())
 			{
-				keys_pnr.add(key);
+				if (!keys_down.contains(key))
+				{
+					keys_pnr.add(key);
+				}
 			}
 		}
 	}

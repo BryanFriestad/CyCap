@@ -25,13 +25,15 @@ public class IncomingPlayer
 	
 	public Player BuildPlayer(Game g, int inventory_size, int max_lives)
 	{
-		return new Player(new CharacterCollisionComponent(new CircleCollider(), 10, new PositionComponent()), 
-						  DrawingComponentFactory.getInstance().BuildPlayerDrawingComponent(team), 
-						  g, 
-						  team, 
-						  role,
-						  inventory_size,
-						  max_lives);
+		Player p = new Player(new CharacterCollisionComponent(new CircleCollider(), 10, new PositionComponent()), 
+						      DrawingComponentFactory.getInstance().BuildPlayerDrawingComponent(team), 
+						      g, 
+						      team, 
+						      role,
+						      inventory_size,
+						      max_lives,
+						      client_id);
+		return p;
 	}
 	
 	public String GetClientId()

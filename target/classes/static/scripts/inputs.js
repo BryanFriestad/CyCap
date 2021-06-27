@@ -1,7 +1,5 @@
-function InputHandler(game_id)
-{
-	this.game_id = game_id;
-	
+function InputHandler()
+{	
 	this.canvasX = 0;
 	this.canvasY = 0;
 	this.mapX = 0;
@@ -31,8 +29,8 @@ function InputHandler(game_id)
 		//increment shapshotNum++
 		this.snapshotNum++;
 		
-		//return string
-		return snap.getData();
+		//return object
+		return snap;
 	}
 	
 	this.getMostRecentInput = function()
@@ -53,10 +51,19 @@ function InputHandler(game_id)
 			}
 		}
 	}
+	
+	this.endOfFrameCleanup = function()
+	{
+		//reset the 1 frame inputs
+		this.keys_pnr.splice(0, input_handler.keys_pnr.length);
+		this.mouse_clicked = false;
+	}
 }
 
 function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, keys_down, keys_pnr, num)
 {
+	this.game_id = gameState.game_id;
+	this.input_code = gameState.passcode; 
 	this.mapX = mapX;
 	this.mapY = mapY;
 	this.canvasX = canvasX;
@@ -69,44 +76,11 @@ function InputSnapshot(mapX, mapY, canvasX, canvasY, mouse_clicked, lmb_down, ke
 	
 	this.snapshotNum = num;
 	this.frameTime = global_delta_t; //the amount of time associated with this frame in seconds
-	
-	this.getData = function()
-	{
-		//compile the input information
-		
-		//signify that it is an input message
-		let message = "input" + ":";
-		
-		//game id
-		message += input_handler.game_id + ":";
-		
-		//password
-		message += gameState.pw + ":";
-		
-		//mouse data
-		message += this.mapX.toFixed(5) + ":";
-		message += this.mapY.toFixed(5) + ":";
-		message += this.canvasX.toFixed(5) + ":";
-		message += this.canvasY.toFixed(5) + ":";
-		message += this.mouse_clicked + ":";
-		message += this.lmb_down + ":";
-		
-		//key data
-		message += this.keys_down.join(",") + ":";
-		message += this.keys_pnr.join(",") + ":";
-		
-		//add on the snapshotNum, password, and frameTime(so that the movement data is correct locally and on the server
-		//or maybe the frameTime can be based off of the difference in time when received at the server? idk man fuck
-		message += this.snapshotNum + ":";
-		message += this.frameTime.toFixed(5);
-		
-		return message;
-	}
 }
 
 function SetupInputHandling()
 {
-	input_handler = new InputHandler("default");
+	input_handler = new InputHandler();
 	
 	//when a key goes down it is added to a list and when it goes up its taken out
 	document.addEventListener("keydown", function(event) 
