@@ -1,0 +1,39 @@
+- Matchmaking
+	- handle leaving a game properly
+	- handle leaving a lobby
+	- player level column in list
+	- class switching
+	- in lobby, fix Team == None font/background color issue
+	- Give players a team if they join after 40 seconds
+	
+- Gameplay
+	- GUI
+		- Weapons/Equipment
+		- Health
+		- Item slot
+		- ammo bar
+		- game score
+	- AI
+		- pathfinding
+		- behavior trees
+	- Collision
+		- Walls
+	- Maps
+		- 1 map 
+			- TDM flags
+			- spawns
+			- graveyard site.
+	- Sound
+	- Fog of War
+	- Client predictive state
+	
+- Accounts
+	- if password fail, delete account object
+	
+- Server
+	- consolidate JSON reading function
+	- Read maps on start up, same as images
+	- store class data in JSON file
+		- name, speed, visibility, max health
+		- equipment/weapon slots
+	- only send data about visible characters to client

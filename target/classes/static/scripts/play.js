@@ -196,20 +196,28 @@ function InitializeInterpolatingEntity(entity)
 	
 	entity.UpdateInterpolation = function(next_entity, time_in_ms)
 	{
-		//console.log(this.model);
-		//console.log(next_entity.model);
-		//console.log(time_in_ms);
+		console.log("time since last interpolate: " + time_in_ms);
+		
+		//if (!this.next_model === undefined)
+		//{
+		//	this.model = this.next_model;
+		//	this.position = this.next_position;
+		//}
+		
+		this.next_model = next_entity.model;
+		this.next_position = next_entity.position;
+		
 		// TODO if time in ms > 500, just set the model and position to next entity
 		let time_in_sec = time_in_ms/1000;
-		this.delta_position.x 		= (next_entity.position.x - this.position.x) 			/ (time_in_sec);
-		this.delta_position.y 		= (next_entity.position.y - this.position.y) 			/ (time_in_sec);
+		this.delta_position.x 		= (this.next_position.x - this.position.x) 			/ (time_in_sec);
+		this.delta_position.y 		= (this.next_position.y - this.position.y) 			/ (time_in_sec);
 		
-		this.model.img 				= next_entity.model.img;
-		this.delta_model.sprIdx 	= (next_entity.model.sprIdx - this.model.sprIdx) 		/ (time_in_sec);
-		this.delta_model.drawW 		= (next_entity.model.drawW - this.model.drawW) 			/ (time_in_sec);
-		this.delta_model.drawH 		= (next_entity.model.drawH - this.model.drawH) 			/ (time_in_sec);
-		this.delta_model.rotation 	= (next_entity.model.rotation - this.model.rotation) 	/ (time_in_sec);
-		this.delta_model.alpha 		= (next_entity.model.alpha - this.model.alpha) 			/ (time_in_sec);
+		this.model.img 				= this.next_model.img;
+		this.delta_model.sprIdx 	= (this.next_model.sprIdx - this.model.sprIdx) 		/ (time_in_sec);
+		this.delta_model.drawW 		= (this.next_model.drawW - this.model.drawW) 		/ (time_in_sec);
+		this.delta_model.drawH 		= (this.next_model.drawH - this.model.drawH) 		/ (time_in_sec);
+		this.delta_model.rotation 	= (this.next_model.rotation - this.model.rotation) 	/ (time_in_sec);
+		this.delta_model.alpha 		= (this.next_model.alpha - this.model.alpha) 		/ (time_in_sec);
 		//console.log(this.delta_model);
 	}
 	

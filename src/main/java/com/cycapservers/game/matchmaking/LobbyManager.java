@@ -51,7 +51,6 @@ public class LobbyManager
 			String s = Utils.getGoodRandomString(used_lobby_join_codes, join_code_length);
 			used_lobby_join_codes.add(s);
 			Lobby new_lobby = LobbyFactory.getInstance().getLobby(type, s);
-			System.out.println("lobby factory done");
 			lobbies.add(new_lobby);
 			return new_lobby;
 		}

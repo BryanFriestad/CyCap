@@ -36,6 +36,7 @@ function InitializeGameState(initial_game_state)
 	gameState.ReceiveNewGameState = function(new_game_state_obj)
 	{
 		let delta_message_time = Date.now() - this.last_message_time;
+		this.last_message_time = Date.now();
 		
 		// add new persistent entities
 		if (new_game_state_obj.persistent_entities)

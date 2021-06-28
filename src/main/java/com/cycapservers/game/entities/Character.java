@@ -9,6 +9,7 @@ import com.cycapservers.game.Buff;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.DamageDealer;
 import com.cycapservers.game.Team;
+import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.CollisionComponent;
@@ -47,6 +48,9 @@ public abstract class Character extends CollidingDrawableEntity
 	 */
 	private int lives_remaining;
 	
+	/**
+	 * The speed of the character in grid spaces per second.
+	 */
 	private double speed;
 	private int visibility;
 	
@@ -87,7 +91,12 @@ public abstract class Character extends CollidingDrawableEntity
 	/**
 	 * resets equipment, health, visibility, speed to match the class spawn state
 	 */
-	public abstract void resetClass();
+	public void resetClass()
+	{
+		visibility = 5;
+		speed = 6;
+		health = max_health = 100;
+	}
 	
 	////IMPLEMENTED METHODS////
 	public void takeDamage(DamageDealer d) 
@@ -223,8 +232,7 @@ public abstract class Character extends CollidingDrawableEntity
 	}
 	
 	/**
-	 * Returns the speed of this character, multiplied by any current speed boosts
-	 * @return
+	 * Returns the speed of this character (in grids/second), multiplied by any current speed boosts
 	 */
 	public double getSpeed(){
 		return this.speed * this.speed_boost;

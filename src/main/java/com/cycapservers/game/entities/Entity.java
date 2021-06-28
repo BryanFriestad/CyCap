@@ -93,7 +93,11 @@ public class Entity extends ComponentContainer implements JSON_returnable
 		return new Entity(position);
 	}
 
-	public long getDelta_update_time() {
+	/**
+	 * Gets the time in ms since the last update call.
+	 */
+	public long getDelta_update_time() 
+	{
 		return delta_update_time;
 	}
 }

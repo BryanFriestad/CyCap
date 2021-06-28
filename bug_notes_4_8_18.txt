@@ -1,2 +1,0 @@
--if you pick up the red flag it shows you have the blue flag
--if you are carrying a flag, you can't return your teams flag

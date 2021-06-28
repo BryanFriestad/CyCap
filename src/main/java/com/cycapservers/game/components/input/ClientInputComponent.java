@@ -58,69 +58,70 @@ public class ClientInputComponent extends InputComponent
 		int movement_code  = 0b0000; //the binary code for which directions the player moving
 
 		//this section will probably end up on the server
-		if (input_handler.isPressedAndReleased(InputAction.MOVE_UP)) 
+		if (input_handler.isDown(InputAction.MOVE_UP)) 
 		{
 			movement_code |= Utils.UP; //trying to move up
 		}
-		if (input_handler.isPressedAndReleased(InputAction.MOVE_LEFT)) 
+		if (input_handler.isDown(InputAction.MOVE_LEFT)) 
 		{
 			movement_code |= Utils.LEFT; //trying to move left
 		}
-		if (input_handler.isPressedAndReleased(InputAction.MOVE_RIGHT)) 
+		if (input_handler.isDown(InputAction.MOVE_RIGHT)) 
 		{
 			movement_code |= Utils.RIGHT; //trying to move right
 		}
-		if (input_handler.isPressedAndReleased(InputAction.MOVE_DOWN)) 
+		if (input_handler.isDown(InputAction.MOVE_DOWN)) 
 		{
 			movement_code |= Utils.DOWN; //trying to move down
 		}
 
-		if ((movement_code & (Utils.UP | Utils.DOWN)) == 0b1100)
-		{ //if both up and down are pressed
+		if ((movement_code & (Utils.UP | Utils.DOWN)) == 0b1100) //if both up and down are pressed
+		{
 			movement_code &= ~(Utils.UP | Utils.DOWN); //clear the up and down bits
 		}
-		if ((movement_code & (Utils.LEFT | Utils.RIGHT)) == 0b0011)
-		{ //if both left and right are pressed
+		if ((movement_code & (Utils.LEFT | Utils.RIGHT)) == 0b0011) //if both left and right are pressed
+		{
 			movement_code &= ~(Utils.LEFT | Utils.RIGHT); //clear the left and right bits
 		}
 
 		double delta_x = 0;
 		double delta_y = 0;
+		double pixels_per_ms = c.getSpeed() * Utils.GRID_LENGTH * (c.getDelta_update_time() / 1000.0);
 		if (movement_code == 0b1010)
 		{
-			delta_y = -1 * c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
-			delta_x = -1 * c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
+			delta_y = -1 * pixels_per_ms * Utils.SIN_45;
+			delta_x = -1 * pixels_per_ms * Utils.SIN_45;
 		}
 		else if (movement_code == 0b1001)
 		{
-			delta_y = -1 * c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
-			delta_x = c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
+			delta_y = -1 * pixels_per_ms * Utils.SIN_45;
+			delta_x = 	   pixels_per_ms * Utils.SIN_45;
 		}
 		else if (movement_code == 0b0110)
 		{
-			delta_y = c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
-			delta_x = -1 * c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
+			delta_y = 	   pixels_per_ms * Utils.SIN_45;
+			delta_x = -1 * pixels_per_ms * Utils.SIN_45;
 		}
 		else if (movement_code == 0b0101)
 		{
-			delta_y = c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
-			delta_x = c.getSpeed() * Utils.SIN_45 * c.getDelta_update_time();
+			delta_y = pixels_per_ms * Utils.SIN_45;
+			delta_x = pixels_per_ms * Utils.SIN_45;
 		}
 		else if (movement_code == 0b1000)
 		{
-			delta_y = -1 * c.getSpeed() * c.getDelta_update_time();
+			delta_y = -1 * pixels_per_ms;
 		}
 		else if (movement_code == 0b0100)
 		{
-			delta_y = c.getSpeed() * c.getDelta_update_time();
+			delta_y = pixels_per_ms;
 		}
 		else if (movement_code == 0b0010)
 		{
-			delta_x = -1 * c.getSpeed() * c.getDelta_update_time();
+			delta_x = -1 * pixels_per_ms;
 		}
 		else if (movement_code == 0b0001)
 		{
-			delta_x = c.getSpeed() * c.getDelta_update_time();
+			delta_x = pixels_per_ms;
 		}
 		
 		c.setX(c.getX() + delta_x);

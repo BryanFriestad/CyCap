@@ -55,12 +55,6 @@ public class Player extends Character {
 		this.resetClass();
 		return;
 	}
-
-	@Override
-	public void resetClass() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public String GetInputPasscode()
 	{
