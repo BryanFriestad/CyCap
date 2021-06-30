@@ -1,6 +1,7 @@
 package com.cycapservers.game.components.drawing;
 
-import com.cycapservers.game.entities.Entity;
+import com.cycapservers.game.components.ComponentMessage;
+import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class ParticleComponent extends AnimatedDrawingComponent 
 {
@@ -41,16 +42,15 @@ public class ParticleComponent extends AnimatedDrawingComponent
 	 * updates the particle
 	 * @return returns false if the particle is dead and should be removed
 	 */
-	public boolean update(Entity e) 
+	public boolean Update(long delta_t) 
 	{
-		if (!super.update(e)) return false;
+		if (!super.Update(delta_t)) return false;
 		
-		this.getDrawPosition().setX(this.getDrawPosition().getX() 	+ (dx * this.time_elapsed));
-		this.getDrawPosition().setY(this.getDrawPosition().getY() 	+ (dy * this.time_elapsed));
-		this.setDrawWidth(this.getDrawWidth() 						+ (dw * this.time_elapsed));
-		this.setDrawHeight(this.getDrawHeight() 					+ (dh * this.time_elapsed));
-		this.setRotation(this.getRotation() 						+ (dr * this.time_elapsed));
-		this.setAlpha(this.getAlpha() 								+ (da * this.time_elapsed));
+		parent.Send(new ComponentMessage(null, new PositionComponent((dx * this.time_elapsed), (dy * this.time_elapsed))));
+		this.setDrawWidth(this.getDrawWidth() 	+ (dw * this.time_elapsed));
+		this.setDrawHeight(this.getDrawHeight() + (dh * this.time_elapsed));
+		this.setRotation(this.getRotation() 	+ (dr * this.time_elapsed));
+		this.setAlpha(this.getAlpha() 			+ (da * this.time_elapsed));
 		
 		return true;
 	}

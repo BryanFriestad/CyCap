@@ -14,9 +14,9 @@ public class CollidingDrawableEntity extends Entity {
 	public CollidingDrawableEntity(PositionComponent p, CollisionComponent c, DrawingComponent m) {
 		super(p);
 		collision_component = c;
-		RegisterComponent(collision_component);
+		AddComponent(collision_component);
 		model = m;
-		RegisterComponent(m);
+		AddComponent(m);
 	}
 	
 	@Override

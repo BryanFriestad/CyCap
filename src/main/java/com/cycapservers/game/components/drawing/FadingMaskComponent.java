@@ -1,7 +1,5 @@
 package com.cycapservers.game.components.drawing;
 
-import com.cycapservers.game.entities.Entity;
-
 public class FadingMaskComponent extends AnimatedDrawingComponent {
 	
 	//params
@@ -23,9 +21,9 @@ public class FadingMaskComponent extends AnimatedDrawingComponent {
 	 * @return true if the ground mask is finished fading away
 	 */
 	@Override
-	public boolean update(Entity e) 
+	public boolean Update(long delta_t) 
 	{
-		if (!super.update(e)) return false;
+		if (!super.Update(delta_t)) return false;
 		
 		if (elapsed_animation_time >= this.full_alpha_time) 
 		{

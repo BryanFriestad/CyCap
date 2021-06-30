@@ -37,3 +37,13 @@
 		- name, speed, visibility, max health
 		- equipment/weapon slots
 	- only send data about visible characters to client
+	
+- Component Architecture fixes
+	- components need a way to call ComponentContainer.Send();
+		- component should probably be an abstract class with "private ComponentContainer parent;"
+	- health component
+		- need new interface for HealingDealer
+		- is wall (to determine if should use normal or multiplied damage).
+	- There should be no subclass of Entity
+	- collision components need member data: static, can be picked up.
+		- explosion collision and projectile can share code: need a stopping power

@@ -8,13 +8,15 @@ public class RectangleCollider extends Collider {
 	private PositionComponent bottomLeft;
 	private PositionComponent topRight;
 	
-	public RectangleCollider() {
+	public RectangleCollider() 
+	{
 		super();
 		bottomLeft = new PositionComponent(-Utils.GRID_LENGTH / 2.0, -Utils.GRID_LENGTH / 2.0);
 		topRight = new PositionComponent(Utils.GRID_LENGTH / 2.0, Utils.GRID_LENGTH / 2.0);
 	}
 	
-	public RectangleCollider(double width, double height){
+	public RectangleCollider(double width, double height)
+	{
 		super();
 		bottomLeft = new PositionComponent(curPos.getX() - (width / 2.0), curPos.getY() - (height / 2.0));
 		topRight = new PositionComponent(curPos.getX() + (width / 2.0), curPos.getY() + (height / 2.0));

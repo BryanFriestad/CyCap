@@ -65,7 +65,7 @@ public abstract class Character extends CollidingDrawableEntity
 		this.entity_id = client_id;
 		
 		input_comp = i;
-		RegisterComponent(input_comp);
+		AddComponent(input_comp);
 		this.setGame(game);
 		this.team = team;
 		this.class_name = class_name;

@@ -2,27 +2,19 @@ package com.cycapservers.game.components.drawing;
 
 import org.json.JSONObject;
 
-import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
-import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.entities.Entity;
 
 /**
  * A component which allows an entity to be drawn.
  * @author Bryan Friestad
  *
  */
-public class DrawingComponent implements JSON_returnable, Component 
+public class DrawingComponent extends Component 
 {
-	private Object parent;
-	
 	private Image image;
 	private int spriteIndex;
-	
-	//TODO: position, width. height, rotation and alpha could be combined into a "DrawTransform", which when combined with a time unit, could become a "DrawKeyframe"
-	private PositionComponent drawPosition;
 	private double drawHeight;
 	private double drawWidth;
 	private double rotation; //in radians
@@ -30,7 +22,7 @@ public class DrawingComponent implements JSON_returnable, Component
 	
 	public DrawingComponent(Image image, int spriteIndex, double drawHeight, double drawWidth, double rot, double a) 
 	{
-		parent = null;
+		super("model");
 		
 		if (spriteIndex < 0 || spriteIndex >= image.GetNumberOfSprites())
 		{
@@ -54,7 +46,6 @@ public class DrawingComponent implements JSON_returnable, Component
 		
 		this.image = image;
 		this.spriteIndex = spriteIndex;
-		this.drawPosition = new PositionComponent();
 		this.drawHeight = drawHeight;
 		this.drawWidth = drawWidth;
 		this.rotation = rot;
@@ -70,6 +61,8 @@ public class DrawingComponent implements JSON_returnable, Component
 	 */
 	public DrawingComponent(Image image, int spriteIndex, double drawHeight, double drawWidth) 
 	{
+		super("model");
+		
 		if(spriteIndex < 0 || spriteIndex >= image.GetNumberOfSprites()){
 			throw new IllegalArgumentException("spriteIndex(" + spriteIndex + ") is invalid");
 		}
@@ -81,7 +74,6 @@ public class DrawingComponent implements JSON_returnable, Component
 		}
 		this.image = image;
 		this.spriteIndex = spriteIndex;
-		this.drawPosition = new PositionComponent();
 		this.drawHeight = drawHeight;
 		this.drawWidth = drawWidth;
 		this.rotation = 0;
@@ -95,37 +87,26 @@ public class DrawingComponent implements JSON_returnable, Component
 	 */
 	public DrawingComponent(Image image, int spriteIndex) 
 	{
+		super("model");
+		
 		if (spriteIndex < 0 || spriteIndex >= image.GetNumberOfSprites()){
 			throw new IllegalArgumentException("spriteIndex(" + spriteIndex + ") is invalid");
 		}
 		this.image = image;
 		this.spriteIndex = spriteIndex;
-		this.drawPosition = new PositionComponent();
 		this.drawHeight = Utils.GRID_LENGTH;
 		this.drawWidth = Utils.GRID_LENGTH;
 		this.rotation = 0;
 		this.alpha = 1.0;
 	}
-	
-	/**
-	 * 
-	 * @return Whether or not the drawable should be drawn. True = draw.
-	 */
-	public boolean update(Entity e)
-	{
-		drawPosition = e.getPosition();
-		// TODO: if the height or width has changed, the collider on this Entity needs to be informed.
-		return true;
-	}
 
 	@Override
-	public JSONObject toJSONObject() 
+	public Object GetJSONValue() 
 	{
 		JSONObject obj = new JSONObject();
 		obj.put("class", this.getClass().getSimpleName());
 		obj.put("img", this.image.toJSONObject());
 		obj.put("sprIdx", spriteIndex);
-		obj.put("drawPos", this.drawPosition.toJSONObject());
 		obj.put("drawH", drawHeight);
 		obj.put("drawW", drawWidth);
 		obj.put("rotation", rotation);
@@ -151,11 +132,6 @@ public class DrawingComponent implements JSON_returnable, Component
 	public void setSpriteIndex(int spriteIndex) 
 	{
 		this.spriteIndex = spriteIndex;
-	}
-
-	public PositionComponent getDrawPosition() 
-	{
-		return drawPosition;
 	}
 
 	public double getDrawHeight() 
@@ -208,17 +184,12 @@ public class DrawingComponent implements JSON_returnable, Component
 	{
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
-	public Object GetParent()
+	public boolean Update(long delta_t) 
 	{
-		return parent;
+		return true;
 	}
-	
-	@Override
-	public void SetParent(Object p)
-	{
-		parent = p;
-	}
+
 
 }

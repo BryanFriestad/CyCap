@@ -1,7 +1,5 @@
 package com.cycapservers.game.components.drawing;
 
-import com.cycapservers.game.entities.Entity;
-
 public class AnimatedDrawingComponent extends DrawingComponent 
 {	
 	//Class parameters
@@ -34,15 +32,10 @@ public class AnimatedDrawingComponent extends DrawingComponent
 	 */
 	public AnimatedDrawingComponent(Image image, int startingSpriteIndex, double drawHeight, double drawWidth, double rot, double a, int animation_frames, long ani_len, boolean do_loop, boolean show_while_paused) {
 		super(image, startingSpriteIndex, drawHeight, drawWidth, rot, a);
-		if(animation_frames < 1){
-			throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be greater than 0");
-		}
-		if(startingSpriteIndex + animation_frames > image.GetNumberOfSprites()){
-			throw new IllegalArgumentException("startingSpriteIndex plus animation_frames(" + startingSpriteIndex + animation_frames + ") is out of bounds of image.getSpritesLength()");
-		}
-		if(ani_len < 0){
-			throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
-		}
+		if (animation_frames < 1) throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be greater than 0");
+		if (startingSpriteIndex + animation_frames > image.GetNumberOfSprites()) throw new IllegalArgumentException("startingSpriteIndex plus animation_frames(" + startingSpriteIndex + animation_frames + ") is out of bounds of image.getSpritesLength()");
+		if (ani_len < 0) throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
+		
 		this.start_sprite_index = startingSpriteIndex;
 		this.number_of_sprites = animation_frames;
 		this.animation_length = ani_len;
@@ -66,15 +59,10 @@ public class AnimatedDrawingComponent extends DrawingComponent
 	 */
 	public AnimatedDrawingComponent(Image image, double drawHeight, double drawWidth, int animation_frames, long ani_len) {
 		super(image, 0, drawHeight, drawWidth);
-		if(animation_frames < 1){
-			throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be greater than 0");
-		}
-		if(animation_frames > image.GetNumberOfSprites()){
-			throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be <= image.getSpritesLength()");
-		}
-		if(ani_len < 0){
-			throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
-		}
+		if (animation_frames < 1) throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be greater than 0");
+		if (animation_frames > image.GetNumberOfSprites()) throw new IllegalArgumentException("animation_frames(" + animation_frames + ") must be <= image.getSpritesLength()");
+		if (ani_len < 0) throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
+		
 		this.start_sprite_index = 0;
 		this.number_of_sprites = animation_frames;
 		this.animation_length = ani_len;
@@ -94,11 +82,10 @@ public class AnimatedDrawingComponent extends DrawingComponent
 	 * @param drawPosition
 	 * @param ani_len
 	 */
-	public AnimatedDrawingComponent(Image image, long ani_len) {
+	public AnimatedDrawingComponent(Image image, long ani_len) 
+	{
 		super(image, 0);
-		if(ani_len < 0){
-			throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
-		}
+		if (ani_len < 0) throw new IllegalArgumentException("ani_len(" + ani_len + ") must be positive or 0");
 		this.start_sprite_index = 0;
 		this.number_of_sprites = image.GetNumberOfSprites();
 		this.animation_length = ani_len;
@@ -114,7 +101,8 @@ public class AnimatedDrawingComponent extends DrawingComponent
 	/**
 	 * resets the animation back to the beginning
 	 */
-	public void startAnimation(){
+	public void startAnimation()
+	{
 		this.setSpriteIndex(this.start_sprite_index);
 		completed = false;
 		running = true;
@@ -126,7 +114,8 @@ public class AnimatedDrawingComponent extends DrawingComponent
 	 * 
 	 * @return returns false if the animation is already running or if it is completed
 	 */
-	public boolean resumeAnimation(){
+	public boolean resumeAnimation()
+	{
 		if(running || completed) return false;
 		
 		last_update_time = System.currentTimeMillis();
@@ -138,32 +127,37 @@ public class AnimatedDrawingComponent extends DrawingComponent
 	 * 
 	 * @return returns false if the animation is already not running or if it is completed
 	 */
-	public boolean pauseAnimation(){
+	public boolean pauseAnimation()
+	{
 		if(!running || completed) return false;
 		
 		running = false;
 		return true;
 	}
 	
-	public void stopAnimation(){
+	public void stopAnimation()
+	{
 		running = false;
 		completed = true;
 	}
 	
 	@Override
-	public boolean update(Entity e){
-		if(!super.update(e)) return false;
-		if(completed) return false;
-		if(!running) return show_while_not_running;
+	public boolean Update(long delta_t)
+	{
+		if (!super.Update(delta_t)) return false;
+		
+		if (completed) return false;
+		if (!running) return show_while_not_running;
 		
 		time_elapsed = System.currentTimeMillis() - last_update_time; //time elapsed since last update call
 		elapsed_animation_time += time_elapsed;
 		
-		if(this.getAnimation_length() != 0){
+		if (this.getAnimation_length() != 0)
+		{
 			int next_sprite_index = (int) Math.floor(elapsed_animation_time / time_per_sprite) + this.start_sprite_index;
-			if(next_sprite_index >= this.getImage().GetNumberOfSprites())
+			if (next_sprite_index >= this.getImage().GetNumberOfSprites())
 			{
-				if(looping) 
+				if (looping) 
 				{
 					elapsed_animation_time -= animation_length;
 					next_sprite_index = this.start_sprite_index;
@@ -176,8 +170,10 @@ public class AnimatedDrawingComponent extends DrawingComponent
 			}
 			this.setSpriteIndex(next_sprite_index);
 		}
-		else{ //if animation length is 0 ms
-			if(!looping){
+		else
+		{ //if animation length is 0 ms
+			if (!looping)
+			{
 				completed = true;
 				return false;
 			}
@@ -187,23 +183,28 @@ public class AnimatedDrawingComponent extends DrawingComponent
 		return true;
 	}
 
-	public long getAnimation_length() {
+	public long getAnimation_length() 
+	{
 		return animation_length;
 	}
 
-	public int getNumber_of_sprites() {
+	public int getNumber_of_sprites() 
+	{
 		return number_of_sprites;
 	}
 
-	public boolean isLooping() {
+	public boolean isLooping() 
+	{
 		return looping;
 	}
 
-	public boolean isShow_while_not_running() {
+	public boolean isShow_while_not_running() 
+	{
 		return show_while_not_running;
 	}
 
-	public int getStart_sprite_index() {
+	public int getStart_sprite_index() 
+	{
 		return start_sprite_index;
 	}
 

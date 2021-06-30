@@ -8,23 +8,21 @@ import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
 
-public class PositionComponent implements JSON_returnable, Component
+public class PositionComponent extends Component
 {
-	private Object parent;
-	
 	private double x;
 	private double y;
 
 	public PositionComponent() 
 	{
-		parent = null;
+		super("position");
 		x = 0;
 		y = 0;
 	}
 
 	public PositionComponent(double x, double y) 
 	{
-		parent = null;
+		super("position");
 		this.x = x;
 		this.y = y;
 	}
@@ -54,9 +52,9 @@ public class PositionComponent implements JSON_returnable, Component
 	}
 
 	@Override
-	public JSONObject toJSONObject() {
+	public Object GetJSONValue() 
+	{
 		JSONObject object = new JSONObject();
-		object.put("class", this.getClass().getSimpleName());
 		object.put("x", this.x);
 		object.put("y", this.y);
 		return object;
@@ -71,18 +69,25 @@ public class PositionComponent implements JSON_returnable, Component
 	@Override
 	public void Receive(ComponentMessage message) 
 	{
-		// TODO Auto-generated method stub
+		switch(message.getMessage_id())
+		{
+		
+		case DRAWING_POSITION_CHANGE_DELTA:
+			PositionComponent delta = (PositionComponent) message.getData();
+			x += delta.getX();
+			y += delta.getY();
+			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
+			break;
+			
+		default:
+			break;
+		
+		}
 	}
-	
+
 	@Override
-	public Object GetParent()
+	public boolean Update(long delta_t) 
 	{
-		return parent;
-	}
-	
-	@Override
-	public void SetParent(Object p)
-	{
-		parent = p;
+		return true;
 	}
 }

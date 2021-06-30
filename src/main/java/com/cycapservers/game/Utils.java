@@ -4,15 +4,14 @@
 package com.cycapservers.game;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.cycapservers.game.components.drawing.ImageSprite;
 import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.entities.Entity;
 
-public final class Utils{
+public final class Utils
+{
 	public final static boolean DEBUG = true;
 	public final static float GRAVITY = (float) -9.81;
 	public final static int GRID_LENGTH = 32;
@@ -52,14 +51,16 @@ public final class Utils{
 	
 	private Utils(){} //prevents the class from being constructed
 	
-	public static double sumDoubleArray(Double ... values) {
+	public static double sumDoubleArray(Double ... values) 
+	{
 		double sum = 0;
 		for(double d : values)
 			sum += d;
 		return sum;
 	}
 	
-	public static int sumIntArray(Integer ... integer) {
+	public static int sumIntArray(Integer ... integer) 
+	{
 		int sum = 0;
 		for(int i : integer)
 			sum += i;
@@ -73,7 +74,8 @@ public final class Utils{
 	 * @param upper
 	 * @return
 	 */
-	public static boolean isBetween(double num, double lower, double upper){
+	public static boolean isBetween(double num, double lower, double upper)
+	{
 		if(num >= lower && num <= upper){
 			return true;
 		}
@@ -82,18 +84,9 @@ public final class Utils{
 		}
 	}
 	
-	public static double clamp(double lowerClamp, double value, double upperClamp){
+	public static double clamp(double lowerClamp, double value, double upperClamp)
+	{
 		return Math.max(lowerClamp, Math.min(value, upperClamp));
-	}
-	
-	/**
-	 * Returns the distance between two entities in pixels
-	 * @param ent1
-	 * @param ent2
-	 * @return
-	 */
-	public static double distanceBetween(Entity ent1, Entity ent2){
-		return Math.sqrt(Math.pow(ent1.getX() - ent2.getX(), 2) + Math.pow(ent1.getY() - ent2.getY(), 2));
 	}
 	
 	/**
@@ -104,12 +97,14 @@ public final class Utils{
 	 * @param y2
 	 * @return the distance between the two points
 	 */
-	public static double distanceBetween(double x1, double y1, double x2, double y2) {
+	public static double distanceBetween(double x1, double y1, double x2, double y2) 
+	{
 		return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
 	}
 	
-	public static double distanceBetween(PositionComponent p1, PositionComponent p2){
-		return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2.0) + Math.pow(p2.getY() - p1.getY(), 2.0));
+	public static double distanceBetween(PositionComponent p1, PositionComponent p2)
+	{
+		return distanceBetween(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 	
 	/**
