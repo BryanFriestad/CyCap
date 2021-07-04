@@ -1,8 +1,8 @@
 package com.cycapservers.game.components.collision;
 
 import com.cycapservers.game.components.Component;
+import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.entities.Entity;
 
 /**
  * A component which allows the entity to collide with other entities.
@@ -23,10 +23,10 @@ public abstract class CollisionComponent extends Component implements Comparable
 		previous_position = start_pos;
 	}
 	
-	protected void SetPreviousAndCurrentPosition(Entity e)
+	private void SetPreviousAndCurrentPosition(PositionComponent p)
 	{
 		previous_position = collider.curPos;
-		collider.curPos = e.getPosition();
+		collider.curPos = p;
 	}
 	
 	public boolean isColliding(CollisionComponent other)
@@ -38,8 +38,6 @@ public abstract class CollisionComponent extends Component implements Comparable
 	{
 		return collision_priority;
 	}
-	
-	public abstract void onCollision(CollisionComponent other);
 
 	public Collider getCollider() 
 	{
@@ -57,11 +55,31 @@ public abstract class CollisionComponent extends Component implements Comparable
 	}
 	
 	@Override
-	public abstract CollisionComponent clone();
-
-	@Override
 	public int compareTo(CollisionComponent o) 
 	{
 		return this.collision_priority - o.getCollisionPriority();
 	}
+	
+	@Override
+	public void Receive(ComponentMessage message)
+	{
+		switch (message.getMessage_id())
+		{
+		case POSITIONING_UPDATE:
+			SetPreviousAndCurrentPosition((PositionComponent) message.getData());
+			break;
+			
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public abstract CollisionComponent clone();
+	
+	public abstract void beCollidedBy(CollisionComponent other);
+	public abstract void collideWith(CharacterCollisionComponent other);
+	public abstract void collideWith(DamagingCollisionComponent other);
+	public abstract void collideWith(WeakDamagingCollisionComponent other);
+	public abstract void collideWith(StaticCollisionComponent other);
 }

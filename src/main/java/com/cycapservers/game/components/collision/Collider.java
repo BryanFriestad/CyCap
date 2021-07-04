@@ -2,7 +2,8 @@ package com.cycapservers.game.components.collision;
 
 import com.cycapservers.game.components.positioning.PositionComponent;
 
-public abstract class Collider {
+public abstract class Collider 
+{
 	
 	protected PositionComponent curPos;
 	
@@ -24,9 +25,15 @@ public abstract class Collider {
 	
 	public abstract Collider clone();
 	
-	public void updateCurPosition(PositionComponent p)
+	public void SetCurPosition(PositionComponent p)
 	{
 		curPos = p;
+	}
+
+	public Object getJSONValue() 
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

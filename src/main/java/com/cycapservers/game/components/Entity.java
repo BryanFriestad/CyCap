@@ -84,4 +84,9 @@ public class Entity implements JSON_returnable
 		}
 		return obj;
 	}
+	
+	public String getEntityId()
+	{
+		return entity_id;
+	}
 }

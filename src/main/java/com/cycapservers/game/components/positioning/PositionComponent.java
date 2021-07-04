@@ -2,7 +2,6 @@ package com.cycapservers.game.components.positioning;
 
 import org.json.JSONObject;
 
-import com.cycapservers.JSON_returnable;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
@@ -76,6 +75,13 @@ public class PositionComponent extends Component
 			PositionComponent delta = (PositionComponent) message.getData();
 			x += delta.getX();
 			y += delta.getY();
+			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
+			break;
+			
+		case COLLISION_CORRECT_POSITION:
+			PositionComponent p = (PositionComponent) message.getData();
+			x = p.getX();
+			y = p.getY();
 			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
 			break;
 			

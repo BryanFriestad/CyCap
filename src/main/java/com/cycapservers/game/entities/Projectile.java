@@ -2,7 +2,7 @@ package com.cycapservers.game.entities;
 
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.collision.Collider;
-import com.cycapservers.game.components.collision.ProjectileCollisionComponent;
+import com.cycapservers.game.components.collision.WeakDamagingCollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.equipment.ProjectileWeapon;
@@ -23,7 +23,7 @@ public class Projectile extends CollidingDrawableEntity
 				      PositionComponent direction, int damage, double wall_damage_mult, String ownerId, Team team, 
 				      ProjectileWeapon firingWeapon, long lifeSpan) 
 	{
-		super(p, new ProjectileCollisionComponent(c, collision_priority, p, ownerId, damage, wall_damage_mult, firingWeapon.getName(), team),
+		super(p, new WeakDamagingCollisionComponent(c, collision_priority, p, ownerId, damage, wall_damage_mult, firingWeapon.getName(), team),
 			  model);
 		this.speed = speed;
 		this.direction = direction;

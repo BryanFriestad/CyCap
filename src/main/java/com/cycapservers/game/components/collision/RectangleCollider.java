@@ -85,7 +85,7 @@ public class RectangleCollider extends Collider {
 	}
 	
 	@Override
-	public void updateCurPosition(PositionComponent p)
+	public void SetCurPosition(PositionComponent p)
 	{
 		PositionComponent delta = Utils.difference(p, curPos);
 		bottomLeft = Utils.add(bottomLeft, delta);

@@ -35,7 +35,7 @@ public abstract class Component
 	
 	/**
 	 * Updates this component.
-	 * @param delta_t The amount of time since the last update call.
+	 * @param delta_t The amount of time in ms since the last update call.
 	 * @return Returns true if this object should persist, false if it should be deleted.
 	 */
 	public abstract boolean Update(long delta_t);

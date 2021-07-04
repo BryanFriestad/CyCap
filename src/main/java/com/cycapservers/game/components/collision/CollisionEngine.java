@@ -3,8 +3,6 @@ package com.cycapservers.game.components.collision;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.cycapservers.game.entities.CollidingEntity;
-
 public class CollisionEngine {
 	
 	private ArrayList<CollisionComponent> collidables;
@@ -36,8 +34,8 @@ public class CollisionEngine {
 		collidables.add(cc);
 	}
 	
-	private class Collision implements Comparable<Collision>{
-		
+	private class Collision implements Comparable<Collision>
+	{	
 		CollisionComponent c1;
 		CollisionComponent c2;
 		
@@ -48,18 +46,21 @@ public class CollisionEngine {
 		
 		private void respond()
 		{
-			if(c1.compareTo(c2) > 0){
-				c1.onCollision(c2);
-				c2.onCollision(c1);
+			if(c1.compareTo(c2) > 0)
+			{
+				c2.beCollidedBy(c1);
+				c1.beCollidedBy(c2);
 			}
-			else{
-				c2.onCollision(c1);
-				c1.onCollision(c2);
+			else
+			{
+				c1.beCollidedBy(c2);
+				c2.beCollidedBy(c1);
 			}
 		}
 
 		@Override
-		public int compareTo(Collision o) {
+		public int compareTo(Collision o) 
+		{
 			return this.c1.compareTo(o.c1) + this.c1.compareTo(o.c2) + this.c2.compareTo(o.c1) + this.c2.compareTo(o.c2);
 		}
 		

@@ -8,14 +8,23 @@ public class HealthComponent extends Component
 {
 	private int health;
 	private int max_health;
+	/**
+	 * The number of lives remaining for this character. Decremented upon death. Once you reach 0, you can no longer respawn. -1 means you have unlimited lives.
+	 */
+	private int lives_remaining;
+	private boolean alive;
+	private long last_time_of_death;
 	private boolean is_wall;
 	
 	// TODO: may just want to have "is_invincible" be a param
-	public HealthComponent(int h, int max_h, boolean wall)
+	public HealthComponent(int max_h, int lives_remaining, boolean wall)
 	{
 		super("health");
-		this.health = h;
+		this.health = max_h;
 		this.max_health = max_h;
+		this.lives_remaining = lives_remaining;
+		this.alive = true;
+		this.last_time_of_death = 0;
 		this.is_wall = wall;
 	}
 	
@@ -44,7 +53,7 @@ public class HealthComponent extends Component
 		}
 	}
 	
-	private void UpdateHealth(HealingDealing h)
+	private void UpdateHealth(HealingDealer h)
 	{
 		if (is_wall)
 		{
@@ -62,6 +71,7 @@ public class HealthComponent extends Component
 		JSONObject obj = new JSONObject();
 		obj.put("current", health);
 		obj.put("max", max_health);
+		obj.put("lives", lives_remaining);
 		return obj;
 	}
 

@@ -32,26 +32,12 @@ public abstract class Character extends CollidingDrawableEntity
 	 */
 	private Game game;
 
-	private Team team;
 	private CharacterClass class_name;
 	
 	private Equipment[] inventory;
 	private Equipment currentEquipment;
 	private Item item_slot;
 	
-	private int health;
-	private int max_health;
-	private boolean alive;
-	private long last_time_of_death;
-	/**
-	 * The number of lives remaining for this character. Decremented upon death. Once you reach 0, you can no longer respawn. -1 means you have unlimited lives.
-	 */
-	private int lives_remaining;
-	
-	/**
-	 * The speed of the character in grid spaces per second.
-	 */
-	private double speed;
 	private int visibility;
 	
 	private List<Buff> active_buffs;

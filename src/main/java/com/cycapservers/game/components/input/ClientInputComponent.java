@@ -2,7 +2,9 @@ package com.cycapservers.game.components.input;
 
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.ComponentMessage;
-import com.cycapservers.game.entities.Character;
+import com.cycapservers.game.components.ComponentMessageId;
+import com.cycapservers.game.components.SpeedComponent;
+import com.cycapservers.game.components.positioning.PositionComponent;
 
 /**
  * A component which allows a character to be controller by a client across the internet.
@@ -15,45 +17,45 @@ public class ClientInputComponent extends InputComponent
 	
 	public ClientInputComponent()
 	{
-//		session = s;
+		super();
 		input_handler = new ClientInputHandler();
 	}
 	
 	@Override
-	public boolean update(Character c) 
+	public boolean Update(long delta_t) 
 	{
-		movePlayer(c, input_handler); //move the player first
-		if (c.getCurrentEquipment() != null) c.getCurrentEquipment().update(input_handler); //checks to see if the current weapon is to be fired
+		movePlayer(delta_t); //move the player first
+//		if (c.getCurrentEquipment() != null) c.getCurrentEquipment().update(input_handler); //checks to see if the current weapon is to be fired
 		
 		//WEAPON AND ITEM RELATED KEYPRESSES
 		if (input_handler.isPressedAndReleased(InputAction.WEAPON_1_SELECT))
 		{
-			c.switchEquipment(1);
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 1));
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_2_SELECT))
 		{
-			c.switchEquipment(2);
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 2));
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_3_SELECT))
 		{
-			c.switchEquipment(3);
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 3));
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_4_SELECT))
 		{
-			c.switchEquipment(4);
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 4));
 		}
+		
 		if (input_handler.isPressedAndReleased(InputAction.USE_ITEM))
 		{
-			c.useItem();
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_USE_ITEM, null));
 		}
 		return true;
 	}
 	
 	/**
 	 * moves the player based on input snapshot and checks for collision
-	 * @param input_handler - current input snapshot
 	 */
-	private void movePlayer(Character c, ClientInputHandler input_handler) 
+	private void movePlayer(long delta_t) 
 	{
 		int movement_code  = 0b0000; //the binary code for which directions the player moving
 
@@ -86,7 +88,9 @@ public class ClientInputComponent extends InputComponent
 
 		double delta_x = 0;
 		double delta_y = 0;
-		double pixels_per_ms = c.getSpeed() * Utils.GRID_LENGTH * (c.getDelta_update_time() / 1000.0);
+		double speed = 0;
+		if (parent.HasComponentOfType(SpeedComponent.class)) speed = ((SpeedComponent) parent.GetComponentOfType(SpeedComponent.class)).getCurrentSpeed();
+		double pixels_per_ms = speed * Utils.GRID_LENGTH * (delta_t);
 		if (movement_code == 0b1010)
 		{
 			delta_y = -1 * pixels_per_ms * Utils.SIN_45;
@@ -124,8 +128,8 @@ public class ClientInputComponent extends InputComponent
 			delta_x = pixels_per_ms;
 		}
 		
-		c.setX(c.getX() + delta_x);
-		c.setY(c.getY() + delta_y);
+		parent.Send(new ComponentMessage(ComponentMessageId.INPUT_POSITION_CHANGE_DELTA,
+										 new PositionComponent(delta_x, delta_y)));
 	}
 
 	@Override
@@ -161,6 +165,12 @@ public class ClientInputComponent extends InputComponent
 	public String GetInputPasscode()
 	{
 		return input_handler.getInput_passcode();
+	}
+
+	@Override
+	public Object GetJSONValue() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

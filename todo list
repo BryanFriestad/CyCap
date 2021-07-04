@@ -39,8 +39,18 @@
 	- only send data about visible characters to client
 	
 - Component Architecture fixes
-	- components need a way to call ComponentContainer.Send();
-		- component should probably be an abstract class with "private ComponentContainer parent;"
+	- Character needs a way to inform database of player kills on death.
+		- Perhaps just a way to send a message from a component to the game it's entity belongs to
+		- The data would be the GameEventsEntity
+		- Also look into Listener design pattern
+	- replace power ups with Entities that have UsableComponents
+	- replace items (flags) with Entities that have GrabbableCollisionComponents
+	- LifespanComponent (used for projectiles).
+		- keeps track of when an item was created. Deletes itself at limit.
+	- InventoryComponent
+		- allows an Entity to carry equipment and items, and use them
+	- VisibilityComponent
+	- ClassComponent
 	- health component
 		- need new interface for HealingDealer
 		- is wall (to determine if should use normal or multiplied damage).

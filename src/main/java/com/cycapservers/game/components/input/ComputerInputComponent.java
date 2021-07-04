@@ -1,21 +1,27 @@
 package com.cycapservers.game.components.input;
 
 import com.cycapservers.game.components.ComponentMessage;
-import com.cycapservers.game.components.ComponentMessageId;
-import com.cycapservers.game.entities.Character;
 
-public class ComputerInputComponent extends InputComponent {
+public class ComputerInputComponent extends InputComponent 
+{
 
 	@Override
-	public boolean update(Character c) {
+	public void Receive(ComponentMessage message) 
+	{
+		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public boolean Update(long delta_t) 
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void Receive(ComponentMessage message) {
+	public Object GetJSONValue() 
+	{
 		// TODO Auto-generated method stub
-
+		return null;
 	}
-
 }
