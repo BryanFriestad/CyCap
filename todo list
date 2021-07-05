@@ -45,8 +45,6 @@
 		- Also look into Listener design pattern
 	- replace power ups with Entities that have UsableComponents
 	- replace items (flags) with Entities that have GrabbableCollisionComponents
-	- LifespanComponent (used for projectiles).
-		- keeps track of when an item was created. Deletes itself at limit.
 	- InventoryComponent
 		- allows an Entity to carry equipment and items, and use them
 	- VisibilityComponent

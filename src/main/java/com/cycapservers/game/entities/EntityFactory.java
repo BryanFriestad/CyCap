@@ -3,6 +3,7 @@ package com.cycapservers.game.entities;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.HealthComponent;
+import com.cycapservers.game.components.LifespanComponent;
 import com.cycapservers.game.components.SpeedComponent;
 import com.cycapservers.game.components.TeamComponent;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
@@ -10,6 +11,7 @@ import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.collision.RectangleCollider;
 import com.cycapservers.game.components.collision.StaticCollisionComponent;
+import com.cycapservers.game.components.collision.WeakDamagingCollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.drawing.DrawingComponentFactory;
 import com.cycapservers.game.components.input.ClientInputComponent;
@@ -72,6 +74,22 @@ public class EntityFactory
 		e.AddComponent(new CharacterCollisionComponent(new CircleCollider(),
 													   1, 
 													   new PositionComponent()));
+		return e;
+	}
+	
+	public Entity ManufactureProjectile(String entity_id, 
+										PositionComponent p, 
+										DrawingComponent d, 
+										int lifespan, 
+										double speed, 
+										PositionComponent direction)
+	{
+		Entity e = new Entity(entity_id);
+		e.AddComponent(new LifespanComponent(lifespan));
+		e.AddComponent(new SpeedComponent(speed, direction));
+		e.AddComponent(p);
+		e.AddComponent(d);
+		e.AddComponent(new WeakDamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent()));
 		return e;
 	}
 
