@@ -56,8 +56,6 @@ public abstract class Character extends CollidingDrawableEntity
 		this.team = team;
 		this.class_name = class_name;
 		
-		inventory = new Equipment[inventory_size];
-		
 		this.setAlive(true);
 		this.lives_remaining = starting_lives;
 		this.setLast_time_of_death(System.currentTimeMillis());
@@ -119,61 +117,6 @@ public abstract class Character extends CollidingDrawableEntity
 		this.setPosition(this.getGame().getGraveyardPosition());
 	}
 	
-	public void useItem() {
-		if(this.getItem_slot() == null){
-			return;
-		}
-		else{
-			if(this.getItem_slot().use()) {
-				this.setItem_slot(null);
-			}
-		}
-	}
-	
-	/**
-	 * @param equipmentIndex which inventory slot to equip
-	 * @return true = success / false = failure
-	 */
-	public boolean switchEquipment(int equipmentIndex) 
-	{
-		if (equipmentIndex >= inventory.length || equipmentIndex < 0)
-		{
-			throw new IllegalArgumentException("equipmentIndex(" + equipmentIndex + ") is out of bounds");
-		}
-		
-		if (inventory[equipmentIndex] != null)
-		{
-			Equipment old = getCurrentEquipment();
-			if(getCurrentEquipment().unequip())
-			{
-				if (inventory[equipmentIndex].equip())
-				{
-					setCurrentEquipment(inventory[equipmentIndex]);
-					return true;
-				}
-				else
-				{ //cannot equip new object for some reason
-					if (old.equip())
-					{
-						return false; //did not equip new object
-					}
-					else
-					{ //cannot re-equip old object
-						setCurrentEquipment(null);
-						throw new IllegalStateException("equipment switch failed and could not switch back.");
-					}
-				}
-			}
-			else
-			{
-				return false; //cannot unequip current item
-			}
-		}
-		else
-		{
-			return false; //new slot is empty
-		}
-	}
 	
 	////GETTERS AND SETTERS////
 	public CharacterClass getClass_name() {
