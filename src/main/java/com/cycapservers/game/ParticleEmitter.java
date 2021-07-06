@@ -2,7 +2,7 @@ package com.cycapservers.game;
 
 import com.cycapservers.game.components.drawing.ParticleComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.entities.DrawableEntity;
+import com.cycapservers.game.entities.EntityFactory;
 import com.cycapservers.game.matchmaking.Game;
 
 public class ParticleEmitter {
@@ -70,7 +70,7 @@ public class ParticleEmitter {
 			p.setDw(randomizer.getDeltaWidth()); //give the particle a random dw
 			p.setDr(randomizer.getDeltaRotation()); //give the particle a random dr
 			p.setDa(randomizer.getDeltaAlpha()); //give the particle a random da
-			game.addEntity(new DrawableEntity(Utils.getRandomPositionInCircle(spawn_point, spawn_range), p));
+			game.addEntity(EntityFactory.getInstance().ManufactureDrawableEntity("entity_id", Utils.getRandomPositionInCircle(spawn_point, spawn_range), p));
 			have_spawned++;
 		}
 		

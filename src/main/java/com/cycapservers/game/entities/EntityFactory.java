@@ -11,10 +11,11 @@ import com.cycapservers.game.components.SpeedComponent;
 import com.cycapservers.game.components.TeamComponent;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
+import com.cycapservers.game.components.collision.Collider;
 import com.cycapservers.game.components.collision.CollisionComponent;
+import com.cycapservers.game.components.collision.DamagingCollisionComponent;
 import com.cycapservers.game.components.collision.RectangleCollider;
 import com.cycapservers.game.components.collision.StaticCollisionComponent;
-import com.cycapservers.game.components.collision.WeakDamagingCollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.drawing.DrawingComponentFactory;
 import com.cycapservers.game.components.input.ClientInputComponent;
@@ -94,7 +95,7 @@ public class EntityFactory
 		e.AddComponent(new SpeedComponent(speed, direction));
 		e.AddComponent(p);
 		e.AddComponent(d);
-		e.AddComponent(new WeakDamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent()));
+		e.AddComponent(new DamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent(), "owner", damage, wall_dmg_mult, deathType, team, 1));
 		return e;
 	}
 

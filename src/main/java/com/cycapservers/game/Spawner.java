@@ -5,16 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.cycapservers.game.entities.PowerUp;
+import com.cycapservers.game.components.Entity;
+import com.cycapservers.game.components.positioning.PositionComponent;
 
-public class PowerUpSpawner {
-	
-	protected List<PowerUpSpawn> spawns;
+public class Spawner 
+{	
+	protected List<PositionComponent> spawns;
 	
 	/**
 	 * The percent chance of each type of powerup spawning. The sum of the values should be equal to 1.0
 	 */
-	private HashMap<PowerUp, Double> power_up_chances;
+	private HashMap<Entity, Double> power_up_chances;
 	
 	/**
 	 * the average time in between power up spawns, if feasible
@@ -42,7 +43,7 @@ public class PowerUpSpawner {
 	 * @param s time in between each spawn
 	 * @param r randomness added to the spawn time 
 	 */
-	public PowerUpSpawner(ArrayList<PowerUpSpawn> spawns, HashMap<PowerUp, Double> power_up_chances, short s, short r) {
+	public Spawner(ArrayList<PositionComponent> spawns, HashMap<Entity, Double> power_up_chances, short s, short r) {
 		if(r > s) {
 			throw new IllegalArgumentException("Error: randomness of PowerUpHandler is greater than it's rate");
 		}
@@ -60,38 +61,44 @@ public class PowerUpSpawner {
 	 * 
 	 * @return Returns the spawn power up or null if none was created
 	 */
-	public PowerUp update() {
-		if(System.currentTimeMillis() >= this.next_spawn_time) {
-			List<PowerUpSpawn> freeNodes = new ArrayList<PowerUpSpawn>();
-			for(PowerUpSpawn s : spawns) {
-				if(s.getSlot() == null) {
+	public boolean Update(long delta_t) 
+	{
+		if(System.currentTimeMillis() >= this.next_spawn_time) 
+		{	
+			List<PositionComponent> freeNodes = new ArrayList<PositionComponent>();
+			for(PositionComponent s : spawns) 
+			{
+				if (true)// does not have a power up assigned to it already 
+				{
 					freeNodes.add(s);
 				}
 			}
 			
-			if(!freeNodes.isEmpty()) {
+			if(!freeNodes.isEmpty()) 
+			{
 				setNextSpawnTime();
-				return spawnPowerUp(freeNodes.get(Utils.RANDOM.nextInt(freeNodes.size())));
+				spawnPowerUp(freeNodes.get(Utils.RANDOM.nextInt(freeNodes.size())));
+				// TODO: some way to pass new object up to game
 			}
 		}
 		
-		return null;
+		return false;
 	}
 	
 	private void setNextSpawnTime() {
 		this.next_spawn_time = System.currentTimeMillis() + (this.rate + (Utils.RANDOM.nextInt(this.randomness * 2) - this.randomness));
 	}
 	
-	private PowerUp spawnPowerUp(PowerUpSpawn spawn){
+	private Entity spawnPowerUp(PositionComponent spawn){
 		double val = Utils.RANDOM.nextDouble();
 		double sum = 0;
-		PowerUp[] arr = (PowerUp[]) this.power_up_chances.keySet().toArray();
+		Entity[] arr = (Entity[]) this.power_up_chances.keySet().toArray();
 		for(int i = 0; i < arr.length; i++){
 			Double d = this.power_up_chances.get(arr[i]);
 			sum += d;
 			if(sum > val){
-				PowerUp selected = arr[i];
-				spawn.setSlot(selected.clone());
+				Entity selected = arr[i];
+				// mark spawn as having a power up in it: spawn.setSlot(selected.clone());
 				return selected;
 			}
 		}

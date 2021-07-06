@@ -11,9 +11,10 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.BeanUtil;
 import com.cycapservers.game.CharacterClass;
-import com.cycapservers.game.PowerUpSpawner;
+import com.cycapservers.game.Spawner;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
+import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.CollisionComponent;
@@ -26,11 +27,6 @@ import com.cycapservers.game.database.GameEventsRepository;
 import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
-import com.cycapservers.game.entities.Character;
-import com.cycapservers.game.entities.CollidingEntity;
-import com.cycapservers.game.entities.Entity;
-import com.cycapservers.game.entities.Player;
-import com.cycapservers.game.entities.Spawn;
 import com.cycapservers.game.maps.Map;
 import com.cycapservers.game.pathfinding.PathfindingNode;
 
@@ -63,7 +59,7 @@ public abstract class Game
 	private boolean game_ended; //whether or not the game has finished
 	private long start_time; //the unix time in ms since the start of the game
 	private CollisionEngine collision_engine;
-	private PowerUpSpawner power_up_spawner;
+	private Spawner power_up_spawner;
 	
 	private JSONObject initial_game_state;
 	
