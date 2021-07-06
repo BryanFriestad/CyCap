@@ -1,86 +1,58 @@
 package com.cycapservers.game.components;
 
+import org.json.JSONObject;
+
 import com.cycapservers.game.entities.Item;
 import com.cycapservers.game.equipment.Equipment;
 
 public class InventoryComponent extends Component 
 {
 	public static final int DEFAULT_INVENTORY_SIZE = 4;
-	private Equipment[] inventory;
-	private Equipment current_equipment;
-	private Item item_slot;
+	private Entity[] equipment;
+	private int active_equipment_index;
+	private Entity item_slot;
 	
 	public InventoryComponent()
 	{
 		super("inventory");
 		item_slot = null;
-		current_equipment = null;
-		inventory = new Equipment[DEFAULT_INVENTORY_SIZE];
+		active_equipment_index = 0;
+		equipment = new Entity[DEFAULT_INVENTORY_SIZE];
 	}
 	
 	/**
 	 * @param equipment_index which inventory slot to equip
 	 */
-	private boolean switchEquipment(int equipment_index) 
+	private void SwitchEquipment(int equipment_index) 
 	{
-		if (equipment_index >= inventory.length || equipment_index < 0)
+		if (equipment_index >= equipment.length || equipment_index < 0)
 		{
 			throw new IllegalArgumentException("equipmentIndex(" + equipment_index + ") is out of bounds");
 		}
-		
-		if (inventory[equipment_index] != null)
-		{
-			Equipment old = current_equipment;
-			if(current_equipment.unequip())
-			{
-				if (inventory[equipment_index].equip())
-				{
-					current_equipment = inventory[equipment_index];
-					return true;
-				}
-				else //cannot equip new object for some reason
-				{ 
-					if (old.equip())
-					{
-						return false; //did not equip new object
-					}
-					else //cannot re-equip old object
-					{ 
-						current_equipment = null;
-						throw new IllegalStateException("equipment switch failed and could not switch back.");
-					}
-				}
-			}
-			else
-			{
-				return false; //cannot unequip current item
-			}
-		}
-		else
-		{
-			return false; //new slot is empty
-		}
+		active_equipment_index = equipment_index;
 	}
 	
-	private void SetItem(Item i)
+	private void PickupItem(Entity i)
 	{
 		item_slot = i;
+		// set item as grabbed
+		// set grabber to this.parent
 	}
 	
-	private void SetInventoryList(Equipment[] new_list)
+	private void DropItem()
 	{
-		if (inventory.length != new_list.length) throw new IllegalArgumentException("new list length does not match that of this component");
-		for (int slot_index = 0; slot_index < inventory.length; slot_index++)
-		{
-			inventory[slot_index] = new_list[slot_index];
-		}
+		// set item position to this.position
+		// set item as not grabbed
+		// set item grabber to null
+		item_slot = null;
 	}
 	
 	private void UseItem()
 	{
 		if (item_slot != null)
 		{
-			boolean exhausted = item_slot.use();
+			UsableComponent usable = (UsableComponent) item_slot.GetComponentOfType(UsableComponent.class);
+			boolean exhausted = usable.Use();
 			if (exhausted)
 			{
 				item_slot = null;
@@ -88,25 +60,50 @@ public class InventoryComponent extends Component
 		}
 	}
 	
+	private void SetInventoryList(Entity[] new_list)
+	{
+		if (equipment.length != new_list.length) throw new IllegalArgumentException("new list length does not match that of this component");
+		for (int slot_index = 0; slot_index < equipment.length; slot_index++)
+		{
+			equipment[slot_index] = new_list[slot_index];
+		}
+	}
+	
 	@Override
 	public void Receive(ComponentMessage message) 
 	{
-		// TODO Auto-generated method stub
-
+		switch (message.getMessage_id())
+		{
+		case INPUT_SWITCH_EQUIPMENT:
+			SwitchEquipment((Integer) message.getData());
+			break;
+			
+		case INPUT_USE_ITEM:
+			UseItem();
+			break;
+			
+		default:
+			break;
+		}
 	}
 
 	@Override
 	public boolean Update(long delta_t) 
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public Object GetJSONValue() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject obj = new JSONObject();
+		obj.put("current_equipment", active_equipment_index);
+		for (Entity e : equipment)
+		{
+			obj.append("inventory", e.toJSONObject());
+		}
+		obj.put("item_slot", item_slot.toJSONObject());
+		return obj;
 	}
 
 }

@@ -30,19 +30,19 @@ public class ClientInputComponent extends InputComponent
 		//WEAPON AND ITEM RELATED KEYPRESSES
 		if (input_handler.isPressedAndReleased(InputAction.WEAPON_1_SELECT))
 		{
-			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 1));
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 0));
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_2_SELECT))
 		{
-			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 2));
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 1));
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_3_SELECT))
 		{
-			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 3));
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 2));
 		}
 		else if (input_handler.isPressedAndReleased(InputAction.WEAPON_4_SELECT))
 		{
-			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 4));
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 3));
 		}
 		
 		if (input_handler.isPressedAndReleased(InputAction.USE_ITEM))

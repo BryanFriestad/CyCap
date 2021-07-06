@@ -3,6 +3,7 @@ package com.cycapservers.game.entities;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.HealthComponent;
+import com.cycapservers.game.components.InventoryComponent;
 import com.cycapservers.game.components.LifespanComponent;
 import com.cycapservers.game.components.SpeedComponent;
 import com.cycapservers.game.components.TeamComponent;
@@ -70,7 +71,8 @@ public class EntityFactory
 		e.AddComponent(new HealthComponent(-1, 3, false));
 		e.AddComponent(new SpeedComponent(5));
 		e.AddComponent(new TeamComponent(t));
-		// add class, visibility, and inventory components
+		e.AddComponent(new InventoryComponent());
+		// add class and visibility components
 		e.AddComponent(new CharacterCollisionComponent(new CircleCollider(),
 													   1, 
 													   new PositionComponent()));

@@ -12,7 +12,7 @@ public enum ComponentMessageId
 	// Start and end enums should look like so: "[GROUP_NAME]_START" "[GROUP_NAME]_END". 
 	
 	EXTERNAL_START,
-	EXTERNAL_INPUT_SNAPSHOT,
+	EXTERNAL_INPUT_SNAPSHOT, 
 	EXTERNAL_END,
 	
 	DRAWING_START,

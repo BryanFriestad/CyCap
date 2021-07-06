@@ -23,10 +23,6 @@ import com.cycapservers.game.matchmaking.Game;
 
 public abstract class Character extends CollidingDrawableEntity 
 {
-	public static final int DEFAULT_INVENTORY_SIZE = 4;
-	
-	protected InputComponent input_comp;
-	
 	/**
 	 * The game in which this character is playing
 	 */
@@ -34,15 +30,9 @@ public abstract class Character extends CollidingDrawableEntity
 
 	private CharacterClass class_name;
 	
-	private Equipment[] inventory;
-	private Equipment currentEquipment;
-	private Item item_slot;
-	
 	private int visibility;
 	
 	private List<Buff> active_buffs;
-	private boolean is_invincible;
-	private double speed_boost;
 	private double damage_boost;
 
 	public Character(PositionComponent p, CollisionComponent c, DrawingComponent model, InputComponent i, Game game, Team team, CharacterClass class_name, int inventory_size, int starting_lives, String client_id) 
