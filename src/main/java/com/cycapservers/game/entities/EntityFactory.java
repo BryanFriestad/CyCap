@@ -9,6 +9,7 @@ import com.cycapservers.game.components.InventoryComponent;
 import com.cycapservers.game.components.LifespanComponent;
 import com.cycapservers.game.components.SpeedComponent;
 import com.cycapservers.game.components.TeamComponent;
+import com.cycapservers.game.components.VisibilityComponent;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.Collider;
@@ -67,12 +68,12 @@ public class EntityFactory
 	
 	public Entity ManufacturePlayerCharacter(String entity_id, Team t, CharacterClass c)
 	{
-		Entity e = ManufactureDrawableEntity(entity_id, 
-											 new PositionComponent(), 
-											 DrawingComponentFactory.getInstance().BuildPlayerDrawingComponent(t));
+		Entity e = new Entity(entity_id); 
 		e.AddComponent(new ClientInputComponent());
-		e.AddComponent(new HealthComponent(-1, 3, false));
 		e.AddComponent(new SpeedComponent(5));
+		e.AddComponent(new PositionComponent());
+		e.AddComponent(DrawingComponentFactory.getInstance().BuildPlayerDrawingComponent(t));
+		e.AddComponent(new HealthComponent(-1, 3, false));
 		e.AddComponent(new TeamComponent(t));
 		e.AddComponent(new InventoryComponent());
 		e.AddComponent(new ClassComponent(c));

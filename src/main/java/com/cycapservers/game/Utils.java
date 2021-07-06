@@ -102,6 +102,26 @@ public final class Utils
 		return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
 	}
 	
+	public static PositionComponent GetScaleVector(PositionComponent p, double scale)
+	{
+		return new PositionComponent(p.getX() * scale, p.getY() * scale);
+	}
+	
+	public static PositionComponent MakeUnitVector(PositionComponent p)
+	{
+		double mag = GetMagnitude(p);
+		double new_x = p.getX() / mag;
+		double new_y = p.getY() / mag;
+		p.setX(new_x);
+		p.setY(new_y);
+		return p;
+	}
+	
+	public static double GetMagnitude(PositionComponent p)
+	{
+		return distanceBetween(new PositionComponent(), p);
+	}
+	
 	public static double distanceBetween(PositionComponent p1, PositionComponent p2)
 	{
 		return distanceBetween(p1.getX(), p1.getY(), p2.getX(), p2.getY());

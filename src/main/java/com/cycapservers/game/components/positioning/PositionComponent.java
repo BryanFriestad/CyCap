@@ -72,9 +72,16 @@ public class PositionComponent extends Component
 		{
 		
 		case DRAWING_POSITION_CHANGE_DELTA:
-			PositionComponent delta = (PositionComponent) message.getData();
-			x += delta.getX();
-			y += delta.getY();
+			PositionComponent drawing_delta = (PositionComponent) message.getData();
+			x += drawing_delta.getX();
+			y += drawing_delta.getY();
+			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
+			break;
+			
+		case SPEED_POSITION_CHANGE_DELTA:
+			PositionComponent speed_delta = (PositionComponent) message.getData();
+			x += speed_delta.getX();
+			y += speed_delta.getY();
 			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
 			break;
 			

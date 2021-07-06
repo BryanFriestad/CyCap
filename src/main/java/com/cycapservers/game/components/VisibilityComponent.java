@@ -1,7 +1,4 @@
-package com.cycapservers.game.entities;
-
-import com.cycapservers.game.components.Component;
-import com.cycapservers.game.components.ComponentMessage;
+package com.cycapservers.game.components;
 
 public class VisibilityComponent extends Component 
 {

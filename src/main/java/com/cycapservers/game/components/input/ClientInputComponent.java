@@ -88,48 +88,44 @@ public class ClientInputComponent extends InputComponent
 
 		double delta_x = 0;
 		double delta_y = 0;
-		double speed = 0;
-		if (parent.HasComponentOfType(SpeedComponent.class)) speed = ((SpeedComponent) parent.GetComponentOfType(SpeedComponent.class)).getCurrentSpeed();
-		double pixels_per_ms = speed * Utils.GRID_LENGTH * (delta_t);
 		if (movement_code == 0b1010)
 		{
-			delta_y = -1 * pixels_per_ms * Utils.SIN_45;
-			delta_x = -1 * pixels_per_ms * Utils.SIN_45;
+			delta_y = -1 * Utils.SIN_45;
+			delta_x = -1 * Utils.SIN_45;
 		}
 		else if (movement_code == 0b1001)
 		{
-			delta_y = -1 * pixels_per_ms * Utils.SIN_45;
-			delta_x = 	   pixels_per_ms * Utils.SIN_45;
+			delta_y = -1 * Utils.SIN_45;
+			delta_x = 	   Utils.SIN_45;
 		}
 		else if (movement_code == 0b0110)
 		{
-			delta_y = 	   pixels_per_ms * Utils.SIN_45;
-			delta_x = -1 * pixels_per_ms * Utils.SIN_45;
+			delta_y = 	   Utils.SIN_45;
+			delta_x = -1 * Utils.SIN_45;
 		}
 		else if (movement_code == 0b0101)
 		{
-			delta_y = pixels_per_ms * Utils.SIN_45;
-			delta_x = pixels_per_ms * Utils.SIN_45;
+			delta_y = Utils.SIN_45;
+			delta_x = Utils.SIN_45;
 		}
 		else if (movement_code == 0b1000)
 		{
-			delta_y = -1 * pixels_per_ms;
+			delta_y = -1;
 		}
 		else if (movement_code == 0b0100)
 		{
-			delta_y = pixels_per_ms;
+			delta_y = 1;
 		}
 		else if (movement_code == 0b0010)
 		{
-			delta_x = -1 * pixels_per_ms;
+			delta_x = -1;
 		}
 		else if (movement_code == 0b0001)
 		{
-			delta_x = pixels_per_ms;
+			delta_x = 1;
 		}
 		
-		parent.Send(new ComponentMessage(ComponentMessageId.INPUT_POSITION_CHANGE_DELTA,
-										 new PositionComponent(delta_x, delta_y)));
+		parent.Send(new ComponentMessage(ComponentMessageId.INPUT_DIRECTION_CHANGE, new PositionComponent(delta_x, delta_y)));
 	}
 
 	@Override
