@@ -49,12 +49,6 @@ public class CharacterCollisionComponent extends CollisionComponent
 	}
 
 	@Override
-	public void collideWith(WeakDamagingCollisionComponent other) 
-	{
-		// intentionally blank
-	}
-
-	@Override
 	public void collideWith(StaticCollisionComponent other) 
 	{
 		PositionComponent curr_pos = collider.curPos;

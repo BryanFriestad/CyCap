@@ -37,12 +37,6 @@ public class StaticCollisionComponent extends CollisionComponent
 	}
 
 	@Override
-	public void collideWith(WeakDamagingCollisionComponent other) 
-	{
-		// intentionally blank
-	}
-
-	@Override
 	public void collideWith(StaticCollisionComponent other) 
 	{
 		// intentionally blank

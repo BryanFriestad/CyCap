@@ -24,8 +24,12 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	private Team team;
 	
 	private List<CollisionComponent> hurt_entities;
+	/**
+	 * The number of unique entities this can hurt before deleting itself.
+	 */
+	private int stopping_power;
 	
-	public DamagingCollisionComponent(Collider c, int p, PositionComponent start_pos, String owner_id, int damage, double wall_dmg_mult, String deathType, Team team) 
+	public DamagingCollisionComponent(Collider c, int p, PositionComponent start_pos, String owner_id, int damage, double wall_dmg_mult, String deathType, Team team, int stopping_power) 
 	{
 		super(c, p, start_pos);
 		this.damage = damage;
@@ -34,18 +38,19 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 		this.death_type = deathType;
 		this.team = team;
 		this.hurt_entities = new ArrayList<CollisionComponent>();
+		this.stopping_power = stopping_power;
 	}
 	
 	@Override
 	public boolean Update(long delta_t) 
 	{
-		return true;
+		return (stopping_power > 0);
 	}
 
 	@Override
 	public CollisionComponent clone() 
 	{
-		return new DamagingCollisionComponent(collider, collision_priority, new PositionComponent(), owner_id, damage, wall_damage_mult, death_type, team);
+		return new DamagingCollisionComponent(collider, collision_priority, new PositionComponent(), owner_id, damage, wall_damage_mult, death_type, team, stopping_power);
 	}
 
 	@Override
@@ -84,16 +89,11 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 		if (hurt_entities.contains(other)) return;
 		other.GetParent().Send(new ComponentMessage(ComponentMessageId.COLLISION_TAKE_DAMAGE, this));
 		hurt_entities.add(other);
+		stopping_power--;
 	}
 
 	@Override
 	public void collideWith(DamagingCollisionComponent other) 
-	{
-		// intentionally blank	
-	}
-
-	@Override
-	public void collideWith(WeakDamagingCollisionComponent other) 
 	{
 		// intentionally blank	
 	}
@@ -104,11 +104,12 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 		if (hurt_entities.contains(other)) return;
 		other.GetParent().Send(new ComponentMessage(ComponentMessageId.COLLISION_TAKE_DAMAGE, this));
 		hurt_entities.add(other);
+		stopping_power--;
 	}
 
 	@Override
-	public Object GetJSONValue() {
-		// TODO Auto-generated method stub
+	public Object GetJSONValue() 
+	{
 		return null;
 	}
 

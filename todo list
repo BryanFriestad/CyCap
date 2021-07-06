@@ -48,5 +48,3 @@
 		- need new interface for HealingDealer
 		- is wall (to determine if should use normal or multiplied damage).
 	- There should be no subclass of Entity
-	- collision components need member data: static, can be picked up.
-		- explosion collision and projectile can share code: need a stopping power
