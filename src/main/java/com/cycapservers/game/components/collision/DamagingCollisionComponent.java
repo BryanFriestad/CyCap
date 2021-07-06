@@ -108,6 +108,12 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	}
 
 	@Override
+	public void collideWith(GrabbableCollisionComponent other) 
+	{
+		// intentionally blank
+	}
+
+	@Override
 	public Object GetJSONValue() 
 	{
 		return null;

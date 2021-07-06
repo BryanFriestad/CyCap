@@ -43,6 +43,12 @@ public class StaticCollisionComponent extends CollisionComponent
 	}
 
 	@Override
+	public void collideWith(GrabbableCollisionComponent other) 
+	{
+		// intentionally blank
+	}
+
+	@Override
 	public boolean Update(long delta_t) 
 	{
 		return true;

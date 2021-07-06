@@ -1,4 +1,4 @@
-package com.cycapservers.game.components;
+package com.cycapservers.game.entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.cycapservers.JSON_returnable;
+import com.cycapservers.game.components.Component;
+import com.cycapservers.game.components.ComponentMessage;
 
 /**
  * An object which contains a list of comonents and enables them to communicate with one another.

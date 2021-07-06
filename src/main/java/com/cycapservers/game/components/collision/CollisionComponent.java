@@ -81,4 +81,5 @@ public abstract class CollisionComponent extends Component implements Comparable
 	public abstract void collideWith(CharacterCollisionComponent other);
 	public abstract void collideWith(DamagingCollisionComponent other);
 	public abstract void collideWith(StaticCollisionComponent other);
+	public abstract void collideWith(GrabbableCollisionComponent other);
 }

@@ -14,7 +14,6 @@ import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Spawner;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
-import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.CollisionComponent;
@@ -27,6 +26,7 @@ import com.cycapservers.game.database.GameEventsRepository;
 import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
+import com.cycapservers.game.entities.Entity;
 import com.cycapservers.game.maps.Map;
 import com.cycapservers.game.pathfinding.PathfindingNode;
 

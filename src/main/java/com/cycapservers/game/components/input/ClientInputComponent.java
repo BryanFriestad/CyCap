@@ -3,7 +3,6 @@ package com.cycapservers.game.components.input;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
-import com.cycapservers.game.components.SpeedComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 
 /**

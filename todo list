@@ -30,6 +30,10 @@
 - Accounts
 	- if password fail, delete account object
 	
+- Drawing
+	- move drawH, drawW, and rotation to TransformComponent (from position component)
+	- get rid of Image class
+	
 - Server
 	- consolidate JSON reading function
 	- Read maps on start up, same as images
@@ -43,8 +47,9 @@
 		- Perhaps just a way to send a message from a component to the game it's entity belongs to
 		- The data would be the GameEventsEntity
 		- Also look into Listener design pattern
-	- replace items (flags) with Entities that have GrabbableCollisionComponents
 	- health component
 		- need new interface for HealingDealer
 		- is wall (to determine if should use normal or multiplied damage).
 	- There should be no subclass of Entity
+	- HomeBasePositionComponent
+		- A grid locked position component which has a function to return itself to its home position.

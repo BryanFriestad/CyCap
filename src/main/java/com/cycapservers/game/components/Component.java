@@ -1,5 +1,7 @@
 package com.cycapservers.game.components;
 
+import com.cycapservers.game.entities.Entity;
+
 /**
  * An object which can communicate to other components via an intermediate ComponentContainer. 
  * @author Bryan Friestad

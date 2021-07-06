@@ -1,11 +1,14 @@
-package com.cycapservers.game.components;
+package com.cycapservers.game.components.usable;
 
 import org.json.JSONObject;
 
-public class UsableComponent extends Component 
+import com.cycapservers.game.components.Component;
+import com.cycapservers.game.components.ComponentMessage;
+
+public abstract class UsableComponent extends Component 
 {
 	private int max_uses;
-	private int uses_left;
+	protected int uses_left;
 	/**
 	 * In ms.
 	 */
@@ -13,7 +16,7 @@ public class UsableComponent extends Component
 	/**
 	 * In ms.
 	 */
-	private long last_activate_time;
+	protected long last_activate_time;
 	
 	public UsableComponent(int max_uses, long duration)
 	{
@@ -28,10 +31,7 @@ public class UsableComponent extends Component
 	 * 
 	 * @return Returns true if the item is exhausted.
 	 */
-	public boolean Use()
-	{
-		return false;
-	}
+	public abstract boolean Use();
 	
 	@Override
 	public void Receive(ComponentMessage message) 
@@ -53,6 +53,16 @@ public class UsableComponent extends Component
 		obj.put("uses_left", uses_left);
 		obj.put("max_uses", max_uses);
 		return obj;
+	}
+	
+	protected int GetMaxUses()
+	{
+		return max_uses;
+	}
+	
+	protected long GetDuration()
+	{
+		return duration;
 	}
 
 }

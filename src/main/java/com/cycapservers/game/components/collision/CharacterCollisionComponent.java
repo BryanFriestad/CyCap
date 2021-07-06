@@ -77,6 +77,12 @@ public class CharacterCollisionComponent extends CollisionComponent
 		
 		this.parent.Send(new ComponentMessage(ComponentMessageId.COLLISION_CORRECT_POSITION, working_pos));
 	}
+
+	@Override
+	public void collideWith(GrabbableCollisionComponent other) 
+	{
+		// intentionally blank
+	}
 	
 	@Override
 	public void beCollidedBy(CollisionComponent other) 

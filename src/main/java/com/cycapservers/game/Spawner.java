@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.positioning.PositionComponent;
+import com.cycapservers.game.entities.Entity;
 
 public class Spawner 
 {	

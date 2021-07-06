@@ -2,8 +2,9 @@ package com.cycapservers.game.components;
 
 import org.json.JSONObject;
 
-import com.cycapservers.game.entities.Item;
-import com.cycapservers.game.equipment.Equipment;
+import com.cycapservers.game.components.collision.GrabbableCollisionComponent;
+import com.cycapservers.game.components.usable.UsableComponent;
+import com.cycapservers.game.entities.Entity;
 
 public class InventoryComponent extends Component 
 {
@@ -32,18 +33,22 @@ public class InventoryComponent extends Component
 		active_equipment_index = equipment_index;
 	}
 	
-	private void PickupItem(Entity i)
+	/**
+	 * 
+	 * @param item The item to pick up by this component.
+	 * @return Returns true if the item was successfully picked up.
+	 */
+	public boolean PickupItem(Entity item)
 	{
-		item_slot = i;
-		// set item as grabbed
-		// set grabber to this.parent
+		if (item_slot != null) return false;
+		item_slot = item;
+		return true;
 	}
 	
 	private void DropItem()
 	{
 		// set item position to this.position
-		// set item as not grabbed
-		// set item grabber to null
+		((GrabbableCollisionComponent) item_slot.GetComponentOfType(GrabbableCollisionComponent.class)).GetDropped(); 
 		item_slot = null;
 	}
 	

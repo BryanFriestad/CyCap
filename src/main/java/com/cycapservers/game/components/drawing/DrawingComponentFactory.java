@@ -71,5 +71,10 @@ public class DrawingComponentFactory
 		}
 		return new DrawingComponent(i, index);
 	}
+	
+	public DrawingComponent ManufactureAmmoPackDrawingComponent()
+	{
+		return new DrawingComponent(Image.GetImageBySrc("res/images/ammo_box.png"), 0);
+	}
 
 }

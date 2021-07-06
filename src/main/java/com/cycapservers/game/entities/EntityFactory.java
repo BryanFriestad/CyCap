@@ -3,7 +3,6 @@ package com.cycapservers.game.entities;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.ClassComponent;
-import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.HealthComponent;
 import com.cycapservers.game.components.InventoryComponent;
 import com.cycapservers.game.components.LifespanComponent;
@@ -15,6 +14,7 @@ import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.Collider;
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.collision.DamagingCollisionComponent;
+import com.cycapservers.game.components.collision.GrabbableCollisionComponent;
 import com.cycapservers.game.components.collision.RectangleCollider;
 import com.cycapservers.game.components.collision.StaticCollisionComponent;
 import com.cycapservers.game.components.drawing.DrawingComponent;
@@ -22,6 +22,7 @@ import com.cycapservers.game.components.drawing.DrawingComponentFactory;
 import com.cycapservers.game.components.input.ClientInputComponent;
 import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
+import com.cycapservers.game.components.usable.AmmoPackUsableComponent;
 
 public class EntityFactory
 {
@@ -97,6 +98,18 @@ public class EntityFactory
 		e.AddComponent(p);
 		e.AddComponent(d);
 		e.AddComponent(new DamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent(), "owner", damage, wall_dmg_mult, deathType, team, 1));
+		return e;
+	}
+	
+	////////// POWER UPS //////////
+	
+	public Entity ManufactureAmmoPack(String entity_id, PositionComponent p)
+	{
+		Entity e = new Entity(entity_id);
+		e.AddComponent(p);
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(), 1, p));
+		e.AddComponent(new AmmoPackUsableComponent(1));
+		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureAmmoPackDrawingComponent());
 		return e;
 	}
 
