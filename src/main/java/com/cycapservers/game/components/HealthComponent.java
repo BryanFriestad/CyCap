@@ -44,7 +44,7 @@ public class HealthComponent extends Component
 	{
 		if (is_wall)
 		{
-			health = Math.max(0, health - d.getWallDamageAmount());
+			health = Math.max(0, health - d.getDamageAmount()); 
 			// TODO: inform if health goes below zero.
 		}
 		else
@@ -53,17 +53,17 @@ public class HealthComponent extends Component
 		}
 	}
 	
-	private void UpdateHealth(HealingDealer h)
-	{
-		if (is_wall)
-		{
-			health = Math.min(max_health, health + h.getWallHealingAmount());
-		}
-		else
-		{
-			health = Math.min(max_health, health + h.getHealingAmount());
-		}
-	}
+//	private void UpdateHealth(HealingDealer h)
+//	{
+//		if (is_wall)
+//		{
+//			health = Math.min(max_health, health + h.getWallHealingAmount());
+//		}
+//		else
+//		{
+//			health = Math.min(max_health, health + h.getHealingAmount());
+//		}
+//	}
 
 	@Override
 	public Object GetJSONValue() 

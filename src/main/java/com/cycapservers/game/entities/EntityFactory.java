@@ -1,6 +1,8 @@
 package com.cycapservers.game.entities;
 
+import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
+import com.cycapservers.game.components.ClassComponent;
 import com.cycapservers.game.components.Entity;
 import com.cycapservers.game.components.HealthComponent;
 import com.cycapservers.game.components.InventoryComponent;
@@ -62,7 +64,7 @@ public class EntityFactory
 		return e;
 	}
 	
-	public Entity ManufacturePlayerCharacter(String entity_id, Team t)
+	public Entity ManufacturePlayerCharacter(String entity_id, Team t, CharacterClass c)
 	{
 		Entity e = ManufactureDrawableEntity(entity_id, 
 											 new PositionComponent(), 
@@ -72,7 +74,8 @@ public class EntityFactory
 		e.AddComponent(new SpeedComponent(5));
 		e.AddComponent(new TeamComponent(t));
 		e.AddComponent(new InventoryComponent());
-		// add class and visibility components
+		e.AddComponent(new ClassComponent(c));
+		e.AddComponent(new VisibilityComponent());
 		e.AddComponent(new CharacterCollisionComponent(new CircleCollider(),
 													   1, 
 													   new PositionComponent()));
