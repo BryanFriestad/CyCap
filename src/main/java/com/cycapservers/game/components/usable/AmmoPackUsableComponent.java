@@ -11,6 +11,7 @@ public class AmmoPackUsableComponent extends UsableComponent
 	public AmmoPackUsableComponent(int max_uses)
 	{
 		super(max_uses, 0);
+		user = null;
 	}
 
 	@Override

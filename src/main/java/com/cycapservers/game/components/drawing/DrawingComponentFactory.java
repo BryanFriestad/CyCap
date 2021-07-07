@@ -76,5 +76,15 @@ public class DrawingComponentFactory
 	{
 		return new DrawingComponent(Image.GetImageBySrc("res/images/ammo_box.png"), 0);
 	}
+	
+	public DrawingComponent ManufactureHealthPackDrawingComponent()
+	{
+		return new DrawingComponent(Image.GetImageBySrc("res/images/health_pack.png"), 0);
+	}
+	
+	public DrawingComponent ManufactureSpeedPotionDrawingComponent()
+	{
+		return new DrawingComponent(Image.GetImageBySrc("res/images/speed_potion.png"), 0);
+	}
 
 }

@@ -23,6 +23,8 @@ import com.cycapservers.game.components.input.ClientInputComponent;
 import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.components.usable.AmmoPackUsableComponent;
+import com.cycapservers.game.components.usable.HealthPackUsableComponent;
+import com.cycapservers.game.components.usable.SpeedPotionUsableComponent;
 
 public class EntityFactory
 {
@@ -110,6 +112,26 @@ public class EntityFactory
 		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(), 1, p));
 		e.AddComponent(new AmmoPackUsableComponent(1));
 		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureAmmoPackDrawingComponent());
+		return e;
+	}
+
+	public Entity ManufactureHealthPack(String entity_id, PositionComponent p)
+	{
+		Entity e = new Entity(entity_id);
+		e.AddComponent(p);
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(), 1, p));
+		e.AddComponent(new HealthPackUsableComponent(1, 500));
+		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureHealthPackDrawingComponent());
+		return e;
+	}
+
+	public Entity ManufactureSpeedPotion(String entity_id, PositionComponent p)
+	{
+		Entity e = new Entity(entity_id);
+		e.AddComponent(p);
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(), 1, p));
+		e.AddComponent(new SpeedPotionUsableComponent(1, 10, 1.5, true));
+		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureSpeedPotionDrawingComponent());
 		return e;
 	}
 
