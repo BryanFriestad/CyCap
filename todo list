@@ -43,13 +43,25 @@
 	- only send data about visible characters to client
 	
 - Component Architecture fixes
-	- Character needs a way to inform database of player kills on death.
-		- Perhaps just a way to send a message from a component to the game it's entity belongs to
-		- The data would be the GameEventsEntity
-		- Also look into Listener design pattern
+	- finish dealing with flag object
+		- Character needs a way to inform database of player kills on death.
+			- Perhaps just a way to send a message from a component to the game it's entity belongs to
+			- The data would be the GameEventsEntity
+			- Also look into Listener design pattern
+			- A GameEventReporterComponent which listens for ComponentMessages on an entity and interacts appropriately with the DB/Game.
+		- Flag Base entity, which has a special FlagBaseCollisionComponent, this detects collisions with 
+	- deal with error in playerStats.java
+	- finish dealing with projectile entities
+		- ArtilleryShell creates two objects on lifespan expiration, maybe a subclass of LifespanComponent
+		- consider how entities will create/spawn new entities into the game
+			- this may also require listener pattern
+		- Smoke grenade has a falling projectile, which is disabled after 10 secs
+			- Then, after the 10 secs are elapsed, a spawner component is enabled
 	- health component
 		- need new interface for HealingDealer
 		- is wall (to determine if should use normal or multiplied damage).
-	- There should be no subclass of Entity
-	- HomeBasePositionComponent
-		- A grid locked position component which has a function to return itself to its home position.
+	- It would be a good idea to have a mapping of priority for components
+		- ex: lifespan component should go first to save on computations.
+		- then sort by priority before updating
+	- Components can be enabled/disabled
+		- When disabled, a component does not update nor have it's JSON value returned.

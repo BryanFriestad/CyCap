@@ -1,9 +1,7 @@
-package com.cycapservers.game.entities;
+package com.cycapservers.game.components.drawing;
 
 import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
-import com.cycapservers.game.components.collision.Collider;
-import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.equipment.ProjectileWeapon;
 
@@ -13,38 +11,38 @@ import com.cycapservers.game.equipment.ProjectileWeapon;
  * @author Bryan Friestad
  *
  */
-public class FallingProjectile extends Projectile {
-	
+public class FallingProjectileDrawingComponent extends DrawingComponent 
+{	
 	//internal
 	private double initial_v;
 	private double scale_per_height;
 	private double initial_draw_height;
 	private double initial_draw_width;
+	private long time_of_creation;
 	
-	public FallingProjectile(DrawingComponent model, Collider c, int collision_priority, PositionComponent source, 
+	public FallingProjectileDrawingComponent(Image image, int spriteIndex, double drawHeight, double drawWidth, double rot, double a, PositionComponent source, 
 							 PositionComponent destination, int damage, double wall_damage_mult, String ownerId, Team team, 
 							 ProjectileWeapon firingWeapon, long lifeSpan, double max_height_scale) 
 	{
-		super(source, model, c, collision_priority, Utils.distanceBetween(source, destination) / lifeSpan, 
-			  Utils.getDirection(source, destination), damage, wall_damage_mult, ownerId, team, firingWeapon, lifeSpan);
+		super(image, spriteIndex, drawHeight, drawWidth, rot, a);
 		initial_v = -Utils.GRAVITY / 2.0 * lifeSpan; //initial velocity to get height = 0 at time = lifeSpan
 		double max_height = ((-Utils.GRAVITY / 2.0) * (lifeSpan / 2.0) * (lifeSpan / 2.0)) + (initial_v * (lifeSpan / 2.0));
-		scale_per_height = (max_height_scale - model.getDrawWidth()) / (max_height);
-		initial_draw_height = model.getDrawHeight();
-		initial_draw_width = model.getDrawWidth();
+		scale_per_height = (max_height_scale - this.getDrawWidth()) / (max_height);
+		initial_draw_height = this.getDrawHeight();
+		initial_draw_width = this.getDrawWidth();
+		this.time_of_creation = System.currentTimeMillis();
 	}
 	
 	/**
 	 * Calls Projectile.update() and then performs scaling calculations based on current "height"
 	 */
 	@Override
-	public boolean update() {
-		if(!super.update()) return false;
-		
-		long elapsed_life_time = System.currentTimeMillis() - getTime_of_creation();
+	public boolean Update(long delta_t) 
+	{	
+		long elapsed_life_time = System.currentTimeMillis() - time_of_creation;
 		double current_scale = scale_per_height * (((-Utils.GRAVITY / 2.0) * (elapsed_life_time) * (elapsed_life_time)) + (initial_v * (elapsed_life_time)));
-		model.setDrawHeight(initial_draw_height * current_scale);
-		model.setDrawWidth(initial_draw_width * current_scale);
+		setDrawHeight(initial_draw_height * current_scale);
+		setDrawWidth(initial_draw_width * current_scale);
 		
 		return true;
 	}

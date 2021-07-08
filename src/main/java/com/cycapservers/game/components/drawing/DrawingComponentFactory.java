@@ -86,5 +86,52 @@ public class DrawingComponentFactory
 	{
 		return new DrawingComponent(Image.GetImageBySrc("res/images/speed_potion.png"), 0);
 	}
+	
+	public DrawingComponent ManufactureFlagDrawingComponent(Team team)
+	{
+		Image i = Image.GetImageBySrc("res/images/flags.png");
+		int index;
+		switch (team)
+		{
+		case Blue:
+			index = 0;
+			break;
+			
+		case Green:
+			index = 1;
+			break;
+			
+		case LightSkyBlue:
+			index = 7;
+			break;
+			
+		case None:
+			throw new IllegalArgumentException();
+			
+		case Orange:
+			index = 4;
+			break;
+			
+		case Pink:
+			index = 3;
+			break;
+			
+		case Purple:
+			index = 2;
+			break;
+			
+		case Red:
+			index = 5;
+			break;
+			
+		case Yellow:
+			index = 6;
+			break;
+			
+		default:
+			throw new IllegalArgumentException();
+		}
+		return new DrawingComponent(i, index);
+	}
 
 }

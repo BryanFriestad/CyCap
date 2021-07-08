@@ -21,6 +21,7 @@ import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.drawing.DrawingComponentFactory;
 import com.cycapservers.game.components.input.ClientInputComponent;
 import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
+import com.cycapservers.game.components.positioning.HomebasePositionComponent;
 import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.components.usable.AmmoPackUsableComponent;
 import com.cycapservers.game.components.usable.HealthPackUsableComponent;
@@ -87,19 +88,30 @@ public class EntityFactory
 		return e;
 	}
 	
-	public Entity ManufactureProjectile(String entity_id, 
-										PositionComponent p, 
-										DrawingComponent d, 
-										int lifespan, 
-										double speed, 
-										PositionComponent direction)
+//	public Entity ManufactureProjectile(String entity_id, 
+//										PositionComponent p, 
+//										DrawingComponent d, 
+//										int lifespan, 
+//										double speed, 
+//										PositionComponent direction)
+//	{
+//		Entity e = new Entity(entity_id);
+//		e.AddComponent(new LifespanComponent(lifespan));
+//		e.AddComponent(new SpeedComponent(speed, direction));
+//		e.AddComponent(p);
+//		e.AddComponent(d);
+//		e.AddComponent(new DamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent(), "owner", damage, wall_dmg_mult, deathType, team, 1));
+//		return e;
+//	}
+	
+	public Entity ManufactureFlag(String entity_id, Team t, double base_x, double base_y)
 	{
 		Entity e = new Entity(entity_id);
-		e.AddComponent(new LifespanComponent(lifespan));
-		e.AddComponent(new SpeedComponent(speed, direction));
+		e.AddComponent(new TeamComponent(t));
+		HomebasePositionComponent p = new HomebasePositionComponent(base_x, base_y);
 		e.AddComponent(p);
-		e.AddComponent(d);
-		e.AddComponent(new DamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent(), "owner", damage, wall_dmg_mult, deathType, team, 1));
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(), 1, p));
+		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureFlagDrawingComponent(t));
 		return e;
 	}
 	
