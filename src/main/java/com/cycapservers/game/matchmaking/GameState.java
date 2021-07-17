@@ -196,9 +196,14 @@ public class GameState implements JSON_returnable
 		intermittent_entities.add(e);
 	}
 	
+	public String GetUniqueEntityId()
+	{
+		return Utils.getGoodRandomString(used_entity_id, id_rand_len) + "(" + used_entity_id.size() + ")";
+	}
+	
 	private void setUniqueEntityId(Entity e) 
 	{
-		String s = Utils.getGoodRandomString(used_entity_id, id_rand_len) + "(" + used_entity_id.size() + ")";
+		String s = GetUniqueEntityId();
 		used_entity_id.add(s);
 		e.setEntity_id(s);
 	}

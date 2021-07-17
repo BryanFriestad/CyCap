@@ -1,14 +1,12 @@
 package com.cycapservers.game.database;
 
 import java.awt.Point;
-import java.util.ArrayList;
-
-import org.springframework.web.socket.WebSocketSession;
-import com.cycapservers.account.*;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
-import com.cycapservers.game.entities.Character;
+import com.cycapservers.game.components.ClassComponent;
+import com.cycapservers.game.components.TeamComponent;
+import com.cycapservers.game.entities.Entity;
 import com.cycapservers.game.matchmaking.CaptureTheFlag;
 import com.cycapservers.game.matchmaking.GameState;
 import com.cycapservers.game.matchmaking.TeamDeathMatch;
@@ -45,10 +43,13 @@ public class PlayerStats {
 	int gamelosses;
 
 
-	public PlayerStats(Character player){
-		this.userID = player.getEntity_id(); //need to add this in later
-		this.champion = player.getClass_name(); //need to ensure role was already assigned
-		this.team = player.getTeam();
+	public PlayerStats(Entity player)
+	{
+		this.userID = player.getEntityId(); //need to add this in later
+		ClassComponent c = (ClassComponent) player.GetComponentOfType(ClassComponent.class);
+		this.champion = c.GetCharacterClass(); //need to ensure role was already assigned
+		TeamComponent t = (TeamComponent) player.GetComponentOfType(TeamComponent.class);
+		this.team = t.GetTeam();
 		this.kills = 0;
 		this.deaths = 0; 
 		this.wins = 0; 

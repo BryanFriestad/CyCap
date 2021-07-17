@@ -42,24 +42,25 @@
 		- equipment/weapon slots
 	- only send data about visible characters to client
 	
+- finish dealing with flag object
+	- Character needs a way to inform database of player kills on death.
+		- Perhaps just a way to send a message from a component to the game it's entity belongs to
+		- The data would be the GameEventsEntity
+		- Also look into Listener design pattern
+		- A GameEventReporterComponent which listens for ComponentMessages on an entity and interacts appropriately with the DB/Game.
+		
+- finish dealing with projectile entities
+	- ArtilleryShell creates two objects on lifespan expiration, maybe a subclass of LifespanComponent
+	- consider how entities will create/spawn new entities into the game
+		- this may also require listener pattern
+	- Smoke grenade has a falling projectile, which is disabled after 10 secs
+		- Then, after the 10 secs are elapsed, a spawner component is enabled
+	
+- health component
+	- need new interface for HealingDealer
+	- is wall (to determine if should use normal or multiplied damage).
+		
 - Component Architecture fixes
-	- finish dealing with flag object
-		- Character needs a way to inform database of player kills on death.
-			- Perhaps just a way to send a message from a component to the game it's entity belongs to
-			- The data would be the GameEventsEntity
-			- Also look into Listener design pattern
-			- A GameEventReporterComponent which listens for ComponentMessages on an entity and interacts appropriately with the DB/Game.
-		- Flag Base entity, which has a special FlagBaseCollisionComponent, this detects collisions with 
-	- deal with error in playerStats.java
-	- finish dealing with projectile entities
-		- ArtilleryShell creates two objects on lifespan expiration, maybe a subclass of LifespanComponent
-		- consider how entities will create/spawn new entities into the game
-			- this may also require listener pattern
-		- Smoke grenade has a falling projectile, which is disabled after 10 secs
-			- Then, after the 10 secs are elapsed, a spawner component is enabled
-	- health component
-		- need new interface for HealingDealer
-		- is wall (to determine if should use normal or multiplied damage).
 	- It would be a good idea to have a mapping of priority for components
 		- ex: lifespan component should go first to save on computations.
 		- then sort by priority before updating

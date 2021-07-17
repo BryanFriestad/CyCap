@@ -29,5 +29,10 @@ public class TeamComponent extends Component
 	{
 		return true;
 	}
+	
+	public Team GetTeam()
+	{
+		return team;
+	}
 
 }

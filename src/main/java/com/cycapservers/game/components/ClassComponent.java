@@ -31,4 +31,8 @@ public class ClassComponent extends Component
 		return c;
 	}
 
+	public CharacterClass GetCharacterClass()
+	{
+		return c;
+	}
 }

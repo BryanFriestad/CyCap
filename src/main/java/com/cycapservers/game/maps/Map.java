@@ -61,7 +61,7 @@ public class Map
 		{
 			short x = (short) o.getInt("x");
 			short y = (short) o.getInt("y");
-			state.addEntity(EntityFactory.getInstance().GetWall(x, y));
+			state.addEntity(EntityFactory.getInstance().ManufactureWall(state.GetUniqueEntityId(), x, y));
 		}
 		
 		if (type == GameType.tdm)
@@ -80,7 +80,7 @@ public class Map
 				short y = (short) o.getInt("y");
 				Team t = Team.valueOf((String) o.get("team"));
 				
-				state.addEntity(EntityFactory.getInstance().GetSpawn(x, y, t));
+				state.addEntity(EntityFactory.getInstance().ManufactureSpawn(state.GetUniqueEntityId(), x, y, t));
 			}
 		}
 	}
