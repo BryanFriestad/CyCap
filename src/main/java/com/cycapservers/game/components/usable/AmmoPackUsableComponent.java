@@ -1,8 +1,6 @@
 package com.cycapservers.game.components.usable;
 
 import com.cycapservers.game.components.InventoryComponent;
-import com.cycapservers.game.equipment.Equipment;
-import com.cycapservers.game.equipment.Weapon;
 
 public class AmmoPackUsableComponent extends UsableComponent 
 {

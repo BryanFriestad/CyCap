@@ -3,6 +3,7 @@ package com.cycapservers.game.components;
 import org.json.JSONObject;
 
 import com.cycapservers.game.components.collision.GrabbableCollisionComponent;
+import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.usable.UsableComponent;
 import com.cycapservers.game.entities.Entity;
 
@@ -12,6 +13,9 @@ public class InventoryComponent extends Component
 	private Entity[] equipment;
 	private int active_equipment_index;
 	private Entity item_slot;
+
+	private long switch_cooldown;
+	private long last_switchtime;
 	
 	public InventoryComponent()
 	{

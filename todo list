@@ -59,6 +59,14 @@
 - health component
 	- need new interface for HealingDealer
 	- is wall (to determine if should use normal or multiplied damage).
+	
+- Equipment
+	- Weapons
+		- ShootComponent
+		- ReloadComponent
+		- AmmoComponent
+		- DrawableComponent (for icon)
+		- MousePositionListener (for launched weapons)
 		
 - Component Architecture fixes
 	- It would be a good idea to have a mapping of priority for components
