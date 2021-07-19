@@ -1,19 +1,10 @@
 package com.cycapservers.game.matchmaking;
 
 import java.util.HashMap;
-import java.util.List;
-
-import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
-import com.cycapservers.game.components.collision.CollisionComponent;
-import com.cycapservers.game.components.drawing.DrawingComponent;
-import com.cycapservers.game.components.input.InputSnapshot;
-import com.cycapservers.game.components.positioning.GridLockedPositionComponent;
-import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.database.GameType;
-import com.cycapservers.game.entities.Character;
-import com.cycapservers.game.entities.Flag;
-import com.cycapservers.game.entities.Spawn;
+import com.cycapservers.game.entities.Entity;
+import com.cycapservers.game.entities.EntityFactory;
 
 public class CaptureTheFlag extends Game {
 	
@@ -26,8 +17,8 @@ public class CaptureTheFlag extends Game {
 	}
 	
 	//////CTF STUFF//////
-	protected Flag team1_flag = new Flag(null, null, this, Team.Red, null); // TODO: get base from map. sort out model and collider
-	protected Flag team2_flag = new Flag(null, null, this, Team.Blue, null); 
+	protected Entity team1_flag = EntityFactory.getInstance().ManufactureFlag(this.id_generator.GenerateUniqueEntityId(), Team.Red, 0.0, 0.0); // TODO: get base from map
+	protected Entity team2_flag = EntityFactory.getInstance().ManufactureFlag(this.id_generator.GenerateUniqueEntityId(), Team.Blue, 0.0, 0.0);
 	/////////////////////
 	
 	public CaptureTheFlag() 
@@ -41,7 +32,7 @@ public class CaptureTheFlag extends Game {
 		return false;
 	}
 	@Override
-	public Spawn getValidSpawnNode(Team team) {
+	public Entity getValidSpawnNode(Team team) {
 		// TODO Auto-generated method stub
 		return null;
 	}

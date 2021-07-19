@@ -10,16 +10,12 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.BeanUtil;
-import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Spawner;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.UniqueIdGenerator;
-import com.cycapservers.game.Utils;
-import com.cycapservers.game.components.collision.CharacterCollisionComponent;
-import com.cycapservers.game.components.collision.CircleCollider;
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.collision.CollisionEngine;
-import com.cycapservers.game.components.drawing.DrawingComponentFactory;
+import com.cycapservers.game.components.input.ClientInputComponent;
 import com.cycapservers.game.components.input.InputSnapshot;
 import com.cycapservers.game.components.positioning.PositionComponent;
 import com.cycapservers.game.database.GameEventsEntity;
@@ -41,7 +37,7 @@ import com.cycapservers.game.pathfinding.PathfindingNode;
 public abstract class Game 
 {
 	private static final int ENTITY_ID_LENGTH = 3;
-	private UniqueIdGenerator id_generator;
+	protected UniqueIdGenerator id_generator;
 	
 	//parameters
 	private GameType type; //used to store in DB
@@ -107,14 +103,6 @@ public abstract class Game
 		return sum;
 	}
 	
-	protected void addCharacter(Entity c)
-	{
-		id_generator.AddUsedId(c.getEntityId());
-		addEntity(c);
-	}
-	
-	protected abstract boolean removeCharacter(Character c);
-	
 	public void startGame(List<IncomingPlayer> incoming_players)
 	{
 		if(map == null) throw new IllegalStateException("The map has not yet been set for this game");
@@ -131,7 +119,7 @@ public abstract class Game
 		
 		for(IncomingPlayer i : incoming_players)
 		{
-			addCharacter(i.BuildPlayer(this, Character.DEFAULT_INVENTORY_SIZE, max_character_lives));
+			addCharacter(i.BuildPlayer());
 		}
 		
 		db_entry = new GamesEntity(type);
@@ -139,8 +127,14 @@ public abstract class Game
 		start_time = System.currentTimeMillis();
 		this.started = true;
 	}
+	
+	public void endGame()
+	{
+		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
+		gameEventsRepo.save(game_events);
+	}
 
-	public abstract Spawn getValidSpawnNode(Team team);
+	public abstract Entity getValidSpawnNode(Team team);
 	
 	public void sendGameState()
 	{
@@ -184,16 +178,40 @@ public abstract class Game
 		update();
 	}
 	
-	public void endGame()
+	protected void addCharacter(Entity c)
 	{
-		GameEventsRepository gameEventsRepo = BeanUtil.getBean(GameEventsRepository.class);
-		gameEventsRepo.save(game_events);
+		id_generator.AddUsedId(c.getEntityId());
+		CheckAndRegisterCollision(c);
+		game_state.addCharacter(c);
 	}
 	
-	public void addEntity(Entity e)
+	protected abstract boolean removeCharacter(Character c);
+	
+	public void AddUndrawnEntity(Entity e)
 	{
-		if (e.HasComponentOfType(CollisionComponent.class)) collision_engine.registerCollidable((CollisionComponent) e.GetComponentOfType(CollisionComponent.class));
-		game_state.addEntity(e);
+		CheckAndRegisterCollision(e);
+		game_state.addUndrawnEntity(e);
+	}
+	
+	public void AddIntermittentEntity(Entity e)
+	{
+		CheckAndRegisterCollision(e);
+		game_state.addIntermittentEntity(e);
+	}
+	
+	public void AddPersistentEntity(Entity e)
+	{
+		CheckAndRegisterCollision(e);
+		game_state.addPersistentEntity(e);
+	}
+	
+	private void CheckAndRegisterCollision(Entity e)
+	{
+		if (e.HasComponentOfType(CollisionComponent.class))
+		{
+			CollisionComponent cc = (CollisionComponent) e.GetComponentOfType(CollisionComponent.class);
+			collision_engine.registerCollidable(cc);
+		}
 	}
 	
 	public void addGameEvent(GameEventsEntity event)
@@ -266,12 +284,14 @@ public abstract class Game
 		
 		JSONObject o = this.initial_game_state;
 		o.remove("passcode"); // make sure the passcode key is empty before adding player specific one.
-		o.put("passcode", GetPlayer(client_id).GetInputPasscode());
+		Entity e = GetPlayer(client_id);
+		ClientInputComponent input = (ClientInputComponent) e.GetComponentOfType(ClientInputComponent.class);
+		o.put("passcode", input.GetInputPasscode());
 		
 		return o;
 	}
 	
-	private Player GetPlayer(String client_id)
+	private Entity GetPlayer(String client_id)
 	{
 		return game_state.GetPlayer(client_id);
 	}

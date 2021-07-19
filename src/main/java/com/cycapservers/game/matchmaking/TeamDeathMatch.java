@@ -3,8 +3,7 @@ package com.cycapservers.game.matchmaking;
 import java.util.HashMap;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.database.GameType;
-import com.cycapservers.game.entities.Character;
-import com.cycapservers.game.entities.Spawn;
+import com.cycapservers.game.entities.Entity;
 
 public class TeamDeathMatch extends Game 
 {	
@@ -29,7 +28,7 @@ public class TeamDeathMatch extends Game
 	}
 
 	@Override
-	public Spawn getValidSpawnNode(Team team) {
+	public Entity getValidSpawnNode(Team team) {
 		// TODO Auto-generated method stub
 		return null;
 	}
