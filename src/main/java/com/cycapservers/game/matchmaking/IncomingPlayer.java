@@ -2,11 +2,8 @@ package com.cycapservers.game.matchmaking;
 
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Team;
-import com.cycapservers.game.components.collision.CharacterCollisionComponent;
-import com.cycapservers.game.components.collision.CircleCollider;
-import com.cycapservers.game.components.drawing.DrawingComponentFactory;
-import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.entities.Player;
+import com.cycapservers.game.entities.Entity;
+import com.cycapservers.game.entities.EntityFactory;
 
 public class IncomingPlayer 
 {	
@@ -23,17 +20,9 @@ public class IncomingPlayer
 		this.team = t;
 	}
 	
-	public Player BuildPlayer(Game g, int inventory_size, int max_lives)
+	public Entity BuildPlayer()
 	{
-		Player p = new Player(new CharacterCollisionComponent(new CircleCollider(), 10, new PositionComponent()), 
-						      DrawingComponentFactory.getInstance().BuildPlayerDrawingComponent(team), 
-						      g, 
-						      team, 
-						      role,
-						      inventory_size,
-						      max_lives,
-						      client_id);
-		return p;
+		return EntityFactory.getInstance().ManufacturePlayerCharacter(client_id, team, role);
 	}
 	
 	public String GetClientId()

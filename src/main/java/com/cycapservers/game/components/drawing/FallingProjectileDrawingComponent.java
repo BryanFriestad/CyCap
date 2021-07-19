@@ -3,7 +3,6 @@ package com.cycapservers.game.components.drawing;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.positioning.PositionComponent;
-import com.cycapservers.game.equipment.ProjectileWeapon;
 
 /**
  * A bullet which is launched into the air and falls to the ground.
@@ -22,7 +21,7 @@ public class FallingProjectileDrawingComponent extends DrawingComponent
 	
 	public FallingProjectileDrawingComponent(Image image, int spriteIndex, double drawHeight, double drawWidth, double rot, double a, PositionComponent source, 
 							 PositionComponent destination, int damage, double wall_damage_mult, String ownerId, Team team, 
-							 ProjectileWeapon firingWeapon, long lifeSpan, double max_height_scale) 
+							 long lifeSpan, double max_height_scale) 
 	{
 		super(image, spriteIndex, drawHeight, drawWidth, rot, a);
 		initial_v = -Utils.GRAVITY / 2.0 * lifeSpan; //initial velocity to get height = 0 at time = lifeSpan

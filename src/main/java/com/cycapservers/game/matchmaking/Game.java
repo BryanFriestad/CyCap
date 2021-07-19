@@ -13,6 +13,7 @@ import com.cycapservers.BeanUtil;
 import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Spawner;
 import com.cycapservers.game.Team;
+import com.cycapservers.game.UniqueIdGenerator;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.collision.CharacterCollisionComponent;
 import com.cycapservers.game.components.collision.CircleCollider;
@@ -38,7 +39,10 @@ import com.cycapservers.game.pathfinding.PathfindingNode;
  *
  */
 public abstract class Game 
-{	
+{
+	private static final int ENTITY_ID_LENGTH = 3;
+	private UniqueIdGenerator id_generator;
+	
 	//parameters
 	private GameType type; //used to store in DB
 	
@@ -72,6 +76,7 @@ public abstract class Game
 	
 	public Game(GameType type, boolean friendly_fire, int max_character_lives, long respawn_time, boolean enable_power_ups, long time_limit, HashMap<Team, Integer> max_characters_per_team) 
 	{
+		this.id_generator = new UniqueIdGenerator(ENTITY_ID_LENGTH);
 		this.type = type;
 		this.friendly_fire = friendly_fire;
 		this.max_character_lives = max_character_lives;
@@ -102,8 +107,9 @@ public abstract class Game
 		return sum;
 	}
 	
-	protected void addCharacter(Character c)
+	protected void addCharacter(Entity c)
 	{
+		id_generator.AddUsedId(c.getEntityId());
 		addEntity(c);
 	}
 	
@@ -120,7 +126,7 @@ public abstract class Game
 		}
 		
 		game_state = new GameState(team_list);
-		map.InitializeGameState(type, game_state, enable_power_ups);
+		map.InitializeGameState(type, game_state, id_generator, enable_power_ups);
 		initial_game_state = game_state.toJSONObject();
 		
 		for(IncomingPlayer i : incoming_players)
@@ -160,7 +166,7 @@ public abstract class Game
 	public void update()
 	{
 		//update AI 
-		game_state.update();
+		game_state.Update();
 		//update collision engine
 		//check if game is completed
 	}
