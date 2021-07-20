@@ -26,7 +26,7 @@ public abstract class CollisionComponent extends Component implements Comparable
 	private void SetPreviousAndCurrentPosition(PositionComponent p)
 	{
 		previous_position = collider.curPos;
-		collider.curPos = p;
+		collider.SetCurPosition(p);
 	}
 	
 	public boolean isColliding(CollisionComponent other)

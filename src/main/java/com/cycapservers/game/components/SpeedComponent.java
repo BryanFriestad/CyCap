@@ -5,6 +5,8 @@ import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class SpeedComponent extends Component 
 {
+	private static PositionComponent zero_vector = new PositionComponent(0, 0);
+	
 	/**
 	 * The speed of this entity in grid spaces per ms.
 	 */
@@ -20,7 +22,7 @@ public class SpeedComponent extends Component
 	{
 		super("speed");
 		current_speed = normal_speed;
-		direction = Utils.MakeUnitVector(dir);
+		SetDirection(dir);
 	}
 	
 	public SpeedComponent(double normal_speed)
@@ -59,6 +61,7 @@ public class SpeedComponent extends Component
 	
 	private void SetDirection(PositionComponent dir)
 	{
-		direction = Utils.MakeUnitVector(dir);
+		if (!dir.equals(zero_vector)) Utils.MakeUnitVector(dir);
+		direction = dir;
 	}
 }

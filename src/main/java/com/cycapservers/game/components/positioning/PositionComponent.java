@@ -87,6 +87,7 @@ public class PositionComponent extends Component
 			
 		case COLLISION_CORRECT_POSITION:
 			PositionComponent p = (PositionComponent) message.getData();
+			System.out.println("Position changed from: " + x + ", " + y + " to " + p.getX() + ", " + p.getY());
 			x = p.getX();
 			y = p.getY();
 			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
@@ -102,5 +103,23 @@ public class PositionComponent extends Component
 	public boolean Update(long delta_t) 
 	{
 		return true;
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+        if (o == this) 
+        {
+            return true;
+        }
+
+        if (!(o instanceof PositionComponent)) 
+        {
+            return false;
+        }
+
+        PositionComponent p = (PositionComponent) o;
+
+        return Double.compare(x, p.x) == 0 && Double.compare(y, p.y) == 0;
 	}
 }

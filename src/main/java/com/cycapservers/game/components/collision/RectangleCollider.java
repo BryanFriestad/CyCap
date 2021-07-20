@@ -8,16 +8,16 @@ public class RectangleCollider extends Collider {
 	private PositionComponent bottomLeft;
 	private PositionComponent topRight;
 	
-	public RectangleCollider() 
+	public RectangleCollider(PositionComponent starting_pos) 
 	{
-		super();
-		bottomLeft = new PositionComponent(-Utils.GRID_LENGTH / 2.0, -Utils.GRID_LENGTH / 2.0);
-		topRight = new PositionComponent(Utils.GRID_LENGTH / 2.0, Utils.GRID_LENGTH / 2.0);
+		super(starting_pos);
+		bottomLeft = new PositionComponent(curPos.getX() - (Utils.GRID_LENGTH / 2.0), curPos.getY() - (Utils.GRID_LENGTH / 2.0));
+		topRight = new PositionComponent(curPos.getX() + (Utils.GRID_LENGTH / 2.0), curPos.getY() + (Utils.GRID_LENGTH / 2.0));
 	}
 	
-	public RectangleCollider(double width, double height)
+	public RectangleCollider(PositionComponent starting_pos, double width, double height)
 	{
-		super();
+		super(starting_pos);
 		bottomLeft = new PositionComponent(curPos.getX() - (width / 2.0), curPos.getY() - (height / 2.0));
 		topRight = new PositionComponent(curPos.getX() + (width / 2.0), curPos.getY() + (height / 2.0));
 	}
@@ -81,7 +81,7 @@ public class RectangleCollider extends Collider {
 	@Override
 	public Collider clone() 
 	{
-		return new RectangleCollider(topRight.getX() - bottomLeft.getX(), topRight.getY() - bottomLeft.getY());
+		return new RectangleCollider(curPos, topRight.getX() - bottomLeft.getX(), topRight.getY() - bottomLeft.getY());
 	}
 	
 	@Override

@@ -61,7 +61,7 @@ public class Entity implements JSON_returnable
 	{
 		for (Component comp : components)
 		{
-			if (comp.getClass().equals(c)) return true;
+			if (c.isInstance(comp)) return true;
 		}
 		return false;
 	}
@@ -70,7 +70,7 @@ public class Entity implements JSON_returnable
 	{
 		for (Component comp : components)
 		{
-			if (comp.getClass().equals(c)) return comp;
+			if (c.isInstance(comp)) return comp;
 		}
 		throw new IllegalArgumentException("This component container has no such component");
 	}

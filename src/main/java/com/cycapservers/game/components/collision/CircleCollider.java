@@ -7,15 +7,15 @@ public class CircleCollider extends Collider
 {	
 	private double radius;
 
-	public CircleCollider() 
+	public CircleCollider(PositionComponent starting_pos) 
 	{
-		super();
+		super(starting_pos);
 		this.radius = Utils.GRID_LENGTH / 2.0;
 	}
 
-	public CircleCollider(double radius) 
+	public CircleCollider(PositionComponent starting_pos, double radius) 
 	{
-		super();
+		super(starting_pos);
 		this.radius = radius;
 	}
 
@@ -64,6 +64,6 @@ public class CircleCollider extends Collider
 	@Override
 	public Collider clone() 
 	{
-		return new CircleCollider(radius);
+		return new CircleCollider(curPos, radius);
 	}
 }

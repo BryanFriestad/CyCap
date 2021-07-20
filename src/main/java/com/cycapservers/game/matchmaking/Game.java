@@ -114,7 +114,7 @@ public abstract class Game
 		}
 		
 		game_state = new GameState(team_list);
-		map.InitializeGameState(type, game_state, id_generator, enable_power_ups);
+		map.InitializeGameState(type, this, enable_power_ups);
 		initial_game_state = game_state.toJSONObject();
 		
 		for(IncomingPlayer i : incoming_players)
@@ -161,7 +161,7 @@ public abstract class Game
 	{
 		//update AI 
 		game_state.Update();
-		//update collision engine
+		collision_engine.update();
 		//check if game is completed
 	}
 	
@@ -294,6 +294,11 @@ public abstract class Game
 	private Entity GetPlayer(String client_id)
 	{
 		return game_state.GetPlayer(client_id);
+	}
+	
+	public String GenerateUniqueEntityId()
+	{
+		return id_generator.GenerateUniqueEntityId();
 	}
 	
 //	public void endGame(int winner) {

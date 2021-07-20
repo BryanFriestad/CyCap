@@ -1,21 +1,15 @@
 package com.cycapservers.game.components.collision;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cycapservers.game.DamageDealer;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
 import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class CharacterCollisionComponent extends CollisionComponent 
 {
-	private List<DamageDealer> damage_to_take;
 	
 	public CharacterCollisionComponent(Collider c, int p, PositionComponent start_pos) 
 	{
 		super(c, p, start_pos);
-		damage_to_take = new ArrayList<DamageDealer>();
 	}
 
 	@Override
@@ -23,11 +17,6 @@ public class CharacterCollisionComponent extends CollisionComponent
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public void AddDamageToTake(DamageDealer damage) 
-	{
-		this.damage_to_take.add(damage);
 	}
 
 	@Override
@@ -89,21 +78,10 @@ public class CharacterCollisionComponent extends CollisionComponent
 	{
 		other.collideWith(this);
 	}
-	
-//	else if (other_parent instanceof Item)
-//	{
-//		Item i = (Item) other_parent;
-//		Character c = (Character) GetParent();
-//		
-//		if (c.getItem_slot() == null)
-//		{
-//			i.pickUp(c);
-//		}
-//	}
 
 	@Override
-	public Object GetJSONValue() {
-		// TODO Auto-generated method stub
+	public Object GetJSONValue() 
+	{
 		return null;
 	}
 }

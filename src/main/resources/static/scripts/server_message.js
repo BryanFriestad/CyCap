@@ -43,6 +43,7 @@ function message_handler(msg)
 	
 	if (!got_first_message)
 	{
+		console.log(obj);
 		got_first_message = true;
 		setup(obj);
 		requestAnimationFrame(run);

@@ -7,9 +7,9 @@ public abstract class Collider
 	
 	protected PositionComponent curPos;
 	
-	protected Collider()
+	protected Collider(PositionComponent starting_pos)
 	{
-		curPos = new PositionComponent();
+		curPos = starting_pos;
 	}
 
 	/**

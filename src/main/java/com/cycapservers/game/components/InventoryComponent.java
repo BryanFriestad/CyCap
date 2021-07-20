@@ -109,9 +109,14 @@ public class InventoryComponent extends Component
 		obj.put("current_equipment", active_equipment_index);
 		for (Entity e : equipment)
 		{
-			obj.append("inventory", e.toJSONObject());
+			if (e != null) obj.append("inventory", e.toJSONObject());
 		}
-		obj.put("item_slot", item_slot.toJSONObject());
+		
+		if (item_slot != null) 
+		{
+			obj.put("item_slot", item_slot.toJSONObject());
+		}
+		
 		return obj;
 	}
 

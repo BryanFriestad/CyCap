@@ -10,6 +10,7 @@ import com.cycapservers.game.Team;
 import com.cycapservers.game.UniqueIdGenerator;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.entities.EntityFactory;
+import com.cycapservers.game.matchmaking.Game;
 import com.cycapservers.game.matchmaking.GameState;
 
 public class Map
@@ -54,7 +55,7 @@ public class Map
 	 * @param type
 	 * @param state
 	 */
-	public void InitializeGameState(GameType type, GameState state, UniqueIdGenerator id_gen, boolean use_power_ups) 
+	public void InitializeGameState(GameType type, Game game, boolean use_power_ups) 
 	{
 		if (!legal_game_types.contains(type)) throw new InvalidParameterException("GameType type parameter(" + type + ") not a legal game type for this map.");
 		
@@ -62,16 +63,16 @@ public class Map
 		{
 			short x = (short) o.getInt("x");
 			short y = (short) o.getInt("y");
-			state.addPersistentEntity(EntityFactory.getInstance().ManufactureWall(id_gen.GenerateUniqueEntityId(), x, y));
+			game.AddPersistentEntity(EntityFactory.getInstance().ManufactureWall(game.GenerateUniqueEntityId(), x, y));
 		}
 		
 		if (type == GameType.tdm)
 		{
-			InitializeGameTypeSpecificState(state, id_gen, tdm_dynamics);
+			InitializeGameTypeSpecificState(game, tdm_dynamics);
 		}
 	}
 	
-	private void InitializeGameTypeSpecificState(GameState state, UniqueIdGenerator id_gen, List<JSONObject> dynamics)
+	private void InitializeGameTypeSpecificState(Game game, List<JSONObject> dynamics)
 	{
 		for (JSONObject o : dynamics)
 		{
@@ -81,7 +82,7 @@ public class Map
 				short y = (short) o.getInt("y");
 				Team t = Team.valueOf((String) o.get("team"));
 				
-				state.addPersistentEntity(EntityFactory.getInstance().ManufactureSpawn(id_gen.GenerateUniqueEntityId(), x, y, t));
+				game.AddUndrawnEntity(EntityFactory.getInstance().ManufactureSpawn(game.GenerateUniqueEntityId(), x, y, t));
 			}
 		}
 	}

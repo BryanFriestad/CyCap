@@ -136,6 +136,7 @@ public class GameState implements JSON_returnable
 	{
 //		setUniqueEntityId(e);
 		persistent_entities.add(e);
+		persistent_entities_added.add(e);
 	}
 	
 	public void addIntermittentEntity(Entity e)

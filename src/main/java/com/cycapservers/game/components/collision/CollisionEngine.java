@@ -3,22 +3,26 @@ package com.cycapservers.game.components.collision;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CollisionEngine {
-	
+public class CollisionEngine 
+{
 	private ArrayList<CollisionComponent> collidables;
 	private ArrayList<Collision> collisions;
 
-	public CollisionEngine() {
+	public CollisionEngine() 
+	{
 		collidables = new ArrayList<CollisionComponent>();
 		collisions = new ArrayList<Collision>();
 	}
 	
-	public void update(){
+	public void update()
+	{
 		collisions.clear();
 		
 		CollisionComponent[] arr = collidables.toArray(new CollisionComponent[0]);
-		for(int i = 0; i < arr.length; i++){
-			for(int j = i+1; j < arr.length; j++){
+		for(int i = 0; i < arr.length; i++)
+		{
+			for(int j = i+1; j < arr.length; j++)
+			{
 				if(arr[i].isColliding(arr[j]))
 					collisions.add(new Collision(arr[i], arr[j]));
 			}
@@ -30,7 +34,8 @@ public class CollisionEngine {
 			c.respond();
 	}
 	
-	public void registerCollidable(CollisionComponent cc){
+	public void registerCollidable(CollisionComponent cc)
+	{
 		collidables.add(cc);
 	}
 	
@@ -39,7 +44,8 @@ public class CollisionEngine {
 		CollisionComponent c1;
 		CollisionComponent c2;
 		
-		public Collision(CollisionComponent c1, CollisionComponent c2) {
+		public Collision(CollisionComponent c1, CollisionComponent c2) 
+		{
 			this.c1 = c1;
 			this.c2 = c2;
 		}

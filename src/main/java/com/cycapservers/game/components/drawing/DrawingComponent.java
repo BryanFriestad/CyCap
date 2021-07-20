@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import com.cycapservers.game.Utils;
 import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
+import com.cycapservers.game.components.positioning.PositionComponent;
 
 /**
  * A component which allows an entity to be drawn.
@@ -182,7 +183,7 @@ public class DrawingComponent extends Component
 	@Override
 	public void Receive(ComponentMessage message) 
 	{
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
