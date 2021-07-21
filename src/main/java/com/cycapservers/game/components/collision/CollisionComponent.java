@@ -2,7 +2,6 @@ package com.cycapservers.game.components.collision;
 
 import com.cycapservers.game.components.Component;
 import com.cycapservers.game.components.ComponentMessage;
-import com.cycapservers.game.components.positioning.PositionComponent;
 
 /**
  * A component which allows the entity to collide with other entities.
@@ -13,20 +12,12 @@ public abstract class CollisionComponent extends Component implements Comparable
 {	
 	protected Collider collider;
 	protected int collision_priority;
-	private PositionComponent previous_position; //used in collision handling
 	
-	public CollisionComponent(Collider c, int p, PositionComponent start_pos)
+	public CollisionComponent(Collider c, int p)
 	{
 		super("collider");
 		collider = c;
 		collision_priority = p;
-		previous_position = start_pos;
-	}
-	
-	private void SetPreviousAndCurrentPosition(PositionComponent p)
-	{
-		previous_position = collider.curPos;
-		collider.SetCurPosition(p);
 	}
 	
 	public boolean isColliding(CollisionComponent other)
@@ -43,16 +34,6 @@ public abstract class CollisionComponent extends Component implements Comparable
 	{
 		return this.collider;
 	}
-
-	public PositionComponent getPreviousPosition() 
-	{
-		return previous_position;
-	}
-
-	protected void setPreviousPosition(PositionComponent previousPosition) 
-	{
-		this.previous_position = previousPosition;
-	}
 	
 	@Override
 	public int compareTo(CollisionComponent o) 
@@ -65,9 +46,6 @@ public abstract class CollisionComponent extends Component implements Comparable
 	{
 		switch (message.getMessage_id())
 		{
-		case POSITIONING_UPDATE:
-			SetPreviousAndCurrentPosition((PositionComponent) message.getData());
-			break;
 			
 		default:
 			break;

@@ -2,25 +2,24 @@ package com.cycapservers.game.components.collision;
 
 import org.json.JSONObject;
 
-import com.cycapservers.game.components.positioning.PositionComponent;
-
 public class StaticCollisionComponent extends CollisionComponent 
 {
 
-	public StaticCollisionComponent(Collider c, int p, PositionComponent start_pos) 
+	public StaticCollisionComponent(Collider c, int p) 
 	{
-		super(c, p, start_pos);
+		super(c, p);
 	}
 
 	@Override
 	public CollisionComponent clone() 
 	{
-		return new StaticCollisionComponent(collider, collision_priority, new PositionComponent());
+		return new StaticCollisionComponent(collider, collision_priority);
 	}
 
 	@Override
 	public void beCollidedBy(CollisionComponent other) 
 	{
+		if (!isColliding(other)) return;
 		other.collideWith(this);
 	}
 	

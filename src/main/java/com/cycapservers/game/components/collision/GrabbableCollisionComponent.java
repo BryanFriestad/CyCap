@@ -3,16 +3,15 @@ package com.cycapservers.game.components.collision;
 import org.json.JSONObject;
 
 import com.cycapservers.game.components.InventoryComponent;
-import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class GrabbableCollisionComponent extends CollisionComponent 
 {
 	private boolean grabbed;
 	private InventoryComponent grabber;
 	
-	public GrabbableCollisionComponent(Collider c, int p, PositionComponent start_pos)
+	public GrabbableCollisionComponent(Collider c, int p)
 	{
-		super(c, p, start_pos);
+		super(c, p);
 		grabbed = false;
 		grabber = null;
 	}
@@ -20,12 +19,13 @@ public class GrabbableCollisionComponent extends CollisionComponent
 	@Override
 	public CollisionComponent clone() 
 	{
-		return new GrabbableCollisionComponent(collider, collision_priority, new PositionComponent());
+		return new GrabbableCollisionComponent(collider, collision_priority);
 	}
 
 	@Override
 	public void beCollidedBy(CollisionComponent other) 
 	{
+		if (!isColliding(other)) return;
 		other.collideWith(this);
 	}
 

@@ -4,12 +4,11 @@ import com.cycapservers.game.components.positioning.PositionComponent;
 
 public abstract class Collider 
 {
+	protected PositionComponent position;
 	
-	protected PositionComponent curPos;
-	
-	protected Collider(PositionComponent starting_pos)
+	protected Collider(PositionComponent p)
 	{
-		curPos = starting_pos;
+		position = p;
 	}
 
 	/**
@@ -19,16 +18,18 @@ public abstract class Collider
 	 */
 	public abstract boolean isColliding(Collider other);
 	
-	public abstract void setWidth(double w);
+	protected abstract void setWidth(double w);
 	
-	public abstract void setHeight(double h);
+	protected abstract void setHeight(double h);
 	
 	public abstract Collider clone();
 	
-	public void SetCurPosition(PositionComponent p)
-	{
-		curPos = p;
-	}
+	/**
+	 * Makes a clone of this collider with the new given position.
+	 * @param p
+	 * @return
+	 */
+	public abstract Collider CloneWithNewPosition(PositionComponent p);
 
 	public Object getJSONValue() 
 	{

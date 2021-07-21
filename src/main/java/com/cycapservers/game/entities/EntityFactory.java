@@ -58,7 +58,7 @@ public class EntityFactory
 	{
 		PositionComponent p = new GridLockedPositionComponent(x, y);
 		Entity e = ManufactureDrawableEntity(entity_id, p, DrawingComponentFactory.getInstance().BuildGreyWallDrawingComponent());
-		e.AddComponent(new StaticCollisionComponent(new RectangleCollider(p), 1, p));
+		e.AddComponent(new StaticCollisionComponent(new RectangleCollider(p), 1));
 		e.AddComponent(new HealthComponent(-1, -1, true));
 		return e;
 	}
@@ -84,9 +84,7 @@ public class EntityFactory
 		e.AddComponent(new InventoryComponent());
 		e.AddComponent(new ClassComponent(c));
 		e.AddComponent(new VisibilityComponent());
-		e.AddComponent(new CharacterCollisionComponent(new CircleCollider(p),
-													   1, 
-													   p));
+		e.AddComponent(new CharacterCollisionComponent(new CircleCollider(p), 1));
 		return e;
 	}
 	
@@ -112,7 +110,7 @@ public class EntityFactory
 		e.AddComponent(new TeamComponent(t));
 		HomebasePositionComponent p = new HomebasePositionComponent(base_x, base_y);
 		e.AddComponent(p);
-		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1, p));
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1));
 		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureFlagDrawingComponent(t));
 		return e;
 	}
@@ -123,7 +121,7 @@ public class EntityFactory
 	{
 		Entity e = new Entity(entity_id);
 		e.AddComponent(p);
-		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1, p));
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1));
 		e.AddComponent(new AmmoPackUsableComponent(1));
 		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureAmmoPackDrawingComponent());
 		return e;
@@ -133,7 +131,7 @@ public class EntityFactory
 	{
 		Entity e = new Entity(entity_id);
 		e.AddComponent(p);
-		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1, p));
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1));
 		e.AddComponent(new HealthPackUsableComponent(1, 500));
 		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureHealthPackDrawingComponent());
 		return e;
@@ -143,7 +141,7 @@ public class EntityFactory
 	{
 		Entity e = new Entity(entity_id);
 		e.AddComponent(p);
-		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1, p));
+		e.AddComponent(new GrabbableCollisionComponent(new RectangleCollider(p), 1));
 		e.AddComponent(new SpeedPotionUsableComponent(1, 10, 1.5, true));
 		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureSpeedPotionDrawingComponent());
 		return e;

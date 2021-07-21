@@ -7,15 +7,15 @@ public class CircleCollider extends Collider
 {	
 	private double radius;
 
-	public CircleCollider(PositionComponent starting_pos) 
+	public CircleCollider(PositionComponent p) 
 	{
-		super(starting_pos);
+		super(p);
 		this.radius = Utils.GRID_LENGTH / 2.0;
 	}
 
-	public CircleCollider(PositionComponent starting_pos, double radius) 
+	public CircleCollider(PositionComponent p, double radius) 
 	{
-		super(starting_pos);
+		super(p);
 		this.radius = radius;
 	}
 
@@ -25,7 +25,7 @@ public class CircleCollider extends Collider
 		if(other.getClass().equals(CircleCollider.class))
 		{
 			CircleCollider other_circle = (CircleCollider) other;
-			double dist = Utils.distanceBetween(curPos, other_circle.curPos);
+			double dist = Utils.distanceBetween(position, other_circle.position);
 			return (dist < this.radius + other_circle.radius);
 		}
 		else if(other.getClass().equals(RectangleCollider.class))
@@ -33,10 +33,10 @@ public class CircleCollider extends Collider
 			RectangleCollider other_rect = (RectangleCollider) other;
 			
 			//find point on rect nearest circle
-			double nearestX = Utils.clamp(other_rect.getBottomLeft().getX(), curPos.getX(), other_rect.getTopRight().getX());
-			double nearestY = Utils.clamp(other_rect.getBottomLeft().getY(), curPos.getY(), other_rect.getTopRight().getY());
+			double nearestX = Utils.clamp(other_rect.getBottomLeft().getX(), position.getX(), other_rect.getTopRight().getX());
+			double nearestY = Utils.clamp(other_rect.getBottomLeft().getY(), position.getY(), other_rect.getTopRight().getY());
 			
-			return Utils.distanceBetween(curPos, new PositionComponent(nearestX, nearestY)) < this.radius;
+			return Utils.distanceBetween(position, new PositionComponent(nearestX, nearestY)) < this.radius;
 		}
 		else
 		{
@@ -50,13 +50,13 @@ public class CircleCollider extends Collider
 	}
 
 	@Override
-	public void setWidth(double w) 
+	protected void setWidth(double w) 
 	{
 		radius = Math.max(radius, w/2.0);
 	}
 
 	@Override
-	public void setHeight(double h) 
+	protected void setHeight(double h) 
 	{
 		radius = Math.max(radius, h/2.0);
 	}
@@ -64,6 +64,12 @@ public class CircleCollider extends Collider
 	@Override
 	public Collider clone() 
 	{
-		return new CircleCollider(curPos, radius);
+		return new CircleCollider(position.clone(), radius);
+	}
+
+	@Override
+	public Collider CloneWithNewPosition(PositionComponent p) 
+	{
+		return new CircleCollider(p.clone(), radius);
 	}
 }

@@ -89,6 +89,13 @@ public final class Utils
 		return Math.max(lowerClamp, Math.min(value, upperClamp));
 	}
 	
+	public static double SnapToClosest(double numToSnap, double n1, double n2)
+	{
+		double n1_diff = Math.abs(n1 - numToSnap);
+		double n2_diff = Math.abs(n2 - numToSnap);
+		return n1_diff < n2_diff ? n1 : n2;
+	}
+	
 	/**
 	 * Returns the distance between two coordinate pairs
 	 * @param x1
@@ -100,6 +107,11 @@ public final class Utils
 	public static double distanceBetween(double x1, double y1, double x2, double y2) 
 	{
 		return Math.sqrt(Math.pow(x2 - x1, 2.0) + Math.pow(y2 - y1, 2.0));
+	}
+	
+	public static PositionComponent CenterOf(PositionComponent p1, PositionComponent p2)
+	{
+		return new PositionComponent((p1.getX() + p2.getX()) / 2.0, (p1.getY() + p2.getY()) / 2.0);
 	}
 	
 	public static PositionComponent GetScaleVector(PositionComponent p, double scale)

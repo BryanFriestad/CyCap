@@ -7,7 +7,6 @@ import com.cycapservers.game.DamageDealer;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.components.ComponentMessage;
 import com.cycapservers.game.components.ComponentMessageId;
-import com.cycapservers.game.components.positioning.PositionComponent;
 
 /**
  * A collision component which keeps track of entities that it has already hit, but doesn't die on collision.
@@ -29,9 +28,9 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	 */
 	private int stopping_power;
 	
-	public DamagingCollisionComponent(Collider c, int p, PositionComponent start_pos, String owner_id, int damage, double wall_dmg_mult, String deathType, Team team, int stopping_power) 
+	public DamagingCollisionComponent(Collider c, int p, String owner_id, int damage, double wall_dmg_mult, String deathType, Team team, int stopping_power) 
 	{
-		super(c, p, start_pos);
+		super(c, p);
 		this.damage = damage;
 		this.wall_damage_mult = wall_dmg_mult;
 		this.owner_id = owner_id;
@@ -50,7 +49,7 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	@Override
 	public CollisionComponent clone() 
 	{
-		return new DamagingCollisionComponent(collider, collision_priority, new PositionComponent(), owner_id, damage, wall_damage_mult, death_type, team, stopping_power);
+		return new DamagingCollisionComponent(collider, collision_priority, owner_id, damage, wall_damage_mult, death_type, team, stopping_power);
 	}
 
 	@Override
@@ -80,6 +79,7 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	@Override
 	public void beCollidedBy(CollisionComponent other) 
 	{
+		if (!isColliding(other)) return;
 		other.collideWith(this);
 	}
 

@@ -9,6 +9,8 @@ import com.cycapservers.game.components.ComponentMessageId;
 
 public class PositionComponent extends Component
 {
+	private double prevX;
+	private double prevY;
 	private double x;
 	private double y;
 
@@ -17,6 +19,8 @@ public class PositionComponent extends Component
 		super("position");
 		x = 0;
 		y = 0;
+		prevX = x;
+		prevY = y;
 	}
 
 	public PositionComponent(double x, double y) 
@@ -24,13 +28,17 @@ public class PositionComponent extends Component
 		super("position");
 		this.x = x;
 		this.y = y;
+		prevX = x;
+		prevY = y;
 	}
 
 	public double getX() {
 		return x;
 	}
 
-	public void setX(double x) {
+	public void setX(double x) 
+	{
+		this.prevX = this.x;
 		this.x = x;
 	}
 
@@ -38,7 +46,9 @@ public class PositionComponent extends Component
 		return y;
 	}
 
-	public void setY(double y) {
+	public void setY(double y) 
+	{
+		this.prevY = this.y;
 		this.y = y;
 	}
 
@@ -48,6 +58,17 @@ public class PositionComponent extends Component
 	
 	public short getClosestGridY(){
 		return (short) Math.round((this.y - (Utils.GRID_LENGTH / 2.0)) / Utils.GRID_LENGTH);
+	}
+	
+	public void SetToNearestPixelPosition()
+	{
+		x = Math.round(x);
+		y = Math.round(y);
+	}
+	
+	public PositionComponent GetPreviousPosition()
+	{
+		return new PositionComponent(prevX, prevY);
 	}
 
 	@Override
@@ -73,15 +94,15 @@ public class PositionComponent extends Component
 		
 		case DRAWING_POSITION_CHANGE_DELTA:
 			PositionComponent drawing_delta = (PositionComponent) message.getData();
-			x += drawing_delta.getX();
-			y += drawing_delta.getY();
+			setX(x + drawing_delta.getX());
+			setY(y + drawing_delta.getY());
 			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
 			break;
 			
 		case SPEED_POSITION_CHANGE_DELTA:
 			PositionComponent speed_delta = (PositionComponent) message.getData();
-			x += speed_delta.getX();
-			y += speed_delta.getY();
+			setX(x + speed_delta.getX());
+			setY(y + speed_delta.getY());
 			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
 			break;
 			
@@ -90,6 +111,9 @@ public class PositionComponent extends Component
 			System.out.println("Position changed from: " + x + ", " + y + " to " + p.getX() + ", " + p.getY());
 			x = p.getX();
 			y = p.getY();
+			// Set previous X & Y to corrected position to ensure they are valid (ie non-colliding).
+			prevX = x;
+			prevY = y;
 			parent.Send(new ComponentMessage(ComponentMessageId.POSITIONING_UPDATE, this));
 			break;
 			
