@@ -24,9 +24,35 @@ public class ClientInputComponent extends InputComponent
 	public boolean Update(long delta_t) 
 	{
 		movePlayer(delta_t); //move the player first
-//		if (c.getCurrentEquipment() != null) c.getCurrentEquipment().update(input_handler); //checks to see if the current weapon is to be fired
 		
-		//WEAPON AND ITEM RELATED KEYPRESSES
+		// Shoot Button
+		if (input_handler.isKeyPressed(InputAction.SHOOT))
+		{
+//			System.out.println("Shoot down");
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_ON_SHOOT_DOWN, null));
+		}
+		else if (input_handler.isPressedAndReleased(InputAction.SHOOT))
+		{
+//			System.out.println("Shoot up");
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_ON_SHOOT_UP, null));
+		}
+		
+		// ReloadButton
+		if (input_handler.isKeyPressed(InputAction.RELOAD))
+		{
+//			System.out.println("reload down");
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_ON_RELOAD_DOWN, null));
+		}
+		else if (input_handler.isPressedAndReleased(InputAction.RELOAD))
+		{
+//			System.out.println("reload up");
+			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_ON_RELOAD_UP, null));
+		}
+		
+		// MOUSE POSITION
+		parent.Send(new ComponentMessage(ComponentMessageId.INPUT_UPDATE_MOUSE_POSITION, input_handler.GetMouseWorldLocation()));
+		
+		//WEAPON SWITCHING
 		if (input_handler.isPressedAndReleased(InputAction.WEAPON_1_SELECT))
 		{
 			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 0));
@@ -44,6 +70,7 @@ public class ClientInputComponent extends InputComponent
 			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_SWITCH_EQUIPMENT, 3));
 		}
 		
+		// USE ITEM
 		if (input_handler.isPressedAndReleased(InputAction.USE_ITEM))
 		{
 			parent.Send(new ComponentMessage(ComponentMessageId.INPUT_USE_ITEM, null));

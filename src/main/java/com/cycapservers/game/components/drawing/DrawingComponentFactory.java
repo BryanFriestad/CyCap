@@ -133,5 +133,10 @@ public class DrawingComponentFactory
 		}
 		return new DrawingComponent(i, index);
 	}
+	
+	public DrawingComponent ManufactureProjectileDrawingComponent()
+	{
+		return new DrawingComponent(Image.GetImageBySrc("res/images/bullets.png"), 1);
+	}
 
 }

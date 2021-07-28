@@ -87,6 +87,7 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	public void collideWith(CharacterCollisionComponent other) 
 	{
 		if (hurt_entities.contains(other)) return;
+//		System.out.println("Damage collider hit character");
 		other.GetParent().Send(new ComponentMessage(ComponentMessageId.COLLISION_TAKE_DAMAGE, this));
 		hurt_entities.add(other);
 		stopping_power--;
@@ -102,6 +103,7 @@ public class DamagingCollisionComponent extends CollisionComponent implements Da
 	public void collideWith(StaticCollisionComponent other) 
 	{
 		if (hurt_entities.contains(other)) return;
+//		System.out.println("Damage collider hit wall");
 		other.GetParent().Send(new ComponentMessage(ComponentMessageId.COLLISION_TAKE_DAMAGE, this));
 		hurt_entities.add(other);
 		stopping_power--;

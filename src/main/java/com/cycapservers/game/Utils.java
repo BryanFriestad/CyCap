@@ -22,6 +22,7 @@ public final class Utils
 	public final static double SIN_45 = Math.sin(Math.PI/4);
 	public final static int AI_NODE_PIXEL_DISTANCE = 16;
 	public final static Random RANDOM = new Random();
+	private static final PositionComponent ZERO_VECTOR = new PositionComponent(0, 0);
 	
 	//////WEAPON TEMPLATES//////
 //	public final static Shotgun REMINGTON_870 = new Shotgun("Remington870", 25, 500, 500, 5, 4, 6000, 0.35);
@@ -121,6 +122,7 @@ public final class Utils
 	
 	public static PositionComponent MakeUnitVector(PositionComponent p)
 	{
+		if (p.equals(ZERO_VECTOR)) return p;
 		double mag = GetMagnitude(p);
 		double new_x = p.getX() / mag;
 		double new_y = p.getY() / mag;

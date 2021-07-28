@@ -59,7 +59,7 @@ public class EntityFactory
 		PositionComponent p = new GridLockedPositionComponent(x, y);
 		Entity e = ManufactureDrawableEntity(entity_id, p, DrawingComponentFactory.getInstance().BuildGreyWallDrawingComponent());
 		e.AddComponent(new StaticCollisionComponent(new RectangleCollider(p), 1));
-		e.AddComponent(new HealthComponent(-1, -1, true));
+		e.AddComponent(new HealthComponent(50, 1, true, true));
 		return e;
 	}
 	
@@ -79,7 +79,7 @@ public class EntityFactory
 		e.AddComponent(new SpeedComponent(0.005));
 		e.AddComponent(p);
 		e.AddComponent(DrawingComponentFactory.getInstance().BuildPlayerDrawingComponent(t));
-		e.AddComponent(new HealthComponent(-1, 3, false));
+		e.AddComponent(new HealthComponent(100, 3, false, false));
 		e.AddComponent(new TeamComponent(t));
 		e.AddComponent(new InventoryComponent());
 		e.AddComponent(new ClassComponent(c));
@@ -87,22 +87,6 @@ public class EntityFactory
 		e.AddComponent(new CharacterCollisionComponent(new CircleCollider(p), 1));
 		return e;
 	}
-	
-//	public Entity ManufactureProjectile(String entity_id, 
-//										PositionComponent p, 
-//										DrawingComponent d, 
-//										int lifespan, 
-//										double speed, 
-//										PositionComponent direction)
-//	{
-//		Entity e = new Entity(entity_id);
-//		e.AddComponent(new LifespanComponent(lifespan));
-//		e.AddComponent(new SpeedComponent(speed, direction));
-//		e.AddComponent(p);
-//		e.AddComponent(d);
-//		e.AddComponent(new DamagingCollisionComponent(new CircleCollider(), 1, new PositionComponent(), "owner", damage, wall_dmg_mult, deathType, team, 1));
-//		return e;
-//	}
 	
 	public Entity ManufactureFlag(String entity_id, Team t, double base_x, double base_y)
 	{
@@ -145,6 +129,28 @@ public class EntityFactory
 		e.AddComponent(new SpeedPotionUsableComponent(1, 10, 1.5, true));
 		e.AddComponent(DrawingComponentFactory.getInstance().ManufactureSpeedPotionDrawingComponent());
 		return e;
+	}
+	
+	public Entity ManufactureEntity(String entity_id, Blueprint blueprint)
+	{
+		Entity e = new Entity(entity_id);
+		blueprint.ManufactureEntity(e);
+		return e;
+	}
+	
+	public Blueprint GiveProjectileBlueprint(Entity owner,
+											 PositionComponent p, 
+											 DrawingComponent d, 
+											 long lifespan, 
+											 SpeedComponent speed,
+											 int damage,
+											 double wall_dmg_mult,
+											 String death_type)
+	{
+		Blueprint b = new Blueprint(new LifespanComponent(lifespan), p, d, speed);
+		TeamComponent t = (TeamComponent) owner.GetComponentOfType(TeamComponent.class);
+		b.AddComponent(new DamagingCollisionComponent(new CircleCollider(p), 1, owner.getEntityId(), damage, wall_dmg_mult, death_type, t.GetTeam(), 1));
+		return b;
 	}
 
 }

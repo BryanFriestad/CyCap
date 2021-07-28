@@ -2,8 +2,8 @@ package com.cycapservers.game.components;
 
 import org.json.JSONObject;
 
+import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.components.collision.GrabbableCollisionComponent;
-import com.cycapservers.game.components.drawing.DrawingComponent;
 import com.cycapservers.game.components.usable.UsableComponent;
 import com.cycapservers.game.entities.Entity;
 
@@ -69,7 +69,7 @@ public class InventoryComponent extends Component
 		}
 	}
 	
-	private void SetInventoryList(Entity[] new_list)
+	public void SetInventoryList(Entity[] new_list)
 	{
 		if (equipment.length != new_list.length) throw new IllegalArgumentException("new list length does not match that of this component");
 		for (int slot_index = 0; slot_index < equipment.length; slot_index++)
@@ -81,6 +81,7 @@ public class InventoryComponent extends Component
 	@Override
 	public void Receive(ComponentMessage message) 
 	{
+		Entity cur_equipment;
 		switch (message.getMessage_id())
 		{
 		case INPUT_SWITCH_EQUIPMENT:
@@ -89,6 +90,54 @@ public class InventoryComponent extends Component
 			
 		case INPUT_USE_ITEM:
 			UseItem();
+			break;
+			
+		case INPUT_ON_SHOOT_UP:
+			cur_equipment = equipment[active_equipment_index];
+			if (cur_equipment != null)
+			{
+				cur_equipment.Send(message);
+			}
+			break;
+			
+		case INPUT_ON_SHOOT_DOWN:
+			cur_equipment = equipment[active_equipment_index];
+			if (cur_equipment != null)
+			{
+				cur_equipment.Send(message);
+			}
+			break;
+			
+		case INPUT_ON_RELOAD_UP:
+			cur_equipment = equipment[active_equipment_index];
+			if (cur_equipment != null)
+			{
+				cur_equipment.Send(message);
+			}
+			break;
+			
+		case INPUT_ON_RELOAD_DOWN:
+			cur_equipment = equipment[active_equipment_index];
+			if (cur_equipment != null)
+			{
+				cur_equipment.Send(message);
+			}
+			break;
+			
+		case INPUT_UPDATE_MOUSE_POSITION:
+			cur_equipment = equipment[active_equipment_index];
+			if (cur_equipment != null)
+			{
+				cur_equipment.Send(message);
+			}
+			break;
+			
+		case POSITIONING_UPDATE:
+			cur_equipment = equipment[active_equipment_index];
+			if (cur_equipment != null)
+			{
+				cur_equipment.Send(message);
+			}
 			break;
 			
 		default:

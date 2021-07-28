@@ -1,3 +1,12 @@
+- Equipment
+	- Weapons
+		- ShootComponent
+		- SpawnerComponent
+		- ReloadComponent
+		- AmmoComponent
+		- DrawableComponent (for icon)
+		- MousePositionListener (for launched weapons)
+
 - Matchmaking
 	- handle leaving a game properly
 	- handle leaving a lobby
@@ -16,8 +25,6 @@
 	- AI
 		- pathfinding
 		- behavior trees
-	- Collision
-		- Walls
 	- Maps
 		- 1 map 
 			- TDM flags
@@ -59,14 +66,6 @@
 - health component
 	- need new interface for HealingDealer
 	- is wall (to determine if should use normal or multiplied damage).
-	
-- Equipment
-	- Weapons
-		- ShootComponent
-		- ReloadComponent
-		- AmmoComponent
-		- DrawableComponent (for icon)
-		- MousePositionListener (for launched weapons)
 		
 - Component Architecture fixes
 	- It would be a good idea to have a mapping of priority for components

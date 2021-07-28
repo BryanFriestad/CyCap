@@ -10,7 +10,8 @@ import com.cycapservers.game.components.positioning.PositionComponent;
 
 public class InputSnapshot {
 	
-	private PositionComponent mouse_position;
+	private PositionComponent mouse_position_canvas;
+	private PositionComponent mouse_position_world;
 	private List<Integer> keys_down;
 	
 	private int snapshotNum;
@@ -28,7 +29,11 @@ public class InputSnapshot {
 		
 		double canvasX = snapshot_obj.getDouble("canvasX");
 		double canvasY = snapshot_obj.getDouble("canvasY");
-		this.mouse_position = new PositionComponent(canvasX, canvasY);
+		this.mouse_position_canvas = new PositionComponent(canvasX, canvasY);
+		
+		double mapX = snapshot_obj.getDouble("mapX");
+		double mapY = snapshot_obj.getDouble("mapY");
+		this.mouse_position_world = new PositionComponent(mapX, mapY);
 		
 		keys_down = new ArrayList<Integer>();
 		JSONArray arr = snapshot_obj.getJSONArray("keys_down");
@@ -49,8 +54,14 @@ public class InputSnapshot {
 		return this.keys_down;
 	}
 
-	public PositionComponent getMouse_position() {
-		return mouse_position;
+	public PositionComponent GetMouseCanvasPosition() 
+	{
+		return mouse_position_canvas;
+	}
+	
+	public PositionComponent GetMouseWorldPosition()
+	{
+		return mouse_position_world;
 	}
 
 	public int getSnapshotNum() {

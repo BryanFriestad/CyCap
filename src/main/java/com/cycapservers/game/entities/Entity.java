@@ -18,11 +18,13 @@ public class Entity implements JSON_returnable
 {
 	private String entity_id;
 	private List<Component> components;
+	private boolean to_delete;
 	
 	public Entity(String entity_id)
 	{
 		this.entity_id = entity_id;
 		components = new ArrayList<Component>();
+		to_delete = false;
 	}
 	
 	/**
@@ -40,13 +42,17 @@ public class Entity implements JSON_returnable
 		c.SetParent(this);
 	}
 	
-	public boolean Update(long delta_t)
+	public void Update(long delta_t)
 	{
 		for (Component c : components)
 		{
-			if (c.Update(delta_t) == false) return false;
+			if (c.Update(delta_t) == false) to_delete = true;
 		}
-		return true;
+	}
+	
+	public boolean IsMarkedToDelete()
+	{
+		return to_delete;
 	}
 	
 	public void Send(ComponentMessage msg)

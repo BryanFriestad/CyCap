@@ -108,7 +108,6 @@ public class PositionComponent extends Component
 			
 		case COLLISION_CORRECT_POSITION:
 			PositionComponent p = (PositionComponent) message.getData();
-			System.out.println("Position changed from: " + x + ", " + y + " to " + p.getX() + ", " + p.getY());
 			x = p.getX();
 			y = p.getY();
 			// Set previous X & Y to corrected position to ensure they are valid (ie non-colliding).

@@ -16,9 +16,13 @@ public class LifespanComponent extends Component
 	/**
 	 * In milliseconds.
 	 */
-	private int total_lifespan;
+	private long total_lifespan;
 	
-	public LifespanComponent(int lifespan)
+	/**
+	 * 
+	 * @param lifespan In ms.
+	 */
+	public LifespanComponent(long lifespan)
 	{
 		super("lifespan");
 		this.time_of_creation = System.currentTimeMillis();

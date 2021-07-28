@@ -15,9 +15,17 @@ public class HealthComponent extends Component
 	private boolean alive;
 	private long last_time_of_death;
 	private boolean is_wall;
+	private boolean destroy_when_out_of_lives;
 	
 	// TODO: may just want to have "is_invincible" be a param
-	public HealthComponent(int max_h, int lives_remaining, boolean wall)
+	/**
+	 * 
+	 * @param max_h Maximum health value.
+	 * @param lives_remaining The number of lives to start with.
+	 * @param wall If this should take wall damage or not.
+	 * @param destroy_when_out_of_lives If this component should kill the entity when it is out of lives.
+	 */
+	public HealthComponent(int max_h, int lives_remaining, boolean wall, boolean destroy_when_out_of_lives)
 	{
 		super("health");
 		this.health = max_h;
@@ -26,30 +34,54 @@ public class HealthComponent extends Component
 		this.alive = true;
 		this.last_time_of_death = 0;
 		this.is_wall = wall;
+		this.destroy_when_out_of_lives = destroy_when_out_of_lives;
 	}
 	
 	@Override
 	public void Receive(ComponentMessage message) 
 	{
-		// TODO Auto-generated method stub
+		switch (message.getMessage_id())
+		{
+		case COLLISION_TAKE_DAMAGE:
+			UpdateHealth((DamageDealer) message.getData());
+			break;
+			
+		default:
+			break;
+		
+		}
 	}
 
 	@Override
 	public boolean Update(long delta_t) 
 	{
+		if (destroy_when_out_of_lives && lives_remaining == 0) return false;
 		return true;
 	}
 	
 	private void UpdateHealth(DamageDealer d)
 	{
+//		System.out.println("Entity " + parent.getEntityId() + " is taking " + d.getDamageAmount() + " points of damage");
 		if (is_wall)
 		{
-			health = Math.max(0, health - d.getDamageAmount()); 
+			int health_to_be = health - d.getDamageAmount();
+			if (health_to_be <= 0)
+			{
+				alive = false;
+				lives_remaining--;
+			}
+			health = Math.max(0, health_to_be);
 			// TODO: inform if health goes below zero.
 		}
 		else
 		{
-			health = Math.max(0, health - d.getDamageAmount());
+			int health_to_be = health - d.getDamageAmount();
+			if (health_to_be <= 0)
+			{
+				alive = false;
+				lives_remaining--;
+			}
+			health = Math.max(0, health_to_be);
 		}
 	}
 	
@@ -64,6 +96,11 @@ public class HealthComponent extends Component
 //			health = Math.min(max_health, health + h.getHealingAmount());
 //		}
 //	}
+	
+	private void Respawn()
+	{
+		alive = true;
+	}
 
 	@Override
 	public Object GetJSONValue() 

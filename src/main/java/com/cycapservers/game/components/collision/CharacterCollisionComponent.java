@@ -48,7 +48,6 @@ public class CharacterCollisionComponent extends CollisionComponent
 		for (int i = 0; i < max_depth; i++) //get as close to the wall as we can by successive approximation
 		{
 			PositionComponent working_pos = Utils.CenterOf(min, max);
-			System.out.println("working x: " + working_pos.getX());
 			Collider test_collider = collider.CloneWithNewPosition(working_pos);
 			if (test_collider.isColliding(other.getCollider()))
 			{

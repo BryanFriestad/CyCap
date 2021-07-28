@@ -94,9 +94,14 @@ public class ClientInputHandler
 		}
 	}
 	
-	public PositionComponent getMouseLocation()
+	public PositionComponent GetMouseCanvasLocation()
 	{
-		return current_snapshot.getMouse_position();
+		return current_snapshot.GetMouseCanvasPosition();
+	}
+	
+	public PositionComponent GetMouseWorldLocation()
+	{
+		return current_snapshot.GetMouseWorldPosition();
 	}
 	
 	public boolean isDown(InputAction action)
@@ -107,6 +112,24 @@ public class ClientInputHandler
 	public boolean isPressedAndReleased(InputAction action)
 	{
 		return keys_pnr.contains(input_mapping.get(action));
+	}
+	
+	/**
+	 * Returns true on the input snapshot which the specified action is first pressed down.
+	 * @param action
+	 * @return
+	 */
+	public boolean isKeyPressed(InputAction action)
+	{
+		Integer keycode = input_mapping.get(action);
+		if ((previous_snapshot != null) && (!previous_snapshot.getDown().contains(keycode) && keys_down.contains(keycode)))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public String getInput_passcode() 

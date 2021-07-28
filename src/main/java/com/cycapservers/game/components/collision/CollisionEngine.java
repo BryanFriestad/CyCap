@@ -2,6 +2,7 @@ package com.cycapservers.game.components.collision;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CollisionEngine 
 {
@@ -14,9 +15,10 @@ public class CollisionEngine
 		collisions = new ArrayList<Collision>();
 	}
 	
-	public void update()
+	public void Update()
 	{
 		collisions.clear();
+		CleanUpDeadColliders();
 		
 		CollisionComponent[] arr = collidables.toArray(new CollisionComponent[0]);
 		for(int i = 0; i < arr.length; i++)
@@ -32,6 +34,16 @@ public class CollisionEngine
 		Arrays.sort(collision_arr);
 		for(Collision c : collision_arr)
 			c.respond();
+	}
+	
+	private void CleanUpDeadColliders()
+	{
+		List<CollisionComponent> to_delete = new ArrayList<>();
+		for (CollisionComponent cc : collidables)
+		{
+			if (cc.GetParent().IsMarkedToDelete()) to_delete.add(cc);
+		}
+		collidables.removeAll(to_delete);
 	}
 	
 	public void registerCollidable(CollisionComponent cc)

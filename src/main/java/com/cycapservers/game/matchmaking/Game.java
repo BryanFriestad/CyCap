@@ -10,9 +10,13 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.cycapservers.BeanUtil;
+import com.cycapservers.game.CharacterClass;
 import com.cycapservers.game.Spawner;
 import com.cycapservers.game.Team;
 import com.cycapservers.game.UniqueIdGenerator;
+import com.cycapservers.game.components.ClassComponent;
+import com.cycapservers.game.components.InventoryComponent;
+import com.cycapservers.game.components.SpawnerComponent;
 import com.cycapservers.game.components.collision.CollisionComponent;
 import com.cycapservers.game.components.collision.CollisionEngine;
 import com.cycapservers.game.components.input.ClientInputComponent;
@@ -23,7 +27,9 @@ import com.cycapservers.game.database.GameEventsRepository;
 import com.cycapservers.game.database.GamePlayersEntity;
 import com.cycapservers.game.database.GameType;
 import com.cycapservers.game.database.GamesEntity;
+import com.cycapservers.game.entities.Blueprint;
 import com.cycapservers.game.entities.Entity;
+import com.cycapservers.game.entities.EntityFactory;
 import com.cycapservers.game.maps.Map;
 import com.cycapservers.game.pathfinding.PathfindingNode;
 
@@ -58,8 +64,10 @@ public abstract class Game
 	private boolean started; //whether or not the game has started
 	private boolean game_ended; //whether or not the game has finished
 	private long start_time; //the unix time in ms since the start of the game
+	
 	private CollisionEngine collision_engine;
-	private Spawner power_up_spawner;
+	private List<SpawnerComponent> spawner_list;
+//	private Spawner power_up_spawner;
 	
 	private JSONObject initial_game_state;
 	
@@ -89,6 +97,8 @@ public abstract class Game
 		websocket_session_map = new HashMap<String, WebSocketSession>();
 		
 		this.collision_engine = new CollisionEngine();
+		spawner_list = new ArrayList<SpawnerComponent>();
+		
 		this.game_ended = false;
 		this.started = false;
 	}
@@ -161,7 +171,8 @@ public abstract class Game
 	{
 		//update AI 
 		game_state.Update();
-		collision_engine.update();
+		collision_engine.Update();
+		HandleNewSpawns();
 		//check if game is completed
 	}
 	
@@ -182,6 +193,8 @@ public abstract class Game
 	{
 		id_generator.AddUsedId(c.getEntityId());
 		CheckAndRegisterCollision(c);
+		CheckAndRegisterSpawner(c);
+		SetupCharacterClass(c);
 		game_state.addCharacter(c);
 	}
 	
@@ -190,18 +203,21 @@ public abstract class Game
 	public void AddUndrawnEntity(Entity e)
 	{
 		CheckAndRegisterCollision(e);
+		CheckAndRegisterSpawner(e);
 		game_state.addUndrawnEntity(e);
 	}
 	
 	public void AddIntermittentEntity(Entity e)
 	{
 		CheckAndRegisterCollision(e);
+		CheckAndRegisterSpawner(e);
 		game_state.addIntermittentEntity(e);
 	}
 	
 	public void AddPersistentEntity(Entity e)
 	{
 		CheckAndRegisterCollision(e);
+		CheckAndRegisterSpawner(e);
 		game_state.addPersistentEntity(e);
 	}
 	
@@ -212,6 +228,43 @@ public abstract class Game
 			CollisionComponent cc = (CollisionComponent) e.GetComponentOfType(CollisionComponent.class);
 			collision_engine.registerCollidable(cc);
 		}
+	}
+	
+	private void CheckAndRegisterSpawner(Entity e)
+	{
+		if (e.HasComponentOfType(SpawnerComponent.class))
+		{
+			SpawnerComponent s = (SpawnerComponent) e.GetComponentOfType(SpawnerComponent.class);
+			spawner_list.add(s);
+		}
+	}
+	
+	private void HandleNewSpawns()
+	{
+		List<Entity> to_add = new ArrayList<>();
+		List<Blueprint> to_manufacture = new ArrayList<>();
+		
+		for (SpawnerComponent s : spawner_list)
+		{
+			to_manufacture.addAll(s.GetReadyBlueprints());
+			s.ClearReadyBlueprints();
+		}
+		for (Blueprint b : to_manufacture)
+		{
+//			System.out.println("game has blueprint to manufacture");
+			to_add.add(EntityFactory.getInstance().ManufactureEntity(this.GenerateUniqueEntityId(),	b));
+		}
+		for (Entity e : to_add)
+		{
+			AddIntermittentEntity(e);
+		}
+	}
+	
+	private void SetupCharacterClass(Entity character)
+	{
+		CharacterClass char_class = ((ClassComponent) character.GetComponentOfType(ClassComponent.class)).GetCharacterClass();
+		InventoryComponent inventory = (InventoryComponent) character.GetComponentOfType(InventoryComponent.class);
+		inventory.SetInventoryList(ClassComponent.GetDefaultEquipmentForClass(this, character, char_class));
 	}
 	
 	public void addGameEvent(GameEventsEntity event)

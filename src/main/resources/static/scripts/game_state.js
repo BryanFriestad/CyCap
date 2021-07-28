@@ -116,6 +116,10 @@ function InitializeGameState(initial_game_state)
 		for (let i = 0; i < this.intermittent_entities.length; i++)
 		{
 			RenderDrawingComponent(this.intermittent_entities[i].model, this.intermittent_entities[i].position);
+			if (this.intermittent_entities.length > 1)
+			{
+				console.log(this.intermittent_entities[i]);
+			}
 		}
 	}
 }

@@ -67,15 +67,14 @@ public class GameState implements JSON_returnable
 		
 		for (Entity e : undrawn_entities)
 		{
-			if (!e.Update(delta_t))
-			{
-				entities_to_delete.add(e);
-			}
+			e.Update(delta_t);
+			if (e.IsMarkedToDelete()) entities_to_delete.add(e);
 		}
 		
 		for (Entity e : persistent_entities)
 		{
-			if (!e.Update(delta_t))
+			e.Update(delta_t);
+			if (e.IsMarkedToDelete())
 			{
 				persistent_entities_deleted.add(e.getEntityId());
 				entities_to_delete.add(e);
@@ -84,18 +83,17 @@ public class GameState implements JSON_returnable
 		
 		for (Entity e : intermittent_entities)
 		{
-			if (!e.Update(delta_t))
-			{
-				entities_to_delete.add(e);
-			}
+			e.Update(delta_t);
+			if (e.IsMarkedToDelete()) entities_to_delete.add(e);
 		}
 		
 		for (Entity e : characters)
 		{
-			if (!e.Update(delta_t))
+			e.Update(delta_t);
+			if (e.IsMarkedToDelete())
 			{
 				entities_to_delete.add(e);
-				System.out.println("Deleting " + e.getEntityId());
+				System.out.println("Deleting character " + e.getEntityId());
 			}
 		}
 		
